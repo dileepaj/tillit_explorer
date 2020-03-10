@@ -1,0 +1,112 @@
+<!-- This is the item card component. -->
+<!-- Enable only when testing -->
+<!-- <app-loader *ngIf ="showLoaderNew"></app-loader> -->
+<div class="col-xs-12 col-md-12 mt-3 mt-md-4">
+  <div class="card mb-3 cardshadow">
+    <div class="row no-gutters">
+      <!-- Item image -->
+      <div class="col-md-3 ">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <ol class="carousel-indicators" *ngIf="transactionData.images && transactionData.images.length > 1">
+            <li *ngFor="let item of transactionData.images; let i = index" data-target="#carouselExampleIndicators"
+              data-slide-to="0" class="{{ i == 0 ? 'active' : ''}}"></li>
+          </ol>
+          <div class="carousel-inner" *ngIf="transactionData.images && transactionData.images.length != 0">
+            <div *ngFor="let item of transactionData.images; let i = index"
+              class="carousel-item {{ i == 0 ? 'active' : ''}}">
+              <img class="d-block w-100" src="{{item.image}}" alt="First slide">
+            </div>
+          </div>
+          <div class="carousel-inner" *ngIf="!(transactionData.images && transactionData.images.length != 0)">
+            <div class="carousel-item active">
+              <img class="d-block w-100" src="../../../../assets/img/img-default.png" alt="First slide">
+            </div>
+          </div>
+          <a class="carousel-control-prev" *ngIf="transactionData.images && transactionData.images.length > 1"
+            href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" *ngIf="transactionData.images && transactionData.images.length > 1"
+            href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Item content -->
+      <div class="col-md-6 ">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-auto">
+              <h5 class="card-title" *ngIf="transactionData.productName">{{transactionData.productName}}</h5>
+              <h5 class="card-title" *ngIf="transactionData.assetCode">{{transactionData.assetCode}}</h5>
+            </div>
+            <div class="col-auto text-md-left text-center pl-md-1" style="font-weight: 600;color:#818E94;"  *ngFor="let proof of transactionData.availableProofs">
+              <a href="#" onclick="return false;">
+                <span class="pl-3 pr-3 pt-2 pb-2 badge badge-pill badge-primary" (click)="navigateToProof(proof)"
+                  style="font-size: 14px;background-color: #F3F1FF;color:#818E94;font-weight: 700;">{{proof | uppercase}}</span>
+              </a>
+            </div>
+          </div>
+          <div class="row" style="width:100%;" *ngIf="transactionData.productId">
+            <div class="col-md-3 col-xs-12">
+              <span style="font-weight: 600">Item ID : </span>
+            </div>
+            <div class="col-md-9 col-xs-12">
+              <span class="cardcontent">{{transactionData.productId}}</span>
+            </div>
+          </div>
+          <div class="row" style="width:100%;margin-top: 5px;margin-bottom: 5px;" *ngIf="transactionData.identifier">
+            <div class="col-md-3 col-xs-12">
+              <span style="font-weight: 600">Identifier : </span>
+            </div>
+            <div class="col-md-9 col-xs-12">
+              <span class="cardcontent">{{transactionData.identifier}}</span>
+            </div>
+          </div>
+          <div class="row" style="width:100%;" *ngIf="transactionData.sender">
+            <div class="col-md-3 col-xs-12">
+              <span style="font-weight: 600">Sender : </span>
+            </div>
+            <div class="col-md-9 col-xs-12">
+              <span class="cardcontent">{{transactionData.sender}}</span>
+            </div>
+          </div>
+          <div class="row" style="width:100%;" *ngIf="transactionData.receiver">
+            <div class="col-md-3 col-xs-12">
+              <span style="font-weight: 600">Receiver : </span>
+            </div>
+            <div class="col-md-9 col-xs-12">
+              <span class="cardcontent">{{transactionData.receiver}}</span>
+            </div>
+          </div>
+          <div class="row" style="width:100%;" *ngIf="transactionData.timestamp">
+            <div class="col-md-3 col-xs-12">
+              <span style="font-weight: 600">Timestamp : </span>
+            </div>
+            <div class="col-md-9 col-xs-12">
+              <span class="cardcontent">{{transactionData.timestamp | date: 'medium'}}</span>
+            </div>
+          </div>
+          <div class="row" style="width:100%;" *ngIf="transactionData.transferType">
+            <div class="col-md-3 col-xs-12">
+              <span style="font-weight: 600">Type : </span>
+            </div>
+            <div class="col-md-9 col-xs-12">
+              <span class="cardcontent">{{transactionData.transferType | titlecase}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item button Need to fix -->
+      <div class="col-md-3 align-self-center" style="text-align: center;">
+        <a [routerLink]="['/txn', transactionData.txnHash]"
+          class="btn btn-main btn-view btn-outline-primary mb-4 mb-sm-4 mb-md-0 ">View Item</a>
+      </div>
+    </div>
+
+  </div>
+</div>

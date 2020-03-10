@@ -1,0 +1,126 @@
+<app-header></app-header>
+<div class="container-fluid md-3 shadow-bottom bg-white pt-4 pb-2">
+  <div class="container">
+    <div class="col-12">
+      <h4>PROOF OF CHANGE OF CUSTODY (POC)</h4>
+      <p>Proof that a given data packet existed in the blockchain</p>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="progress-loader-container mt-5" *ngIf="!loadingComplete">
+    <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
+    </mat-spinner>
+  </div>
+  <div class="col-xs-12 col-md-12 mt-5 mt-md-4">
+    <div class="col-xs-12 col-md-12 pl-0 text-left mb-1"
+      style="font-weight: 700;color: #2D2F39;font-size: 28px;">
+      Blockchain Proofs
+    </div>
+    <div class="col-xs-12 col-md-12 pl-0 text-left mb-3"
+      style="color: #2D2F39;">
+      <p>Click each of the nodes to view the transaction data</p>
+    </div>
+    <div class="col-12 pl-0 pr-0" style="background-color: white;">
+      <div style="overflow: scroll;" class="chart"></div>
+    </div>
+    <div *ngIf="selectedItem">
+      <div class="col-xs-12 col-md-12 pl-0 text-left mt-5 mb-3"
+        style="font-weight: 700;color: #2D2F39;font-size: 28px;">
+        Transaction Details
+      </div>
+      <div class="col-xs-12 col-md-12 pb-4 mt-2 ml-0 " style="background-color: white;">
+        <div class="row pl-md-3 pt-4">
+          <div class="col-md-3 col-6" style="font-weight: 500;">
+            Transaction Hash
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.Txnhash}}
+          </div>
+        </div>
+        <div class="row pl-md-3">
+          <div class="col-md-3 col-6" style="font-weight: 500;">
+            Transaction Type
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.TxnType}}
+          </div>
+        </div>
+        <div class="row pl-md-3">
+          <div class="col-md-3 col-6" style="font-weight: 500;">
+            Identifier
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.Identifier}}
+          </div>
+        </div>
+        <div class="row pl-md-3">
+          <div class="col-md-3 col-6" style="font-weight: 500;">
+            Timestamp
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.Timestamp}}
+          </div>
+        </div>
+        <div class="row pl-md-3">
+          <div class="col-md-3 col-6" style="font-weight: 500;">
+            Sequence
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.SequenceNo}}
+          </div>
+        </div>
+        <div class="row pl-md-3">
+          <div class="col-md-3 col-6 " style="font-weight: 500;">
+            Public Key
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.SourceAccount}}
+          </div>
+        </div>
+
+        <div class="row pl-md-3">
+          <div class="col-md-3 col-6 " style="font-weight: 500;">
+            Fee
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.FeePaid}}
+          </div>
+        </div>
+
+        <div class="row pl-md-3">
+          <div class="col-md-3 col-6 " style="font-weight: 500;">
+            Ledger
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.Ledger}}
+          </div>
+        </div>
+
+        <div class="row pl-md-3">
+          <div class="col-md-3 col-6 " style="font-weight: 500;">
+            Blockchain
+          </div>
+          <div class="col-md-9 col-6 overflow-ellipsis">
+            :{{selectedItem.BlockchainName}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-12 col-md-12 center pt-5" style="color: #6C757D;">
+        View this Transaction in Stellar<br>
+        <a href="{{selectedItem.Url}}" target="_blank">
+          <button class="mt-2 btn btn-primary btn-main btn-search" type="button"
+            style="width:fit-content;background-color: #3182BD;border:none">View Transaction</button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngIf="loadingComplete && errorOccurred">
+    <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle" [errorMessage]="error.errorMessage"
+      [errorMessageSecondary]="error.errorMessageSecondary">
+    </app-error-id>
+  </div>
+</div>
+<app-footer></app-footer>

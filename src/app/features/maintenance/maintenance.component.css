@@ -1,0 +1,22 @@
+h3 {
+    font-size: 34px; 
+    color: #262729;
+}
+
+h4 {
+    font-size: 26px; 
+    color: #262729;
+}
+
+h5 {
+    font-size: 22px; 
+    color: #45464a;
+}
+
+img {
+    height: 70vh;
+}
+
+.content-area {
+    height: 100vh;
+}

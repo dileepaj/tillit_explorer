@@ -1,0 +1,44 @@
+/* Row */
+.less-margin {
+ margin-left: 0;
+ margin-right: 0;
+}
+/* Main transition card */
+.transition-card {
+ border: #707070 1px solid;
+}
+/* Left column of the card */
+.transition-icon-col {
+ margin-top: auto;
+ margin-bottom: auto;
+}
+
+/* Right column of the card */
+/* .transition-content-col{
+    
+} */
+
+/* Inner content of the right column */
+.transition-header-icon {
+ color: #6c757d;
+ display: block;
+ text-align: right;
+}
+
+.transition-main-topic {
+ font-size: 20px;
+ font-weight: 450;
+ color: #000;
+ display: block;
+}
+
+.transition-sub-topic {
+ font-size: 11px;
+ font-weight: 500;
+ color: #6c757d;
+ display: block;
+}
+
+.mat-spinner::ng-deep circle {
+ stroke: #0062cc;
+}

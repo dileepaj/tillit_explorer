@@ -1,0 +1,32 @@
+<app-header></app-header>
+<div class="container-fluid md-3 shadow-bottom bg-white pt-4 pb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4>Recent Transactions</h4>
+            </div>
+            <!-- <div class="col-6 float-right">
+                <app-dropdown class="float-right"></app-dropdown>
+            </div> -->
+            <div class="float-none"></div>
+        </div>
+    </div>
+</div>
+<div class="main-container">
+    <div class="container main-app-container">
+        <div *ngIf="!loadingComplete">
+            <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
+            </mat-spinner>
+        </div>
+        <div class="row content-area" *ngIf="loadingComplete && !errorOccurred">
+            <app-card class="col-12" *ngFor="let item of results" [transactionData]="item"></app-card>
+        </div>
+        <div class="row content-area" *ngIf="loadingComplete && errorOccurred">
+            <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"
+                [errorMessage]="error.errorMessage" [errorMessageSecondary]="error.errorMessageSecondary">
+            </app-error-id>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,140 @@
+<app-header></app-header>
+<div class="container-fluid md-3 shadow-bottom bg-white pt-4 pb-2">
+  <div class="container">
+    <div class="col-12">
+      <h4>PROOF OF GENESIS (POG)</h4>
+      <p>Proof of initialization of a traceability item</p>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="progress-loader-container mt-5" *ngIf="!loadingComplete">
+    <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
+    </mat-spinner>
+  </div>
+
+  <div *ngIf="loadingComplete">
+    <div *ngIf="loadingComplete && !errorOccurred">
+      <div class="col-xs-12 col-md-12 mt-3 mt-md-4" *ngIf="txnItem">
+        <div class="col-xs-12 col-md-12 pl-0 text-left " style="font-weight: 700;color: #2D2F39;font-size: 28px;">
+          Transaction Data
+        </div>
+        <div class="col-xs-12 col-md-12 pb-4 mt-2 ml-0 " style="background-color: white;">
+
+          <div class="row pt-4" *ngIf="txnItem.txnHash">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Transaction Hash
+            </div>
+            <div class="col-7 col-md-10 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.txnHash}}
+            </div>
+          </div>
+
+          <div class="row mt-2" *ngIf="txnItem.productName">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Product Name
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.productName}}
+            </div>
+          </div>
+
+          <div class="row mt-2" *ngIf="txnItem.productId">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Product ID
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.productId}}
+            </div>
+          </div>
+
+
+
+          <div class="row mt-2" *ngIf="txnItem.identifier">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Identifier
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.identifier}}
+            </div>
+          </div>
+
+
+          <div class="row mt-2" *ngIf="txnItem.timestamp">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Timestamp
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.timestamp | date: 'medium'}}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-md-12 pb-4 mt-2 mb-3" style="background-color: white;">
+          <div class="row pt-4" *ngIf="txnItem.blockchainName">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Public Blockchain
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.blockchainName}}
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="txnItem.publicKey">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Public Key
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.publicKey}}
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="txnItem.fee">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Transaction Fee
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.fee}}
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="txnItem.ledger">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Ledger
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.ledger}}
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="txnItem.sequence">
+            <div class="col-5 col-md-2" style="font-weight: 500;">
+              Sequence
+            </div>
+            <div class="col-7 col-md-10 text-left overflow-ellipsis">
+              : {{txnItem.sequence}}
+            </div>
+          </div>
+        </div>
+        <div class="row ml-0 mr-0 pt-3 pb-3 mb-3" style="background-color: #E4F7E7;">
+          <div class="col-12 col-sm-12 col-md-1 text-center text-md-right">
+            <i class="fas fa-check-circle status-text-matched" style="font-size: 20px;"></i>
+          </div>
+          <div class="col-12 col-sm-12 col-md-11 text-center text-md-left">
+            <span style="color: #43BB52;font-weight: 700;font-size: 18px;">It's been verified that this is the first
+              transaction</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-xs-12 col-md-12 center pt-5" style="color: #6C757D;">
+        View this Transaction in Stellar<br>
+        <a href="{{txnItem.txnUrl}}" target="_blank"><button class="mt-2 btn btn-primary btn-main btn-search "
+            type="button" style="background-color: #3182BD;border:none; width: fit-content;">View
+            Transaction</button></a>
+      </div>
+    </div>
+    <div class="container" *ngIf="loadingComplete && errorOccurred">
+      <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle" [errorMessage]="error.errorMessage"
+        [errorMessageSecondary]="error.errorMessageSecondary">
+      </app-error-id>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,30 @@
+<app-header></app-header>
+<div class="container-fluid md-3 shadow-bottom bg-white pt-4 pb-2">
+        <div class="container">
+                <div class="row">
+                        <div class="col-md-8 col-xs-12 text-center text-md-left">
+                                <p class="lead search-text overflow-ellipsis">{{results.length}}
+                                        result{{results.length == 1 ? '' : 's'}} for {{searchId}}</p>
+                        </div>
+                </div>
+        </div>
+</div>
+<div class="main-container">
+        <div class="container main-app-container">
+                <div class="progress-loader-container mt-5" *ngIf="!loadingComplete">
+                        <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
+                        </mat-spinner>
+                </div>
+                <div *ngIf="loadingComplete">
+                        <div class="row content-area" *ngIf="loadingComplete && !errorOccurred">
+                                <app-card *ngFor="let item of results" [transactionData]="item"></app-card>
+                        </div>
+                        <div class="row content-area" *ngIf="loadingComplete && errorOccurred">
+                                <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"
+                                        [errorMessage]="error.errorMessage" [errorMessageSecondary]="error.errorMessageSecondary">
+                                </app-error-id>
+                        </div>
+                </div>
+        </div>
+</div>
+<app-footer></app-footer>
