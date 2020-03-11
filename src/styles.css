@@ -282,6 +282,10 @@
     border: 0;
 }
 
+.show-bottom-border{
+    border-bottom: 1px solid #dee2e4;
+}
+
 /* Progress Loader */
 
 .progress-loader {
