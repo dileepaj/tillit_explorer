@@ -61,17 +61,12 @@
 }
 
 .search-bar-input {
- border-left: none;
  border-radius: none;
  background-color: #fbfbfb;
 }
 
 .btn-main {
  font: Regular 14px Muli;
-}
-
-.btn-search {
- width: 100%;
 }
 
 .btn-view {
@@ -144,7 +139,6 @@
  color: black;
  letter-spacing: 0.38px;
  color: #2d2f39;
- opacity: 1;
 }
 
 .card-item-topic {
@@ -246,7 +240,7 @@
  width: 100%;
  line-height: 60px;
  background-color: white;
- box-shadow: 0px -5px 5px 0 rgba(0, 0, 0, 0.3);
+ border-top: 0.5px solid #dee2e6;
 }
 
 .footer-text {
