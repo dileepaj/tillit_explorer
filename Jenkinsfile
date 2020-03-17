@@ -1,5 +1,6 @@
 pipeline {
   agent { label 'linux-slave' }
+  tools {nodejs "nodejs-13.11.0"}
   stages {
     stage('Build') {
       steps {
@@ -36,7 +37,7 @@ pipeline {
 
       }
     }
-     stage('Deploy to QA') {
+    stage('Deploy to QA') {
       when { branch 'qa' }
       steps {
         s3Upload consoleLogLevel: 'INFO', dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'qa.explorer.tillit.world', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: true, selectedRegion: 'ap-south-1', showDirectlyInBrowser: false, sourceFile: 'dist/**', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'tillit-explorer-jenkins-deployer', userMetadata: []
