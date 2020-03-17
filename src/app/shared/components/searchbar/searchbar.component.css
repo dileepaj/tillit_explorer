@@ -1,0 +1,21 @@
+
+.pop-search {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+    left: 0;
+}
+
+.search-input {
+    border: 0;
+    background-color: transparent;
+    font-size: 18px;
+}
+
+.search-icons {
+    font-size: 20px;
+    color: #3d3d3d;
+}

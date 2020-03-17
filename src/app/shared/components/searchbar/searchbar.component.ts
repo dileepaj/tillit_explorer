@@ -12,12 +12,15 @@ export class SearchbarComponent {
   searchForm = new FormControl('');
   private searchText: string;
 
+  popSearch: boolean = false;
+
   constructor(private router: Router) { }
 
   search() {
     console.log("Searchbar button");
     if (this.searchForm.value) {
       this.router.navigate(['/search', this.searchForm.value]);
+      this.popSearch = false;
     }
 
   }

@@ -1,22 +1,32 @@
-<!-- This is the search bar component -->
 <div class="container-fluid search-bar">
-  <div class="container">
-    <div class="row pt-4 pb-4">
-      <!-- Input field column -->
-      <div class="col-md-10 col-12 pr-md-0 mb-2">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text search-icon" id="basic-text1"><i class="fas fa-search "
-                aria-hidden="true"></i></span>
-          </div>
-          <input class="search-bar-input form-control my-0 py-1" type="text"
-            placeholder="Enter Transaction ID or TDP Id or Public Key" aria-label="Search" [formControl]="searchForm">
-        </div>
+    <div class="row">
+      <div class="col-12 d-block d-lg-none text-right pt-2 pb-2">
+        <button class="icon-only-btn" style="color: #3d3d3d; font-size: 18px;" (click)="popSearch = true"><span class="fa fa-search"></span></button>
       </div>
+      <div class="col-10 d-none d-lg-block pr-md-0 mb-2 pt-4 pb-4">
+        <input class="search-bar-input form-control my-0 py-1" type="text"
+          placeholder="Enter Transaction ID or TDP Id or Public Key" aria-label="Search" [formControl]="searchForm">
+      </div>
+      <div class="col-2 d-none d-lg-block pt-4 pb-4">
+        <button type="button" class="btn btn-main" style="background-color: #3182BD; color: white;" (click)="search()">Search</button>
+      </div>
+    </div>
+</div>
 
-      <!-- Button area -->
-      <div class="col-md-2 col-12">
-        <button type="button" class="btn btn-primary btn-main btn-search" (click)="search()">Search</button>
+<div class="pop-search" *ngIf="popSearch">
+  <div class="bg-white">
+    <div class="container pt-3 pb-3">
+      <div class="row no-gutters">
+        <div class="col-8">
+          <input class="search-input form-control" type="text"
+            placeholder="Search here..." aria-label="Search" [formControl]="searchForm">
+        </div>
+        <div class="col-2 py-2 text-right">
+          <button type="button" class="icon-only-btn" (click)="search()"><span class="fa fa-search search-icons"></span></button>
+        </div>
+        <div class="col-2 py-2 text-center">
+          <button type="button" class="icon-only-btn" (click)="popSearch = false"><span class="fa fa-times search-icons"></span></button>
+        </div>
       </div>
     </div>
   </div>
