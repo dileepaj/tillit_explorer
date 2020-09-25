@@ -90,6 +90,15 @@ export class SearchPageComponent implements OnInit {
               return;
             }
 
+            let index = element.AvailableProof.findIndex((proof) => {
+              return proof == "poc";
+            });
+
+            if (index != -1) {
+              element.AvailableProof.splice(index, 1);
+            }
+
+
             let txnItem: ITransactionTDP = {
               status: element.Status,
               txnHash: element.Txnhash,
@@ -171,6 +180,14 @@ export class SearchPageComponent implements OnInit {
           });
         } else if (element.TxnType == "genesis") {
 
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem: ITransactionGenesis = {
             status: element.Status,
             txnHash: element.Txnhash,
@@ -193,6 +210,15 @@ export class SearchPageComponent implements OnInit {
           this.otherResultsAvailable = true;
 
         } else if (element.TxnType == "coc") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem: ITransactionCoc = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -221,6 +247,15 @@ export class SearchPageComponent implements OnInit {
           this.otherResultsAvailable = true;
           console.log("ELSE: ", txnItem);
         } else if (element.TxnType == "splitChild") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -240,6 +275,15 @@ export class SearchPageComponent implements OnInit {
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
         } else if (element.TxnType == "splitParent") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
