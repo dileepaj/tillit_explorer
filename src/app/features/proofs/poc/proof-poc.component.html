@@ -1,109 +1,111 @@
 <app-header></app-header>
-<div class="container-fluid md-3 shadow-bottom bg-white pt-4 pb-2">
-  <div class="container">
-    <div class="col-12">
-      <h4>PROOF OF CHANGE OF CUSTODY (POC)</h4>
-      <p>Proof that a given data packet existed in the blockchain</p>
-    </div>
-  </div>
-</div>
 
 <div class="container">
   <div class="progress-loader-container mt-5" *ngIf="!loadingComplete">
     <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
     </mat-spinner>
   </div>
-  <div class="col-xs-12 col-md-12 mt-5 mt-md-4">
-    <div class="col-xs-12 col-md-12 pl-0 text-left mb-1"
-      style="font-weight: 700;color: #2D2F39;font-size: 28px;">
-      Blockchain Proofs
+
+  <div class="container mt-5">
+    <div class="row mb-3">
+      <div class="col-12">
+        <h4>PROOF OF CHANGE OF CUSTODY (POC)</h4>
+        <p>Proof that a given data packet existed in the blockchain</p>
+      </div>
     </div>
-    <div class="col-xs-12 col-md-12 pl-0 text-left mb-3"
-      style="color: #2D2F39;">
-      <p>Click each of the nodes to view the transaction data</p>
+    <div class="col-xs-12 col-md-12 text-left pt-2 pb-1"
+      style="background-color: white; border-bottom: 0.5px solid #dee2e6;">
+      <h2 style="font-weight: 500;color: #2D2F39;font-size: 28px;">Blockchain Proofs</h2>
     </div>
     <div class="col-12 pl-0 pr-0" style="background-color: white;">
+      <p class="pt-3 pl-3">Click each of the nodes to view the transaction data</p>
       <div style="overflow: scroll;" class="chart"></div>
     </div>
     <div *ngIf="selectedItem">
-      <div class="col-xs-12 col-md-12 pl-0 text-left mt-5 mb-3"
-        style="font-weight: 700;color: #2D2F39;font-size: 28px;">
-        Transaction Details
+      <div class="col-xs-12 col-md-12 text-left mt-4 pt-2 pb-1"
+        style="background-color: white; border-bottom: 0.5px solid #dee2e6;">
+        <h2 style="font-weight: 500;color: #2D2F39;font-size: 28px;">Transaction Data</h2>
       </div>
-      <div class="col-xs-12 col-md-12 pb-4 mt-2 ml-0 " style="background-color: white;">
-        <div class="row pl-md-3 pt-4">
-          <div class="col-md-3 col-6" style="font-weight: 500;">
+      <div class="col-xs-12 col-md-12 pb-4 ml-0 " style="background-color: white;">
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.Txnhash'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Transaction Hash
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.Txnhash}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.Txnhash}}
           </div>
         </div>
-        <div class="row pl-md-3">
-          <div class="col-md-3 col-6" style="font-weight: 500;">
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.TxnType'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Transaction Type
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.TxnType}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.TxnType}}
           </div>
         </div>
-        <div class="row pl-md-3">
-          <div class="col-md-3 col-6" style="font-weight: 500;">
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.Identifier'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Identifier
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.Identifier}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.Identifier}}
           </div>
         </div>
-        <div class="row pl-md-3">
-          <div class="col-md-3 col-6" style="font-weight: 500;">
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.Timestamp'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Timestamp
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.Timestamp}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.Identifier}}
           </div>
         </div>
-        <div class="row pl-md-3">
-          <div class="col-md-3 col-6" style="font-weight: 500;">
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.SequenceNo'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Sequence
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.SequenceNo}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.SequenceNo}}
           </div>
         </div>
-        <div class="row pl-md-3">
-          <div class="col-md-3 col-6 " style="font-weight: 500;">
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.SourceAccount'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Public Key
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.SourceAccount}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.SourceAccount}}
           </div>
         </div>
 
-        <div class="row pl-md-3">
-          <div class="col-md-3 col-6 " style="font-weight: 500;">
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.FeePaid'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Fee
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.FeePaid}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.FeePaid}}
           </div>
         </div>
 
-        <div class="row pl-md-3">
-          <div class="col-md-3 col-6 " style="font-weight: 500;">
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.Ledger'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Ledger
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.Ledger}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.Ledger}}
           </div>
         </div>
 
-        <div class="row pl-md-3">
-          <div class="col-md-3 col-6 " style="font-weight: 500;">
-            Blockchain
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='selectedItem.BlockchainName'>
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Public Blockchain
           </div>
-          <div class="col-md-9 col-6 overflow-ellipsis">
-            :{{selectedItem.BlockchainName}}
+          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+            {{selectedItem.BlockchainName}}
           </div>
         </div>
       </div>
@@ -111,11 +113,12 @@
       <div class="col-xs-12 col-md-12 center pt-5" style="color: #6C757D;">
         View this Transaction in Stellar<br>
         <a href="{{selectedItem.Url}}" target="_blank">
-          <button class="mt-2 btn btn-primary btn-main btn-search" type="button"
+          <button class="mt-2 btn btn-primary btn-main" type="button"
             style="width:fit-content;background-color: #3182BD;border:none">View Transaction</button>
         </a>
       </div>
     </div>
+
   </div>
   <div class="container" *ngIf="loadingComplete && errorOccurred">
     <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle" [errorMessage]="error.errorMessage"
