@@ -81,6 +81,14 @@ export class HomeComponent implements OnInit {
               return;
             }
 
+            let index = element.AvailableProof.findIndex((proof) => {
+              return proof == "poc";
+            });
+
+            if (index != -1) {
+              element.AvailableProof.splice(index, 1);
+            }
+
             let txnItem: ITransactionTDP = {
               status: element.Status,
               txnHash: element.Txnhash,
@@ -125,7 +133,7 @@ export class HomeComponent implements OnInit {
           }, (err) => {
             console.log("Backend Error: ", err);
             this.tdpErrorCount++;
-            this.tdpObsResCount++;            
+            this.tdpObsResCount++;
             if (err.status === 400) {
               this.error = {
                 errorTitle: "No matching results found",
@@ -157,6 +165,14 @@ export class HomeComponent implements OnInit {
           });
         } else if (element.TxnType == "genesis") {
 
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem: ITransactionGenesis = {
             status: element.Status,
             txnHash: element.Txnhash,
@@ -178,6 +194,15 @@ export class HomeComponent implements OnInit {
           this.otherResultsAvailable = true;
 
         } else if (element.TxnType == "coc") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem: ITransactionCoc = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -204,6 +229,15 @@ export class HomeComponent implements OnInit {
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
         } else if (element.TxnType == "splitChild") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -223,6 +257,15 @@ export class HomeComponent implements OnInit {
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
         } else if (element.TxnType == "splitParent") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
