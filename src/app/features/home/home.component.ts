@@ -143,8 +143,8 @@ export class HomeComponent implements OnInit {
               }
             } else {
               this.error = {
-                errorTitle: "Something went wrong",
-                errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
+                errorTitle: "No Transactions",
+                errorMessage: "Currently there aren't any transactions to be shown. Please try again later.",
                 errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
                 errorType: "empty"
               }
@@ -187,7 +187,7 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
             productId: "Not Available",
-            productName: "Not Available"
+            productName: "Product Name Not Available"
           }
 
           this.results.push(txnItem);
@@ -250,8 +250,8 @@ export class HomeComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
-            productId: "Not Available",
-            productName: "Not Available",
+            productId: "Product ID Not Available",
+            productName: "Product Name Not Available",
             identifier: "Not Available"
           }
           this.results.push(txnItem);
@@ -278,8 +278,8 @@ export class HomeComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
-            productId: "Not Available",
-            productName: "Not Available",
+            productId: "Product ID Not Available",
+            productName: "Product Name Not Available",
             identifier: "Not Available"
           }
           this.results.push(txnItem);
@@ -312,8 +312,8 @@ export class HomeComponent implements OnInit {
         }
       } else {
         this.error = {
-          errorTitle: "Something went wrong",
-          errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
+          errorTitle: "No Transactions",
+          errorMessage: "Currently there aren't any transactions to be shown. Please try again later.",
           errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
           errorType: "empty"
         }
