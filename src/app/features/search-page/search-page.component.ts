@@ -7,6 +7,7 @@ import { ITransactionTDP } from '../../shared/models/transaction-tdp.model';
 import { ITransactionCoc } from '../../shared/models/transaction-coc.model';
 import { ITransactionGenesis } from 'src/app/shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
+import { encode, decode } from 'js-base64';
 
 @Component({
   selector: 'app-search-page',
@@ -61,7 +62,7 @@ export class SearchPageComponent implements OnInit {
 
           this.transactionDataService.getTracifiedDataPackets(element.TdpId).subscribe((base64Data: IBase64) => {
             this.tdpObsResCount++;
-            let tdp = JSON.parse(atob(base64Data.data));
+            let tdp = JSON.parse(decode(base64Data.data));
             console.log("Backend Data: ", tdp);
 
             if (Object.keys(tdp).length == 0) {

@@ -29,6 +29,7 @@
     "bootstrap": "^4.3.1",
     "d3": "^3.5.17",
     "hammerjs": "^2.0.8",
+    "js-base64": "^3.6.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "ng-bootstrap": "^1.6.3",

@@ -5,6 +5,7 @@ import { IBase64 } from '../../shared/models/base64.model';
 import { ITransactionCoc } from '../../shared/models/transaction-coc.model';
 import { ITransactionGenesis } from '../../shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
+import { encode, decode } from 'js-base64';
 
 @Component({
   selector: 'app-home',
@@ -52,7 +53,7 @@ export class HomeComponent implements OnInit {
           this.tdpObsCount++;
           this.transactionDataService.getTracifiedDataPackets(element.TdpId).subscribe((base64Data: IBase64) => {
             this.tdpObsResCount++;
-            let tdp = JSON.parse(atob(base64Data.data));
+            let tdp = JSON.parse(decode(base64Data.data));
             console.log("Backend Data: ", tdp);
 
             if (Object.keys(tdp).length == 0) {
