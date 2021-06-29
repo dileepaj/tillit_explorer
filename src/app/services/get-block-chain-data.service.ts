@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IBase64 } from '../shared/models/base64.model';
 import { environment } from '../../environments/environment';
+import { encode, decode } from 'js-base64';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,7 @@ export class GetBlockChainDataService {
   public sendToBackEnd(id: string) {
     this.http.get<IBase64>(environment.backend.api_backendRaw + id, this.header).subscribe(data => {
       if (data.data !== '') {
-        this.JsonData = JSON.parse(atob(data.data));
+        this.JsonData = JSON.parse(decode(data.data));
         // console.log(this.JsonData);
         this.messageSource.next(this.JsonData);
       }

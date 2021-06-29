@@ -7,6 +7,7 @@ import { ITransactionTDP } from '../../shared/models/transaction-tdp.model';
 import { ITransactionCoc } from '../../shared/models/transaction-coc.model';
 import { ITransactionGenesis } from 'src/app/shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
+import { encode, decode } from 'js-base64';
 
 @Component({
   selector: 'app-search-page',
@@ -61,7 +62,7 @@ export class SearchPageComponent implements OnInit {
 
           this.transactionDataService.getTracifiedDataPackets(element.TdpId).subscribe((base64Data: IBase64) => {
             this.tdpObsResCount++;
-            let tdp = JSON.parse(atob(base64Data.data));
+            let tdp = JSON.parse(decode(base64Data.data));
             console.log("Backend Data: ", tdp);
 
             if (Object.keys(tdp).length == 0) {
@@ -89,6 +90,15 @@ export class SearchPageComponent implements OnInit {
 
               return;
             }
+
+            let index = element.AvailableProof.findIndex((proof) => {
+              return proof == "poc";
+            });
+
+            if (index != -1) {
+              element.AvailableProof.splice(index, 1);
+            }
+
 
             let txnItem: ITransactionTDP = {
               status: element.Status,
@@ -171,6 +181,14 @@ export class SearchPageComponent implements OnInit {
           });
         } else if (element.TxnType == "genesis") {
 
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem: ITransactionGenesis = {
             status: element.Status,
             txnHash: element.Txnhash,
@@ -193,6 +211,15 @@ export class SearchPageComponent implements OnInit {
           this.otherResultsAvailable = true;
 
         } else if (element.TxnType == "coc") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem: ITransactionCoc = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -221,6 +248,15 @@ export class SearchPageComponent implements OnInit {
           this.otherResultsAvailable = true;
           console.log("ELSE: ", txnItem);
         } else if (element.TxnType == "splitChild") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -240,6 +276,15 @@ export class SearchPageComponent implements OnInit {
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
         } else if (element.TxnType == "splitParent") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,

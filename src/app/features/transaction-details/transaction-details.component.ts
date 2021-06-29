@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionDataService } from '../../services/transaction-data.service';
 import { IBase64 } from '../../shared/models/base64.model';
 import { ErrorMessage } from '../../shared/models/error-message.model';
+import { encode, decode } from 'js-base64';
 
 
 @Component({
@@ -65,8 +66,21 @@ export class TransactionDetailsComponent implements OnInit {
         this.transactionDataService.getTracifiedDataPackets(transaction[0].TdpId).subscribe((base64Data: IBase64) => {
           console.log("Backend: ", base64Data);
           this.loadingComplete = true;
-          let tdp: any = JSON.parse(atob(base64Data.data));
+          let tdp: any = JSON.parse(decode(base64Data.data));
           console.log("Transaction Item: ", tdp);
+
+          console.log("Available Proofs: ", transaction[0].AvailableProof);
+
+          let index = transaction[0].AvailableProof.findIndex((proof) => {
+            console.log("Proof Loop: ", proof);
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            transaction[0].AvailableProof.splice(index, 1);
+          }
+
+          console.log("Proof After Removed: ", transaction[0].AvailableProof);
 
           this.txnItem = {
             status: transaction[0].Status,
@@ -115,6 +129,15 @@ export class TransactionDetailsComponent implements OnInit {
         });
       } else if (transaction[0].TxnType == "genesis") {
 
+        let index = transaction[0].AvailableProof.findIndex((proof) => {
+          console.log("Proof Loop: ", proof);
+          return proof == "poc";
+        });
+
+        if (index != -1) {
+          transaction[0].AvailableProof.splice(index, 1);
+        }
+
         this.loadingComplete = true;
 
         this.txnItem = {
@@ -135,6 +158,15 @@ export class TransactionDetailsComponent implements OnInit {
         }
 
       } else if (transaction[0].TxnType == "coc") {
+
+        let index = transaction[0].AvailableProof.findIndex((proof) => {
+          console.log("Proof Loop: ", proof);
+          return proof == "poc";
+        });
+
+        if (index != -1) {
+          transaction[0].AvailableProof.splice(index, 1);
+        }
 
         this.loadingComplete = true;
 
@@ -161,6 +193,15 @@ export class TransactionDetailsComponent implements OnInit {
 
       } else if (transaction[0].TxnType == "splitParent") {
 
+        let index = transaction[0].AvailableProof.findIndex((proof) => {
+          console.log("Proof Loop: ", proof);
+          return proof == "poc";
+        });
+
+        if (index != -1) {
+          transaction[0].AvailableProof.splice(index, 1);
+        }
+
         this.loadingComplete = true;
 
         this.txnItem = {
@@ -181,6 +222,15 @@ export class TransactionDetailsComponent implements OnInit {
         }
       } else if (transaction[0].TxnType == "splitChild") {
 
+        let index = transaction[0].AvailableProof.findIndex((proof) => {
+          console.log("Proof Loop: ", proof);
+          return proof == "poc";
+        });
+
+        if (index != -1) {
+          transaction[0].AvailableProof.splice(index, 1);
+        }
+
         this.loadingComplete = true;
 
         this.txnItem = {
@@ -199,7 +249,7 @@ export class TransactionDetailsComponent implements OnInit {
           productId: "Not Sending",
           productName: "Not Sending",
         }
-        
+
       }
     }, (err) => {
       console.log("Get Transaction Error: ", err);

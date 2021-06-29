@@ -5,6 +5,7 @@ import { IBase64 } from '../../shared/models/base64.model';
 import { ITransactionCoc } from '../../shared/models/transaction-coc.model';
 import { ITransactionGenesis } from '../../shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
+import { encode, decode } from 'js-base64';
 
 @Component({
   selector: 'app-home',
@@ -52,7 +53,7 @@ export class HomeComponent implements OnInit {
           this.tdpObsCount++;
           this.transactionDataService.getTracifiedDataPackets(element.TdpId).subscribe((base64Data: IBase64) => {
             this.tdpObsResCount++;
-            let tdp = JSON.parse(atob(base64Data.data));
+            let tdp = JSON.parse(decode(base64Data.data));
             console.log("Backend Data: ", tdp);
 
             if (Object.keys(tdp).length == 0) {
@@ -79,6 +80,14 @@ export class HomeComponent implements OnInit {
               }
 
               return;
+            }
+
+            let index = element.AvailableProof.findIndex((proof) => {
+              return proof == "poc";
+            });
+
+            if (index != -1) {
+              element.AvailableProof.splice(index, 1);
             }
 
             let txnItem: ITransactionTDP = {
@@ -125,7 +134,7 @@ export class HomeComponent implements OnInit {
           }, (err) => {
             console.log("Backend Error: ", err);
             this.tdpErrorCount++;
-            this.tdpObsResCount++;            
+            this.tdpObsResCount++;
             if (err.status === 400) {
               this.error = {
                 errorTitle: "No matching results found",
@@ -135,8 +144,8 @@ export class HomeComponent implements OnInit {
               }
             } else {
               this.error = {
-                errorTitle: "Something went wrong",
-                errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
+                errorTitle: "No Transactions",
+                errorMessage: "Currently there aren't any transactions to be shown. Please try again later.",
                 errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
                 errorType: "empty"
               }
@@ -157,6 +166,14 @@ export class HomeComponent implements OnInit {
           });
         } else if (element.TxnType == "genesis") {
 
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem: ITransactionGenesis = {
             status: element.Status,
             txnHash: element.Txnhash,
@@ -171,13 +188,22 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
             productId: "Not Available",
-            productName: "Not Available"
+            productName: "Product Name Not Available"
           }
 
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
 
         } else if (element.TxnType == "coc") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem: ITransactionCoc = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -204,6 +230,15 @@ export class HomeComponent implements OnInit {
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
         } else if (element.TxnType == "splitChild") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -216,13 +251,22 @@ export class HomeComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
-            productId: "Not Available",
-            productName: "Not Available",
+            productId: "Product ID Not Available",
+            productName: "Product Name Not Available",
             identifier: "Not Available"
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
         } else if (element.TxnType == "splitParent") {
+
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -235,8 +279,8 @@ export class HomeComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
-            productId: "Not Available",
-            productName: "Not Available",
+            productId: "Product ID Not Available",
+            productName: "Product Name Not Available",
             identifier: "Not Available"
           }
           this.results.push(txnItem);
@@ -269,8 +313,8 @@ export class HomeComponent implements OnInit {
         }
       } else {
         this.error = {
-          errorTitle: "Something went wrong",
-          errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
+          errorTitle: "No Transactions",
+          errorMessage: "Currently there aren't any transactions to be shown. Please try again later.",
           errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
           errorType: "empty"
         }
