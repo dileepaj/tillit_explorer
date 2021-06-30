@@ -7,6 +7,7 @@ import { PoeDataService } from '../../../services/poe-data.service';
 import { ErrorMessage } from '../../../shared/models/error-message.model';
 import { ClipboardService } from 'ngx-clipboard';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { encode, decode } from 'js-base64';
 
 
 @Component({
@@ -88,7 +89,7 @@ export class ProofPoeComponent implements OnInit {
       this.poeDataService.getTransactionData(tdpId).subscribe((data) => {
         console.log("Base64: ", data);
         this.tracifiedCoreB64Data = data.data;
-        this.tracifiedCoreData = JSON.parse(atob(this.tracifiedCoreB64Data));
+        this.tracifiedCoreData = JSON.parse(decode(this.tracifiedCoreB64Data));
 
         // if (Object.keys(this.tracifiedCoreData).length == 0) {
         //   this.errorOccurred = true;
