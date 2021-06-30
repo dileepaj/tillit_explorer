@@ -7,6 +7,7 @@ import { ITransactionTDP } from '../../shared/models/transaction-tdp.model';
 import { ITransactionCoc } from '../../shared/models/transaction-coc.model';
 import { ITransactionGenesis } from 'src/app/shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
+import { encode, decode } from 'js-base64';
 
 @Component({
   selector: 'app-search-page',
@@ -53,131 +54,40 @@ export class SearchPageComponent implements OnInit {
       transactions.forEach(element => {
         console.log("Blockchain: ", element);
 
+       
         if (element.TxnType == "tdp") {
 
-          // TEMP VALIDATION
-          this.tdpObsResolved = false;
-          this.tdpObsCount++;
-
-          this.transactionDataService.getTracifiedDataPackets(element.TdpId).subscribe((base64Data: IBase64) => {
-            this.tdpObsResCount++;
-            let tdp = JSON.parse(atob(base64Data.data));
-            console.log("Backend Data: ", tdp);
-
-            if (Object.keys(tdp).length == 0) {
-              this.tdpErrorCount++;
-              console.log("Object Keys Validation");
-              this.error = {
-                errorTitle: "No matching results found",
-                errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
-                errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
-                errorType: "empty"
-              }
-
-              if (this.tdpObsCount == this.tdpObsResCount) {
-                this.loadingComplete = true;
-                this.tdpObsResolved = true;
-
-                if (this.error && this.tdpErrorCount == this.tdpObsCount && !this.otherResultsAvailable) {
-                  this.errorOccurred = true;
-                }
-
-                console.log("Objecy Keys Obs resolved and Loading Complete");
-              } else {
-                console.log("Object Keys Not Resolved yet in Success ");
-              }
-
-              return;
-            }
-
-            let index = element.AvailableProof.findIndex((proof) => {
-              return proof == "poc";
-            });
-
-            if (index != -1) {
-              element.AvailableProof.splice(index, 1);
-            }
-
-
-            let txnItem: ITransactionTDP = {
-              status: element.Status,
-              txnHash: element.Txnhash,
-              transferType: element.TxnType,
-              sequence: element.SequenceNo,
-              txnUrl: element.Url,
-              publickKey: element.SourceAccount,
-              identifier: element.Identifier,
-              timestamp: element.Timestamp,
-              ledger: element.Ledger,
-              fee: element.FeePaid,
-              tdpId: element.TdpId,
-              availableProofs: element.AvailableProof,
-
-              productId: tdp.header.item.itemID,
-              productName: tdp.header.item.itemName,
-              stageId: tdp.header.stageID,
-              images: [],
-              dbHash: "Not Sending",
-              bcHash: "Not Sending",
-              blockchain: "Not Sending"
-            }
-
-            if (tdp.data.photos) {
-              console.log("Photos Exist.");
-              txnItem.images = tdp.data.photos;
-            }
-            console.log("Txn Item: ", txnItem);
-
-            this.results.push(txnItem);
-
-            if (this.tdpObsCount == this.tdpObsResCount) {
-              this.loadingComplete = true;
-              this.tdpObsResolved = true;
-
-              if (this.error && this.tdpErrorCount == this.tdpObsCount && !this.otherResultsAvailable) {
-                this.errorOccurred = true;
-              }
-
-              console.log("Obs resolved and Loading Complete");
-            } else {
-              console.log("Not Resolved yet in Success ");
-            }
-
-          }, (err) => {
-            this.tdpErrorCount++;
-            this.tdpObsResCount++;
-            console.log("Backend Error: ", err);
-
-            if (err.status === 400) {
-              this.error = {
-                errorTitle: "No matching results found",
-                errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
-                errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
-                errorType: "empty"
-              }
-            } else {
-              this.error = {
-                errorTitle: "Something went wrong",
-                errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
-                errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
-                errorType: "empty"
-              }
-            }
-
-            if (this.tdpObsCount == this.tdpObsResCount) {
-              this.loadingComplete = true;
-              this.tdpObsResolved = true;
-
-              if (this.error && this.tdpErrorCount == this.tdpObsCount && !this.otherResultsAvailable) {
-                this.errorOccurred = true;
-              }
-
-              console.log("Obs resolved and Loading Complete in Error ");
-            } else {
-              console.log("Not Resolved yet in Error ");
-            }
-
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
           });
+
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+
+          let txnItem = {
+            status: element.Status,
+            txnHash: element.Txnhash,
+            transferType: element.TxnType,
+            sequence: element.SequenceNo,
+            txnUrl: element.Url,
+            publicKey: element.SourceAccount,
+            identifier: element.Identifier,
+            timestamp: element.Timestamp,
+            ledger: element.Ledger,
+            fee: element.FeePaid,
+            availableProofs: element.AvailableProof,
+
+            productId: "Not Sending",
+            productName: "Not Sending",
+            blockchainName: "Not Sending"
+          }
+
+          this.results.push(txnItem);
+          this.otherResultsAvailable = true;
+
+
+
         } else if (element.TxnType == "genesis") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -188,7 +98,7 @@ export class SearchPageComponent implements OnInit {
             element.AvailableProof.splice(index, 1);
           }
 
-          let txnItem: ITransactionGenesis = {
+          let txnItem  = {
             status: element.Status,
             txnHash: element.Txnhash,
             transferType: element.TxnType,
@@ -219,7 +129,7 @@ export class SearchPageComponent implements OnInit {
             element.AvailableProof.splice(index, 1);
           }
 
-          let txnItem: ITransactionCoc = {
+          let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
             txnUrl: element.Url,

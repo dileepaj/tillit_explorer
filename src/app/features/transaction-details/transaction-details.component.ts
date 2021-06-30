@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionDataService } from '../../services/transaction-data.service';
 import { IBase64 } from '../../shared/models/base64.model';
 import { ErrorMessage } from '../../shared/models/error-message.model';
+import { encode, decode } from 'js-base64';
 
 
 @Component({
@@ -65,7 +66,7 @@ export class TransactionDetailsComponent implements OnInit {
         this.transactionDataService.getTracifiedDataPackets(transaction[0].TdpId).subscribe((base64Data: IBase64) => {
           console.log("Backend: ", base64Data);
           this.loadingComplete = true;
-          let tdp: any = JSON.parse(atob(base64Data.data));
+          let tdp: any = JSON.parse(decode(base64Data.data));
           console.log("Transaction Item: ", tdp);
 
           console.log("Available Proofs: ", transaction[0].AvailableProof);

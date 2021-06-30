@@ -12,7 +12,7 @@ export class TransactionDataService {
   constructor(private http: HttpClient) { }
 
   getRecentTransactions(trasactionCount: number): Observable<any> {
-    return this.http.get(environment.blockchain.getRecentTransactions + trasactionCount).pipe(
+    return this.http.get(environment.blockchain.getRecentTransactions + 10).pipe(
       // tap(data => { console.log("Hash Data: ", JSON.stringify(data))}),
       catchError(this.handleError)
     );
