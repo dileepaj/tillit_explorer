@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             //blockchainName: "Not Available",
             productId: "Not Available",
-            productName: "Product Name Not Available"
+            productName: element.ProductName
           }
 
           this.results.push(txnItem);
@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
             productId: "Not Available",
-            productName: "Product Name Not Available"
+            productName: element.ProductName
           }
 
           this.results.push(txnItem);
@@ -174,14 +174,14 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
             productId: "Product ID Not Available",
-            productName: "Product Name Not Available",
+            productName: element.ProductName,
             identifier: "Not Available"
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
         } 
         
-        ///////////////////////////////////////////////////////////////////////////////////////////
+  
         else if (element.TxnType == "splitParent") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -205,7 +205,7 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
             productId: "Product ID Not Available",
-            productName: "Product Name Not Available",
+            productName: element.ProductName,
             identifier: "Not Available"
           }
           this.results.push(txnItem);
