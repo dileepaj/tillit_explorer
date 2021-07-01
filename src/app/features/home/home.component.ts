@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             //blockchainName: "Not Available",
             productId: "Not Available",
-            productName: "Product Name Not Available"
+            productName: element.ProductName
           }
 
           this.results.push(txnItem);
@@ -81,37 +81,37 @@ export class HomeComponent implements OnInit {
         } 
 
        
-        // else if (element.TxnType == "genesis") {
+        else if (element.TxnType == "genesis") {
 
-        //   let index = element.AvailableProof.findIndex((proof) => {
-        //     return proof == "poc";
-        //   });
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
 
-        //   if (index != -1) {
-        //     element.AvailableProof.splice(index, 1);
-        //   }
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
 
-        //   let txnItem = {
-        //     status: element.Status,
-        //     txnHash: element.Txnhash,
-        //     transferType: element.TxnType,
-        //     sequence: element.SequenceNo,
-        //     txnUrl: element.Url,
-        //     publicKey: element.SourceAccount,
-        //     identifier: element.Identifier,
-        //     timestamp: element.Timestamp,
-        //     ledger: element.Ledger,
-        //     fee: element.FeePaid,
-        //     availableProofs: element.AvailableProof,
-        //     blockchainName: "Not Available",
-        //     productId: "Not Available",
-        //     productName: "Product Name Not Available"
-        //   }
+          let txnItem = {
+            status: element.Status,
+            txnHash: element.Txnhash,
+            transferType: element.TxnType,
+            sequence: element.SequenceNo,
+            txnUrl: element.Url,
+            publicKey: element.SourceAccount,
+            identifier: element.Identifier,
+            timestamp: element.Timestamp,
+            ledger: element.Ledger,
+            fee: element.FeePaid,
+            availableProofs: element.AvailableProof,
+            blockchainName: "Not Available",
+            productId: "Not Available",
+            productName: element.ProductName
+          }
 
-        //   this.results.push(txnItem);
-        //   this.otherResultsAvailable = true;
+          this.results.push(txnItem);
+          this.otherResultsAvailable = true;
 
-        // } 
+        } 
        
         
         else if (element.TxnType == "coc") {
@@ -174,7 +174,7 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
             productId: "Product ID Not Available",
-            productName: "Product Name Not Available",
+            productName: element.ProductName,
             identifier: "Not Available"
           }
           this.results.push(txnItem);
@@ -205,7 +205,7 @@ export class HomeComponent implements OnInit {
             availableProofs: element.AvailableProof,
             blockchainName: "Not Available",
             productId: "Product ID Not Available",
-            productName: "Product Name Not Available",
+            productName: element.ProductName,
             identifier: "Not Available"
           }
           this.results.push(txnItem);
