@@ -43,11 +43,9 @@
               <h5 class="card-title" *ngIf="transactionData.productName">{{transactionData.productName}}</h5>
               <h5 class="card-title" *ngIf="transactionData.assetCode">{{transactionData.assetCode}}</h5>
             </div>
-            <div class="col-auto text-md-left text-center pl-md-1" style="font-weight: 600;color:#818E94;"  *ngFor="let proof of transactionData.availableProofs">
-              <a href="#" onclick="return false;">
-                <span class="pl-3 pr-3 pt-2 pb-2 badge badge-pill badge-primary" (click)="navigateToProof(proof)"
-                  style="font-size: 14px;background-color: #F3F1FF;color:#818E94;font-weight: 700;">{{proof | uppercase}}</span>
-              </a>
+            <div class="col-auto text-md-left text-center pl-md-1" style="font-weight: 600;color:#818E94;"  *ngFor="let proof of transactionData.availableProofs">           
+                <span class="pl-3 pr-3 pt-2 pb-2 badge badge-pill badge-primary"
+                  style="font-size: 14px;background-color: #F3F1FF;color:#818E94;font-weight: 700;">{{proof | uppercase}}</span>           
             </div>
           </div>
           <!-- <div class="row" style="width:100%;" *ngIf="transactionData.productId">
