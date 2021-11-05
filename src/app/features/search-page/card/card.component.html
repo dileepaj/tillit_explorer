@@ -3,10 +3,10 @@
 <!-- <app-loader *ngIf ="showLoaderNew"></app-loader> -->
 <div class="col-xs-12 col-md-12 mt-3 mt-md-4">
   <div class="card mb-3 cardshadow">
-    <div class="card-body">
+ 
     <div class="row no-gutters">
       <!-- Item image -->
-      <div class="col-md-3 ">
+      <div class="col-md-3 align-self-center imageCardCenter">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <ol class="carousel-indicators" *ngIf="transactionData.images && transactionData.images.length > 1">
             <li *ngFor="let item of transactionData.images; let i = index" data-target="#carouselExampleIndicators"
@@ -37,8 +37,8 @@
       </div>
 
       <!-- Item content -->
-      <div class="col-md-6 pl-3" style="width:100%;">
-     
+      <div class="col-md-6 pl-3 contentPadding" style="width:100%;">
+        <div class="card-body">
           <div class="row">
             <div class="col-auto">
               <h5 class="card-title" *ngIf="transactionData.productName">{{transactionData.productName}}</h5>
@@ -57,7 +57,7 @@
               <span class="cardcontent">{{transactionData.productId}}</span>
             </div>
           </div> -->
-          <div class="row" style="margin-top: 5px;margin-bottom: 5px;" *ngIf="transactionData.identifier">
+          <div class="row contentMargin" *ngIf="transactionData.identifier">
             <div class="col-xs-12 col-sm-4 col-md-5 col-lg-4 col-xl-3">
               <span style="font-weight: 600">Identifier : </span>
             </div>
@@ -65,7 +65,7 @@
               <span class="cardcontent">{{transactionData.identifier}}</span>
             </div>
           </div>
-          <div class="row" >
+          <div class="row contentMargin" >
             <div class="col-xs-12 col-sm-4 col-md-5 col-lg-4 col-xl-3" *ngIf="transactionData.sender">
               <span style="font-weight: 600">Sender : </span>
             </div>
@@ -73,7 +73,7 @@
               <span class="cardcontent">{{transactionData.sender}}</span>
             </div>
           </div>
-          <div class="row" *ngIf="transactionData.receiver">
+          <div class="row contentMargin" *ngIf="transactionData.receiver">
             <div class="col-xs-12 col-sm-4 col-md-5 col-lg-4 col-xl-3">
               <span style="font-weight: 600">Receiver : </span>
             </div>
@@ -81,7 +81,7 @@
               <span class="cardcontent">{{transactionData.receiver}}</span>
             </div>
           </div>
-          <div class="row"  *ngIf="transactionData.timestamp">
+          <div class="row contentMargin"  *ngIf="transactionData.timestamp">
             <div class="col-xs-12 col-sm-4 col-md-5 col-lg-4 col-xl-3" >
               <span style="font-weight: 600">Timestamp : </span>
             </div>
@@ -89,7 +89,7 @@
               <span class="cardcontent">{{transactionData.timestamp | date: 'medium'}}</span>
             </div>
           </div>
-          <div class="row" *ngIf="transactionData.transferType">
+          <div class="row contentMargin" *ngIf="transactionData.transferType">
             <div class="col-xs-12 col-sm-4 col-md-5 col-lg-4 col-xl-3">
               <span style="font-weight: 600">Type : </span>
             </div>
@@ -98,13 +98,12 @@
             </div>
           </div>
       </div>
-
+</div>
       <!-- Item button Need to fix -->
-      <div class="col-md-3 align-self-center" style="text-align: center;">
+      <div class="col-md-3 align-self-center buttonPadding" style="text-align: center;">
         <a [routerLink]="['/txn', transactionData.txnHash]"
           class="btn btn-main btn-view btn-outline-primary mb-4 mb-sm-4 mb-md-0 ">View Item</a>
       </div>
     </div>
 
-  </div>
 </div>
