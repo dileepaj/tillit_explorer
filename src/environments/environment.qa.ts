@@ -10,12 +10,12 @@ export const environment = {
         // Blockchain API services and Authorization codes
         blockchain: {
                 blockchainAuth: null,
-                getTransactionFromPublicKey: 'https://tracified-gateway-staging.herokuapp.com/GetTransactionsForPK/',
-                getHashData: 'https://tracified-gateway-staging.herokuapp.com/proof/poe/',
-                getPogData: 'https://tracified-gateway-staging.herokuapp.com/proof/pog/',
-                getPococData: 'https://tracified-gateway-staging.herokuapp.com/proof/pococ/',
-                getPocData: 'https://tracified-gateway-staging.herokuapp.com/proof/poc/',
-                getTransactionData: 'https://tracified-gateway-staging.herokuapp.com/GetTransactions/',
-                getRecentTransactions: 'https://tracified-gateway-staging.herokuapp.com/RetrievePreviousTranasctions/'
+                getTransactionFromPublicKey: 'https://qa.gateway.tracified.com/GetTransactionsForPK/',
+                getHashData: 'https://qa.gateway.tracified.com/proof/poe/',
+                getPogData: 'https://qa.gateway.tracified.com/proof/pog/',
+                getPococData: 'https://qa.gateway.tracified.com/proof/pococ/',
+                getPocData: 'https://qa.gateway.tracified.com/proof/poc/',
+                getTransactionData: 'https://qa.gateway.tracified.com/GetTransactions/',
+                getRecentTransactions: 'https://qa.gateway.tracified.com/RetrievePreviousTranasctions/'
         }
 };

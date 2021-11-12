@@ -1,2 +1,20 @@
 /* This file contains the styling of the item cards */
 
+@media screen and (max-width: 768px) {
+    .contentPadding{     
+       padding-top: 10px;
+    }
+    .buttonPadding{
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+}
+
+.imageCardCenter{
+    justify-content: center;
+}
+
+.contentMargin{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
