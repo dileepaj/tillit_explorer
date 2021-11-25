@@ -62,8 +62,8 @@ export class ProofPogComponent {
         fee: element.FeePaid,
 
         availableProofs: ["Not Sending"],
-        productId: "Not Sending",
-        productName: "Not Sending",
+        productId: element.ProductName,
+        productName: element.ProductId,
 
       }
     }, (err) => {
