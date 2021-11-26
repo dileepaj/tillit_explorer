@@ -79,8 +79,8 @@ export class SearchPageComponent implements OnInit {
             availableProofs: element.AvailableProof,
 
             productId: "Not Sending",
-            productName: "Not Sending",
-            blockchainName: "Not Sending"
+            productName: element.ProductName,
+            blockchainName: "Stellar"
           }
 
           this.results.push(txnItem);
@@ -112,8 +112,8 @@ export class SearchPageComponent implements OnInit {
             availableProofs: element.AvailableProof,
 
             productId: "Not Sending",
-            productName: "Not Sending",
-            blockchainName: "Not Sending"
+            productName: element.ProductName,
+            blockchainName: "Stellar"
           }
 
           this.results.push(txnItem);
@@ -147,7 +147,7 @@ export class SearchPageComponent implements OnInit {
             quantity: 0,
 
             inputData: "Not Sending",
-            blockchain: "Not Sending",
+            blockchainName: "Stellar",
             cocStatus: "Not Sending",
             senderSigned: false,
             receiverSigned: false
@@ -177,9 +177,9 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
+            blockchainName: "Stellar",
             productId: "Not Available",
-            productName: "Not Available",
+            productName: element.ProductName,
             identifier: "Not Available"
           }
           this.results.push(txnItem);
