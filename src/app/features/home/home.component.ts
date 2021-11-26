@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            //blockchainName: "Not Available",
+            BlockchainName: "Stellar",
             productId: "Not Available",
             productName: element.ProductName
           }
@@ -103,7 +103,7 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
+            BlockchainName: "Stellar",
             productId: "Not Available",
             productName: element.ProductName
           }
@@ -145,7 +145,7 @@ export class HomeComponent implements OnInit {
             receiverSigned: false,
             cocStatus: "Not Available",
             inputData: "Not Available",
-            blockchain: "Not Available"
+            BlockchainName: "Stellar",
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
@@ -172,7 +172,7 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
+            BlockchainName: "Stellar",
             productId: "Product ID Not Available",
             productName: element.ProductName,
             identifier: "Not Available"
@@ -203,7 +203,7 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
+            BlockchainName: "Stellar",
             productId: "Product ID Not Available",
             productName: element.ProductName,
             identifier: "Not Available"
