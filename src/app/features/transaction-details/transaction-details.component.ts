@@ -152,9 +152,8 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Not Sending",
-          productId: "Not Sending",
-          productName: "Not Sending",
+          blockchainName: "Stellar",
+          productName: transaction[0].ProductName,
         }
 
       } else if (transaction[0].TxnType == "coc") {
@@ -186,7 +185,7 @@ export class TransactionDetailsComponent implements OnInit {
           assetCode: "Not Sending",
           quantity: 0,
           inputData: "Not Sending",
-          blockchain: "Not Sending",
+          blockchainName: "Stellar",
           senderSigned: false,
           receiverSigned: false
         }
@@ -216,9 +215,9 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Not Sending",
+          blockchainName:"Stellar",
           productId: "Not Sending",
-          productName: "Not Sending",
+          productName: transaction[0].ProductName,
         }
       } else if (transaction[0].TxnType == "splitChild") {
 
@@ -245,9 +244,9 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Not Sending",
+          blockchainName: "Stellar",
           productId: "Not Sending",
-          productName: "Not Sending",
+          productName: transaction[0].ProductName,
         }
 
       }
