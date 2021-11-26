@@ -84,7 +84,7 @@
                 Hash value from Tracified
               </div>
               <div class="mt-2"
-                style="font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                style="font-weight: 700;  overflow-y: auto;  overflow-wrap: break-word;">
                 {{transactionData.DbHash | lowercase}}
               </div>
             </div>
@@ -95,12 +95,12 @@
       <div class="row mb-3 mt-3">
         <div class="col-12 col-sm-12 col-md-12">
           <div class="row  pl-3 ">
-            <div class="col-12 col-sm-12 col-md-9 text-left" style="margin-top: auto;margin-bottom: auto;">
+            <div class="col-12 col-sm-12 col-md-9 text-left" style="margin-top: auto;margin-bottom: auto; ">
               <div style="font-size: 18px; font-weight:500;">
                 Hash value from Blockchain
               </div>
               <div class=" mt-2"
-                style="font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                style="font-weight: 700;  overflow-y: auto;  overflow-wrap: break-word;  ">
                 {{transactionData.BcHash | lowercase}}
               </div>
 
@@ -137,11 +137,11 @@
 
       <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4"
         *ngFor="let item of tracifiedCoreData.data | keyvalue">
-        <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;"
+        <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500; "
           *ngIf="item.key != 'photos'">
           {{item.key}}
         </div>
-        <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;" *ngIf="item.key != 'photos'">
+        <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;" *ngIf="item.key != 'photos'">
           {{item.value | json}}
         </div>
       </div>
@@ -152,7 +152,7 @@
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
           Transaction Hash
         </div>
-        <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+        <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;">
           {{transactionData.Txnhash}}
         </div>
       </div>
@@ -161,7 +161,7 @@
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
           Public Key
         </div>
-        <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+        <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;">
           {{transactionData.SourceAccount}}
         </div>
       </div>
