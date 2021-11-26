@@ -4,7 +4,7 @@
         <button class="icon-only-btn" style="color: #3d3d3d; font-size: 18px;" (click)="popSearch = true"><span class="fa fa-search"></span></button>
       </div>
       <div class="col-10 d-none d-lg-block pr-md-0 mb-2 pt-4 pb-4">
-        <input class="search-bar-input form-control my-0 py-1" type="text"
+        <input class="search-bar-input form-control my-0 py-1" type="text"  (keyup.enter)="search()"
           placeholder="Enter Transaction ID or TDP Id or Public Key" aria-label="Search" [formControl]="searchForm">
       </div>
       <div class="col-2 d-none d-lg-block pt-4 pb-4">
@@ -18,7 +18,7 @@
     <div class="container pt-3 pb-3">
       <div class="row no-gutters">
         <div class="col-8">
-          <input class="search-input form-control" type="text"
+          <input class="search-input form-control" type="text"  (keyup.enter)="search()"
             placeholder="Search here..." aria-label="Search" [formControl]="searchForm">
         </div>
         <div class="col-2 py-2 text-right">
