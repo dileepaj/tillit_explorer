@@ -13,7 +13,10 @@
                     </div>
                 </div>
             </div>
-            <app-card class="col-12" *ngFor="let item of results" [transactionData]="item"></app-card>
+            <div>
+                <app-card class="col-12" *ngFor="let item of results  | paginate: {itemsPerPage:perPage, currentPage:page, totalItems:NoPage*perPage }" [transactionData]="item"></app-card>
+                <pagination-controls class="text-center" (pageChange) = "onChangePage($event)" autoHide = "true" ></pagination-controls>
+            </div>
         </div>
         <div class="row content-area" *ngIf="loadingComplete && errorOccurred">
             <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"
