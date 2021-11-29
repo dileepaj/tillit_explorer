@@ -26,9 +26,9 @@ export class HomeComponent implements OnInit {
 
   error: ErrorMessage;
   
-  page:number
-  perPage:number
-  NoPage:number
+  page:number = 1;
+  perPage:number = 10;
+  NoPage:number = 3;
 
   // Loader Variables
 
@@ -44,8 +44,9 @@ export class HomeComponent implements OnInit {
     this.getRecentTransactions();
   }
 
-  onChangePage(event){
+  onChangePage(event:number){
     this.page = event
+    this.results = []
     this.loadingComplete = false;
     this.getRecentTransactions();
   }
