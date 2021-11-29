@@ -25,7 +25,10 @@ export class HomeComponent implements OnInit {
   tdpErrorCount: number = 0;
 
   error: ErrorMessage;
-
+  
+  page:number
+  perPage:number
+  NoPage:number
 
   // Loader Variables
 
@@ -41,8 +44,14 @@ export class HomeComponent implements OnInit {
     this.getRecentTransactions();
   }
 
+  onChangePage(event){
+    this.page = event
+    this.loadingComplete = false;
+    this.getRecentTransactions();
+  }
+
   getRecentTransactions() {
-    this.transactionDataService.getRecentTransactions(10).subscribe((transactions) => {
+    this.transactionDataService.getRecentTransactions(this.page, this.perPage, this.NoPage).subscribe((transactions) => {
       // this.loadingComplete = true;
       transactions.forEach(element => {
         console.log("Blockchain: ", element);

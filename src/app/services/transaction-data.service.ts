@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError, tap } from 'rxjs/operators';
@@ -11,8 +11,12 @@ export class TransactionDataService {
 
   constructor(private http: HttpClient) { }
 
-  getRecentTransactions(trasactionCount: number): Observable<any> {
-    return this.http.get(environment.blockchain.getRecentTransactions + 10).pipe(
+  getRecentTransactions(page:number, perPage:number, NoPage:number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('page', String(page) );
+    params = params.append('perPage', String(perPage));
+    params = params.append('NoPage', String(NoPage));
+    return this.http.get(environment.blockchain.getRecentTransactions,{params}).pipe(
       // tap(data => { console.log("Hash Data: ", JSON.stringify(data))}),
       catchError(this.handleError)
     );
