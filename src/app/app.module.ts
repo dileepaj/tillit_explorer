@@ -24,7 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorIdComponent } from './shared/components/error-id/error-id.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ProofPocComponent } from './features/proofs/poc/proof-poc.component';
-
+import {NgxPaginationModule} from 'ngx-pagination'; 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MaintenanceComponent } from './features/maintenance/maintenance.component';
 
@@ -59,8 +59,8 @@ import { MaintenanceComponent } from './features/maintenance/maintenance.compone
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
     ClipboardModule,
-    CarouselModule
-
+    CarouselModule,
+    NgxPaginationModule
   ],
   bootstrap: [AppComponent]
 })
