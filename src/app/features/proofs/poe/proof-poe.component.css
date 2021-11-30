@@ -84,3 +84,10 @@
     box-shadow: inset 0px 0px 0px 30px #007bff;
   }
 }
+
+@media screen and (max-width: 600px) {
+.trasactionDataMobileResponsive{
+overflow-y: auto;  
+overflow-wrap: break-word;
+}
+}
