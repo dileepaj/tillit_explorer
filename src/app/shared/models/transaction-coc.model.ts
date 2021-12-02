@@ -2,6 +2,7 @@ export interface ITransactionCoc {
     proofStatus: string;
     txnHash: string;
     txnUrl: string;
+    txnLabUrl: string
     identifier: string;
     blockchain: string;
     timestamp: Date;
