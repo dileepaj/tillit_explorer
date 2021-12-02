@@ -51,6 +51,7 @@ export class ProofPococComponent implements OnInit {
         proofStatus: element.Status,
         txnHash: element.Txnhash,
         txnUrl: element.Url,
+        txnLabUrl:element.LabUrl,
         identifier: element.Identifier,
         blockchain: element.BlockchainName,
         timestamp: element.Timestamp,
