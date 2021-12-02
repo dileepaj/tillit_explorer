@@ -126,9 +126,10 @@
 
     <div class="col-xs-12 col-md-12 center pt-5" style="color: #6C757D;">
       View this Transaction in Stellar<br>
-      <a href="{{txnItem.txnUrl}}" target="_blank"><button class="mt-2 btn btn-primary btn-main" type="button"
-          style="background-color: #3182BD;border:none; width: fit-content;">View
-          Transaction</button></a>
+      <a href="{{txnItem.txnLabUrl}}" target="_blank"><button class="mt-2 mb-2 mr-2 ml-2 btn btn-primary btn-main btnFixSize" type="button"
+        style="width: fit-content;background-color: #3182BD;border:none">View on Stellar Lab</button></a>
+        <a href="{{txnItem.txnUrl}}" target="_blank"><button class="mt-2 mb-2 mr-2 ml-2 btn btn-primary btn-main btnFixSize" type="button"
+          style="width: fit-content;background-color: #3182BD;border:none">JSON View</button></a>
     </div>
   </div>
   <div class="container" *ngIf="loadingComplete && errorOccurred">
@@ -139,3 +140,4 @@
 
 </div>
 <app-footer></app-footer>
+
