@@ -52,6 +52,7 @@ export class ProofPogComponent {
         status: element.Status,
         txnHash: element.Txnhash,
         txnUrl: element.Url,
+        txnLabUrl:element.LabUrl,
         identifier: element.Identifier,
         timestamp: element.Timestamp,
         blockchainName: element.BlockchainName,

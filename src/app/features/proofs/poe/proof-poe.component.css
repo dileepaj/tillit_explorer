@@ -91,3 +91,7 @@ overflow-y: auto;
 overflow-wrap: break-word;
 }
 }
+
+.btnFixSize{
+  width: 180px !important;
+}
