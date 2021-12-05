@@ -42,3 +42,6 @@
 .mat-spinner::ng-deep circle {
  stroke: #0062cc;
 }
+.btnFixSize{
+    width: 180px !important;
+  }

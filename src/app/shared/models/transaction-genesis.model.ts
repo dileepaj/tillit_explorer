@@ -2,6 +2,7 @@ export interface ITransactionGenesis {
         status: string;
         txnHash: string;
         txnUrl: string;
+        txnLabUrl: string;
         identifier: string;
         timestamp: Date;
         blockchainName: string;
