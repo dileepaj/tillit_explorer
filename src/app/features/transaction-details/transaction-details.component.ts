@@ -60,7 +60,7 @@ export class TransactionDetailsComponent implements OnInit {
   }
 
   getTransactionDetails(txnId: string): void {
-    this.transactionDataService.getTransactions(txnId).subscribe((transaction) => {
+    this.transactionDataService.getTransactions(txnId,1,10).subscribe((transaction) => {
       console.log("Transaction: ", transaction);
       if (transaction[0].TxnType == "tdp") {
         this.transactionDataService.getTracifiedDataPackets(transaction[0].TdpId).subscribe((base64Data: IBase64) => {

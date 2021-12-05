@@ -35,25 +35,49 @@ export class SearchPageComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
 
+  page:number = 1;
+  perPage:number = 10;
+  NoItems:number;
+  
+
   constructor(private route: ActivatedRoute, private transactionDataService: TransactionDataService) { }
 
   ngOnInit() {
-
     this.route.params.subscribe((data) => {
       this.results = [];
       this.loadingComplete = false;
       this.searchId = data.id;
       this.search(this.searchId);
+      if ( this.page != 1){
+        this.reloadCurrentPage()
+      }
     });
   }
+  
+  onChangePage(event:number){
+    this.route.params.subscribe((data) => {
+     this.page = event;
+     this.results = [];
+     this.loadingComplete = false;
+     this.searchId = data.id;
+     this.search(this.searchId);
+     if (this.page == 1) {
+      this.reloadCurrentPage()
+    }
+  });
+  }
+
+  reloadCurrentPage() {
+    window.location.reload();
+   }
 
   search(id: string): void {
-    this.transactionDataService.getTransactions(id).subscribe((transactions) => {
+    this.transactionDataService.getTransactions(id,this.page,this.perPage).subscribe((transactions) => {
       console.log("Transactions: ", transactions);
       this.errorOccurred = false;
       transactions.forEach(element => {
         console.log("Blockchain: ", element);
-
+        this.NoItems = element.Itemcount 
        
         if (element.TxnType == "tdp") {
 

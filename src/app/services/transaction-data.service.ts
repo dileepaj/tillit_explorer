@@ -22,8 +22,12 @@ export class TransactionDataService {
     );
   }
 
-  getTransactions(transactionId: string): Observable<any> {
-    return this.http.get(environment.blockchain.getTransactionData + transactionId).pipe(
+  getTransactions(transactionId: string, page:number, perPage:number): Observable<any> {
+    let params = new HttpParams();
+    params = params.append('txn', String(transactionId));
+    params = params.append('page', String(page) );
+    params = params.append('perPage', String(perPage));
+    return this.http.get(environment.blockchain.getTransactionData,{params}).pipe(
       // tap(data => { console.log("Transaction Data: ", JSON.stringify(data))}),
       catchError(this.handleError)
     );
