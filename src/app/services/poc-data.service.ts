@@ -19,6 +19,12 @@ export class PocDataService {
     );
   }
 
+  getPocTreeData(id: string): Observable<any> {
+    return this.http.get(environment.blockchain.getPocTreeData + id).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   handleError(err: HttpErrorResponse) {
     console.log("Error Handler: ", err);
     return throwError('test');
