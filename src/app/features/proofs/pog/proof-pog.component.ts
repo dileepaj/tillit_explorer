@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PogDataService } from '../../../services/pog-data.service';
 import { ITransactionGenesis } from 'src/app/shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
+import {Location} from '@angular/common';
 
 @Component({
   templateUrl: './proof-pog.component.html',
@@ -24,12 +25,16 @@ export class ProofPogComponent {
   mode = "indeterminate";
   value = 20;
 
-  constructor(private route: ActivatedRoute, private pogDataService: PogDataService) { }
+  constructor(private route: ActivatedRoute, private pogDataService: PogDataService, private _location: Location) { }
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
     this.getProofData(this.txnId);
   }
+
+  goBack():void{
+    this._location.back();
+    }  
 
   getProofData(txnID: string) {
     this.pogDataService.getPogProofData(txnID).subscribe((data) => {

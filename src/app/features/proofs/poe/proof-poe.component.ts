@@ -8,7 +8,7 @@ import { ErrorMessage } from '../../../shared/models/error-message.model';
 import { ClipboardService } from 'ngx-clipboard';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { encode, decode } from 'js-base64';
-
+import {Location} from '@angular/common';
 
 @Component({
   templateUrl: './proof-poe.component.html',
@@ -58,11 +58,15 @@ export class ProofPoeComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
 
-  constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService, private _location: Location) { }
 
   ngOnInit() {
     this.tdpId = this.route.snapshot.paramMap.get('txnhash');
     this.getProofData(this.tdpId);
+  }
+  
+  goBack():void{
+  this._location.back();
   }
 
   getProofData(tdpId: string): void {

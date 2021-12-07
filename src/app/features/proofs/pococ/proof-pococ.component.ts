@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PococDataService } from '../../../services/pococ-data.service';
 import { ITransactionCoc } from 'src/app/shared/models/transaction-coc.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
-
+import {Location} from '@angular/common';
 @Component({
   templateUrl: './proof-pococ.component.html',
   styleUrls: ['./proof-pococ.component.css']
@@ -23,12 +23,16 @@ export class ProofPococComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
 
-  constructor(private route: ActivatedRoute, private pococDataService: PococDataService) { }
+  constructor(private route: ActivatedRoute, private pococDataService: PococDataService, private _location: Location) { }
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
     this.getProofDataFromGateway(this.txnId);
   }
+
+  goBack():void{
+    this._location.back();
+  } 
 
   getProofDataFromGateway(txnId: string) {
     this.pococDataService.getPococProofData(txnId).subscribe((data) => {
