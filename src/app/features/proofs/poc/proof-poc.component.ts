@@ -36,6 +36,7 @@ export class ProofPocComponent implements OnInit {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
     // this.getProofData(this.txnId);
     this.getProofTree(this.txnId);
+    // this.renderGraph(this.getData().Nodes);
   }
 
   getProofData(id: string) {
@@ -100,41 +101,21 @@ export class ProofPocComponent implements OnInit {
         return {};
     });
 
-    // set nodes and edges
-    for (var key in Nodes) {
-      const node = Nodes[key];
-      const {sColor, lColor} = this.getColorForTxnType(node.Data.TxnType);
-      g.setNode(node.Data.TxnHash, {
-        label: node.Data.Identifier,
-        shape: 'rect',
-        style: `stroke: black; stroke-width: 1px; fill: ${sColor}`,
-        labelStyle: `font: 300 14px 'Helvetica Neue', Helvetica;fill: ${lColor}; cursor: pointer;`,
-	  });
+    var genesisNodes = Object.entries(Nodes).map(data=>{
+        if (!data[1].Parents) return data[1];
+    })
 
-      if(node.Children) {
-        for (let index = 0; index < node.Children.length; index++) {
-          const child = node.Children[index];
-          const childNode = Nodes[child];
-          const colors = this.getColorForTxnType(childNode.Data.TxnType);
-          g.setEdge(node.Data.TxnHash, childNode.Data.TxnHash, {
-            label: this.getTxnNameForTxnType(childNode.Data.TxnType),
-            labelStyle: `font-size: 10px; fill: ${colors.sColor}; cursor: pointer;`,
-            curve: d3.curveBasis,
-            style: `stroke: ${colors.sColor}; fill:none; stroke-width: 1.4px; stroke-dasharray: 5, 5; cursor: pointer;`,
-            arrowheadStyle: `fill: ${colors.sColor}`,
-          });          
-        }
-      }
-    //   if(node.Parents) {
-    //     for (let index2 = 0; index2 < node.Parents.length; index2++) {
-    //       const parent = node.Parents[index2];
-    //       g.setEdge(Nodes[parent].Data.TxnHash, node.Data.TxnHash, {
-    //         curve: d3.curveBasis,
-    //         style: 'stroke: blue; fill:none; stroke-width: 1.4px; stroke-dasharray: 5, 5; cursor: pointer;',
-    //         arrowheadStyle: 'fill: blue',
-    //       });            
-    //     }
-    //   }
+    genesisNodes = genesisNodes.filter(n=>n);
+
+    var doneNodes = [];
+    var edgeValues :number[] = [0];
+
+    // set nodes and edges
+    for (var key in genesisNodes) {
+      var max = edgeValues.reduce(function(a, b) {
+        return Math.max(a, b);
+      }, 98);
+      this.addNodesAndEdges(g, Nodes, doneNodes, edgeValues, genesisNodes[key], max + 1, 0);
     }
 
     // var svg = d3.select('svg');
@@ -162,6 +143,45 @@ export class ProofPocComponent implements OnInit {
     d3.selectAll("g.node").on('click', function (d: any) {
         window.open("/txn/" + Nodes[d].TrustLinks[0])
     });
+  }
+
+  addNodesAndEdges(g:any, Nodes:any, doneNodes:Array<string>, edgeValues:Array<number>, node:any, mainIndex:number, depth:number) {
+    const {sColor, lColor} = this.getColorForTxnType(node.Data.TxnType);
+    if(doneNodes.includes(node.Data.TxnHash)) return;
+    g.setNode(node.Data.TxnHash, {
+        label: node.Data.Identifier,
+        shape: 'rect',
+        style: `stroke: black; stroke-width: 1px; fill: ${sColor}`,
+        labelStyle: `font: 300 14px 'Helvetica Neue', Helvetica;fill: ${lColor}; cursor: pointer;`,
+    });
+    var lastSplitNodeIndex = null;
+    if(node.Children) {
+        for (let index = 0; index < node.Children.length; index++) {
+            const child = node.Children[index];
+            const childNode = Nodes[child];
+            const colors = this.getColorForTxnType(childNode.Data.TxnType);
+            var nodeIndex = null;
+            var nodeDepth = depth;
+            if (childNode.Data.TxnType == "6") {
+                nodeDepth++;
+                if(lastSplitNodeIndex) lastSplitNodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, lastSplitNodeIndex, nodeDepth);
+                else lastSplitNodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, mainIndex, nodeDepth)
+                nodeIndex = lastSplitNodeIndex;
+                nodeDepth++;
+            } else nodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, mainIndex, nodeDepth);
+            mainIndex = nodeIndex;
+            g.setEdge(node.Data.TxnHash, childNode.Data.TxnHash, {
+                label: `${nodeIndex} ${this.getTxnNameForTxnType(childNode.Data.TxnType)}`,
+                labelStyle: `font-size: 10px; fill: ${colors.sColor}; cursor: pointer;`,
+                curve: d3.curveBasis,
+                style: `stroke: ${colors.sColor}; fill:none; stroke-width: 1.4px; stroke-dasharray: 5, 5; cursor: pointer;`,
+                arrowheadStyle: `fill: ${colors.sColor}`,
+            });  
+            edgeValues.push(nodeIndex);
+            this.addNodesAndEdges(g, Nodes, doneNodes, edgeValues, childNode, nodeIndex, nodeDepth);        
+        }
+    }
+    doneNodes.push(node.Data.TxnHash);
   }
 
   getColorForTxnType(type) {
@@ -203,6 +223,21 @@ export class ProofPocComponent implements OnInit {
           return "MERGE";
       default:
     }
+  }
+  getEdgeIndexForTxnType(type:string, mainIndex: number, depth : number) : number{
+    const suffix =  1 / Math.pow(10, depth);
+    const final = mainIndex + suffix;
+    return parseFloat(final.toFixed(depth));
+    // switch (type) {
+    //   case "0":
+    //     return mainIndex + (1 / suffix);
+    //   case "2":
+    //     return mainIndex + (1 / suffix);
+    //   case "6":
+    //     return mainIndex + (1 / suffix);
+    //   case "7":
+    //     return mainIndex + (1 / suffix);
+    // }
   }
 
   // graph(jsonVal) {
