@@ -167,7 +167,7 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
 
-            assetCode: "Not Sending",
+            assetCode: element.AssetCode,
             quantity: 0,
 
             inputData: "Not Sending",
