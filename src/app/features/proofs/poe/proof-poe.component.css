@@ -87,9 +87,15 @@
 
 @media screen and (max-width: 600px) {
 .trasactionDataMobileResponsive{
-overflow-y: auto;  
-overflow-wrap: break-word;
+  white-space: initial;
 }
+}
+
+.trasactionDataMobileResponsive{
+  white-space: initial;
+  word-wrap: break-word;
+  align-items: center!important;
+
 }
 
 .btnFixSize{
@@ -103,5 +109,5 @@ overflow-wrap: break-word;
 }
 
 .clickableAwesomeFont:hover{
-    color:blue !important;
+  color:blue !important;
 }

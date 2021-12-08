@@ -37,7 +37,7 @@ export class ProofPococComponent implements OnInit {
   getProofDataFromGateway(txnId: string) {
     this.pococDataService.getPococProofData(txnId).subscribe((data) => {
       this.loadingComplete = true;
-      console.log("PoCoC Data: ", data);
+   //   console.log("PoCoC Data: ", data);
       let element = data[0];
 
       if (element.TxnType != "coc") {
@@ -75,7 +75,7 @@ export class ProofPococComponent implements OnInit {
       }
 
     }, (err) => {
-      console.log("PoCoC Data Error: ", err);
+     // console.log("PoCoC Data Error: ", err);
 
       this.loadingComplete = true;
 

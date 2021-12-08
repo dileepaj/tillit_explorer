@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
     this.transactionDataService.getRecentTransactions(this.page, this.perPage, this.NoPage).subscribe((transactions) => {
       // this.loadingComplete = true;
       transactions.forEach(element => {
-        console.log("Blockchain: ", element);
+       // console.log("Blockchain: ", element);
 
 
         if (element.TxnType == "tdp") {
@@ -235,7 +235,7 @@ export class HomeComponent implements OnInit {
       }
 
     }, (err) => {
-      console.log("Blockchain Error: ", err);
+   //   console.log("Blockchain Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
 

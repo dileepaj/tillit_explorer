@@ -40,7 +40,7 @@ export class ProofPogComponent {
     this.pogDataService.getPogProofData(txnID).subscribe((data) => {
       this.loadingComplete = true;
       let element = data[0];
-      console.log("PoG Data: ", data);
+    //  console.log("PoG Data: ", data);
 
       if (element.TxnType != "genesis") {
         this.errorOccurred = true;
@@ -73,7 +73,7 @@ export class ProofPogComponent {
 
       }
     }, (err) => {
-      console.log("Get PoG Proof Error: ", err);
+    //  console.log("Get PoG Proof Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
       
