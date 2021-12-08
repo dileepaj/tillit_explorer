@@ -73,7 +73,7 @@ export class SearchPageComponent implements OnInit {
 
   search(id: string): void {
     this.transactionDataService.getTransactions(id,this.page,this.perPage).subscribe((transactions) => {
-    //  console.log("Transactions: ", transactions);
+   //   console.log("Transactions: ", transactions);
       this.errorOccurred = false;
       transactions.forEach(element => {
       // console.log("Blockchain: ", element);
@@ -102,7 +102,7 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
 
-            productId: "Not Sending",
+            productId: element.ProductId,
             productName: element.ProductName,
             blockchainName: "Stellar"
           }
@@ -135,7 +135,7 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
 
-            productId: "Not Sending",
+            productId: element.ProductId,
             productName: element.ProductName,
             blockchainName: "Stellar"
           }
@@ -167,19 +167,19 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
 
-            assetCode: "Not Sending",
+            assetCode: element.AssetCode,
             quantity: 0,
             productName: element.ProductName,
-            inputData: "Not Sending",
+            inputData: element.inputData,
             blockchainName: "Stellar",
-            cocStatus: "Not Sending",
+            cocStatus: element.cocStatus,
             senderSigned: false,
             receiverSigned: false
           }
 
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-       //   console.log("ELSE: ", txnItem);
+      //   console.log("ELSE: ", txnItem);
         } else if (element.TxnType == "splitChild") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -202,7 +202,7 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             blockchainName: "Stellar",
-            productId: "Not Available",
+            productId: element.ProductId,
             productName: element.ProductName,
             identifier: "Not Available"
           }
@@ -230,7 +230,7 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             blockchainName: "Stellar",
-            productId: "Not Available",
+            productId: element.ProductId,
             productName: element.ProductName,
             identifier: "Not Available"
           }
