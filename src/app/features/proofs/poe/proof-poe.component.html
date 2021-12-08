@@ -58,11 +58,16 @@
   </div>
 
   <div class="container mt-5" *ngIf="loadingComplete && !errorOccurred">
-    <div class="row mb-3">
+    <div class="row mb-3">  
       <div class="col-12">
-        <h4>PROOF OF EXISTENCE (POE)</h4>
-        <p>Proof that a given data packet existed in the blockchain</p>
-      </div>
+        <div class="row">
+          <div class="mr-2 ml-3 "><span  (click)="goBack()">   <i class="fas fa-angle-left clickableAwesomeFont" style="font-size: 30px;"></i></span></div>
+          <div >
+            <h4>PROOF OF EXISTENCE (POE)</h4>
+            <p>Proof that a given data packet existed in the blockchain</p>
+          </div>
+        </div>
+    </div>
     </div>
     <div class="mb-3" style="background-color: #fff;">
       <div class="d-flex justify-content-between m-2">
@@ -138,23 +143,44 @@
 
       <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4"
         *ngFor="let item of tracifiedCoreData.data | keyvalue">
-        <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0 trasactionDataMobileResponsive" style="font-size: 18px; font-weight:500; "
+        <div class="col-sm-12 col-md-4  col-lg-3 pt-md-0 trasactionDataMobileResponsive" style="font-size: 18px; font-weight:500;"
           *ngIf="item.key != 'photos'">
           {{item.key}}
         </div>
-        <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;" *ngIf="item.key != 'photos'">
-          {{item.value | json}}
+        <div class="col-sm-12 col-md-8 col-lg-9 align-item-center" style=" overflow-y: auto; max-height:150px;" >
+          <div class="row align-self-center " *ngIf="!isObject(item.value)">
+            <div class="col-sm-12 col-md-8 col-lg-9 align-self-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  >
+              <p>  {{item.value }}</p>
+            </div>
+          </div>
+          <div *ngIf="isObject(item.value)">
+          <div class="row align-self-center"  *ngFor="let subItem of item.value  | keyvalue" style="overflow-y: auto; "> 
+            <div class="col-sm-12 col-md-4 col-lg-3 align-item-center" style=" font-size: 14px; font-weight:420; overflow-wrap:normal;"
+             *ngIf="item.key != 'photos'">
+              <p>{{subItem.key}} :</p> 
+            </div>
+            <div class="col-sm-12 col-md-8 col-lg-9 align-item-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  >
+              <p>  {{subItem.value }}</p>
+            </div>
+          </div>
+        </div>
         </div>
       </div>
-    </div>
-
-    <div class="col-xs-12 col-md-12 pb-4 mt-2 mb-3" style="background-color: white;">
       <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.Txnhash'>
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
           Transaction Hash
         </div>
         <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;">
           {{transactionData.Txnhash}}
+        </div>
+      </div>
+
+      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="transactionData.SequenceNo">
+        <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+          Sequence
+        </div>
+        <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+          {{transactionData.SequenceNo}}
         </div>
       </div>
 
@@ -173,6 +199,18 @@
         </div>
         <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
           {{transactionData.Identifier}}
+        </div>
+      </div>
+
+      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.Status'>
+        <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+          Status
+        </div>
+        <div class="col-12 col-md-9" style="overflow-y: auto;  overflow-wrap: break-word;">
+          <span class="pl-3 pr-3 pt-2 pb-2 badge badge-pill badge-primary"
+            style="font-size: 14px;background-color: #F3F1FF;color:#818E94;font-weight: 700;"><i
+              class="far {{ transactionData.Status == 'BC Hash & DB Hash match.' ? 'fa-check-circle status-text-matched' : 'fa-times-circle status-text-not-matched' }} mr-1"
+              style="font-size: 18px;"></i>{{transactionData.Status == 'BC Hash & DB Hash match.' ?"BC Hash & DB Hash matched":"BC Hash & DB Hash did not match"}}</span>
         </div>
       </div>
 
@@ -216,8 +254,18 @@
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
           Fee
         </div>
-        <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+        <div class="col-12 col-md-9 " style="overflow-y: auto; text-overflow: ellipsis;">
           {{transactionData.FeePaid}}
+        </div>
+      </div>
+
+
+      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="transactionData.Timestamp">
+        <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+          Timestamp
+        </div>
+        <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+          {{transactionData.Timestamp | date: 'medium'}}
         </div>
       </div>
 

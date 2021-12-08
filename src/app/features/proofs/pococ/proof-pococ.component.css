@@ -4,3 +4,13 @@
 .btnFixSize{
     width: 180px !important;
   }
+
+.clickableAwesomeFont{
+    cursor: pointer;
+    width: 30px;
+    height: 40px;
+}
+  
+.clickableAwesomeFont:hover{
+    color:blue !important;
+}
