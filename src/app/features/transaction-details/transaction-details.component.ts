@@ -159,7 +159,7 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Stellar",
+          blockchain:transaction[0].Blockchain,
           productName: transaction[0].ProductName,
         }
 
@@ -193,7 +193,7 @@ export class TransactionDetailsComponent implements OnInit {
           assetCode: "Not Sending",
           quantity: 0,
           inputData: "Not Sending",
-          blockchainName: "Stellar",
+          blockchain:transaction[0].Blockchain,
           senderSigned: false,
           receiverSigned: false
         }
@@ -224,7 +224,7 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName:"Stellar",
+          blockchain:transaction[0].Blockchain,
           productId: "Not Sending",
           productName: transaction[0].ProductName,
         }
@@ -254,7 +254,7 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Stellar",
+          blockchain:transaction[0].Blockchain,
           productId: "Not Sending",
           productName: transaction[0].ProductName,
         }
@@ -284,7 +284,7 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Stellar",
+          blockchain:transaction[0].Blockchain,
           productId: "Not Sending",
           productName: transaction[0].ProductName,
         }
