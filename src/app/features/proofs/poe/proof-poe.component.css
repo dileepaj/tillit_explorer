@@ -87,11 +87,27 @@
 
 @media screen and (max-width: 600px) {
 .trasactionDataMobileResponsive{
-overflow-y: auto;  
-overflow-wrap: break-word;
+  white-space: initial;
 }
+}
+
+.trasactionDataMobileResponsive{
+  white-space: initial;
+  word-wrap: break-word;
+  align-items: center!important;
+
 }
 
 .btnFixSize{
   width: 180px !important;
+}
+
+.clickableAwesomeFont{
+  cursor: pointer;
+  width: 30px;
+  height: 40px;
+}
+
+.clickableAwesomeFont:hover{
+  color:blue !important;
 }
