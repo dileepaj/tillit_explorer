@@ -73,10 +73,10 @@ export class SearchPageComponent implements OnInit {
 
   search(id: string): void {
     this.transactionDataService.getTransactions(id,this.page,this.perPage).subscribe((transactions) => {
-      console.log("Transactions: ", transactions);
+     // console.log("Transactions: ", transactions);
       this.errorOccurred = false;
       transactions.forEach(element => {
-        console.log("Blockchain: ", element);
+      //  console.log("Blockchain: ", element);
         this.NoItems = element.Itemcount 
        
         if (element.TxnType == "tdp") {
@@ -179,7 +179,7 @@ export class SearchPageComponent implements OnInit {
 
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-          console.log("ELSE: ", txnItem);
+       //   console.log("ELSE: ", txnItem);
         } else if (element.TxnType == "splitChild") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -237,7 +237,7 @@ export class SearchPageComponent implements OnInit {
 
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-          console.log("ELSE: ", txnItem);
+       //   console.log("ELSE: ", txnItem);
         }
       });
 
@@ -253,7 +253,7 @@ export class SearchPageComponent implements OnInit {
       }
 
     }, (err) => {
-      console.log("Blockchain Error: ", err);
+     // console.log("Blockchain Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
       if (err.status === 400) {

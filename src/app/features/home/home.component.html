@@ -1,19 +1,21 @@
 <app-header></app-header>
 <div class="main-container">
-    <div class="container main-app-container">
+    <div class="container" >
         <div *ngIf="!loadingComplete">
             <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
             </mat-spinner>
         </div>
-        <div class="row content-area" *ngIf="loadingComplete && !errorOccurred">
-            <div class="col-12 mt-3">
-                <div class="row mb-3">
+        <div class="row" *ngIf="loadingComplete && !errorOccurred">
+            <div class="col-12 mt-2">
+                <div class="row mb-1">
                     <div class="col-12">
+                        <div class="pl-3">
                         <h4>Recent Transactions</h4>
+                    </div>
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="col-12 mt-0">
                 <app-card class="col-12" *ngFor="let item of results  | paginate: {itemsPerPage:perPage, currentPage:page, totalItems:NoPage*perPage }" [transactionData]="item"></app-card>
                 <pagination-controls class="text-center" (pageChange) = "onChangePage($event)" autoHide = "true" ></pagination-controls>
             </div>

@@ -41,7 +41,7 @@ export class ProofPocComponent implements OnInit {
 
   getProofData(id: string) {
     this.pocDataService.getPocProofData(id).subscribe((data) => {
-      console.log("PoC: ", data);
+    //  console.log("PoC: ", data);
 
       this.loadingComplete = true;
       this.pocTransactions = data;
@@ -52,7 +52,7 @@ export class ProofPocComponent implements OnInit {
 
     }, (err) => {
       this.loadingComplete = true;
-      console.log("Get PoC data error: ", err);
+     // console.log("Get PoC data error: ", err);
       this.errorOccurred = true;
 
       if (err.status === 400) {

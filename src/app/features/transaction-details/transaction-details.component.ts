@@ -4,7 +4,7 @@ import { TransactionDataService } from '../../services/transaction-data.service'
 import { IBase64 } from '../../shared/models/base64.model';
 import { ErrorMessage } from '../../shared/models/error-message.model';
 import { encode, decode } from 'js-base64';
-
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-transaction-details',
@@ -52,24 +52,28 @@ export class TransactionDetailsComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
 
-  constructor(private route: ActivatedRoute, private transactionDataService: TransactionDataService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private transactionDataService: TransactionDataService, private router: Router, private _location: Location) { }
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnId');
     this.getTransactionDetails(this.txnId);
   }
 
+  goBack():void{
+    this._location.back();
+    }
+
   getTransactionDetails(txnId: string): void {
     this.transactionDataService.getTransactions(txnId,1,10).subscribe((transaction) => {
-      console.log("Transaction: ", transaction);
+     // console.log("Transaction: ", transaction);
       if (transaction[0].TxnType == "tdp") {
         this.transactionDataService.getTracifiedDataPackets(transaction[0].TdpId).subscribe((base64Data: IBase64) => {
-          console.log("Backend: ", base64Data);
+        //  console.log("Backend: ", base64Data);
           this.loadingComplete = true;
           let tdp: any = JSON.parse(decode(base64Data.data));
-          console.log("Transaction Item: ", tdp);
+         // console.log("Transaction Item: ", tdp);
 
-          console.log("Available Proofs: ", transaction[0].AvailableProof);
+         // console.log("Available Proofs: ", transaction[0].Blockchain);
 
           // let index = transaction[0].AvailableProof.findIndex((proof) => {
           //   console.log("Proof Loop: ", proof);
@@ -99,17 +103,18 @@ export class TransactionDetailsComponent implements OnInit {
             productId: tdp.header.item.itemID,
             productName: tdp.header.item.itemName,
             stageId: tdp.header.stageID,
+            blockchain:transaction[0].Blockchain,
             images: []
           }
 
           if (tdp.data.photos) {
-            console.log("Photos Exist.");
+         //   console.log("Photos Exist.");
             this.tdpImages = tdp.data.photos;
             this.enableSlider = true;
           }
 
         }, (err) => {
-          console.log("Get TDP Error: ", err);
+        //  console.log("Get TDP Error: ", err);
           this.loadingComplete = true;
           this.errorOccurred = true;
           if (err.status === 400) {
@@ -286,7 +291,7 @@ export class TransactionDetailsComponent implements OnInit {
 
       }
     }, (err) => {
-      console.log("Get Transaction Error: ", err);
+    //  console.log("Get Transaction Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
       if (err.status === 400) {
