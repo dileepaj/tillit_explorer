@@ -73,10 +73,10 @@ export class SearchPageComponent implements OnInit {
 
   search(id: string): void {
     this.transactionDataService.getTransactions(id,this.page,this.perPage).subscribe((transactions) => {
-     // console.log("Transactions: ", transactions);
+    //  console.log("Transactions: ", transactions);
       this.errorOccurred = false;
       transactions.forEach(element => {
-      //  console.log("Blockchain: ", element);
+      // console.log("Blockchain: ", element);
         this.NoItems = element.Itemcount 
        
         if (element.TxnType == "tdp") {
@@ -169,7 +169,7 @@ export class SearchPageComponent implements OnInit {
 
             assetCode: "Not Sending",
             quantity: 0,
-
+            productName: element.ProductName,
             inputData: "Not Sending",
             blockchainName: "Stellar",
             cocStatus: "Not Sending",
@@ -229,9 +229,9 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
+            blockchainName: "Stellar",
             productId: "Not Available",
-            productName: "Not Available",
+            productName: element.ProductName,
             identifier: "Not Available"
           }
 
