@@ -65,7 +65,7 @@ export class TransactionDetailsComponent implements OnInit {
 
   getTransactionDetails(txnId: string): void {
     this.transactionDataService.getTransactions(txnId,1,10).subscribe((transaction) => {
-     // console.log("Transaction: ", transaction);
+  //    console.log("Transaction: ", transaction);
       if (transaction[0].TxnType == "tdp") {
         this.transactionDataService.getTracifiedDataPackets(transaction[0].TdpId).subscribe((base64Data: IBase64) => {
         //  console.log("Backend: ", base64Data);
@@ -159,7 +159,7 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Stellar",
+          blockchain:transaction[0].Blockchain,
           productName: transaction[0].ProductName,
         }
 
@@ -192,8 +192,8 @@ export class TransactionDetailsComponent implements OnInit {
           availableProofs: transaction[0].AvailableProof,
           assetCode: "Not Sending",
           quantity: 0,
-          inputData: "Not Sending",
-          blockchainName: "Stellar",
+          inputData: transaction[0].inputData,
+          blockchain:transaction[0].Blockchain,
           senderSigned: false,
           receiverSigned: false
         }
@@ -224,7 +224,7 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName:"Stellar",
+          blockchain:transaction[0].Blockchain,
           productId: "Not Sending",
           productName: transaction[0].ProductName,
         }
@@ -254,7 +254,7 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Stellar",
+          blockchain:transaction[0].Blockchain,
           productId: "Not Sending",
           productName: transaction[0].ProductName,
         }
@@ -284,7 +284,7 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchainName: "Stellar",
+          blockchain:transaction[0].Blockchain,
           productId: "Not Sending",
           productName: transaction[0].ProductName,
         }
