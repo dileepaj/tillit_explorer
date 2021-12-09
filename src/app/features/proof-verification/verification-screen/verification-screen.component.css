@@ -1,0 +1,28 @@
+#globalInformation {
+    min-height: 32vh;
+    width: 100%;
+    border: 1px solid rgba(204, 204, 204, 0.459);
+    padding: 4% 0% 4% 4%;
+    -webkit-box-shadow: 0px 10px 13px -7px #000000,
+    -50px -49px 0px -28px rgba(0, 0, 0, 0);
+    box-shadow: 0px 10px 13px -7px #000000,
+    -50px -49px 0px -28px rgba(0, 0, 0, 0);
+}
+
+#verificationScreen {
+    height: 64vh;
+    width: 100%;
+    margin-top: 2vh;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    display: flex;
+    justify-content: start;
+    align-items: stretch;
+    padding: 4% 0% 4% 4%;
+    -webkit-box-shadow: -10px 0px 13px -7px #000000,
+    10px 0px 13px -7px #000000,
+    -50px -49px 0px -28px rgba(0, 0, 0, 0);
+    box-shadow: -10px 0px 13px -7px #000000,
+    10px 0px 13px -7px #000000,
+    -50px -49px 0px -28px rgba(0, 0, 0, 0);
+}

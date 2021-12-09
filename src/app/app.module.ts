@@ -27,6 +27,9 @@ import { ProofPocComponent } from './features/proofs/poc/proof-poc.component';
 import {NgxPaginationModule} from 'ngx-pagination'; 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MaintenanceComponent } from './features/maintenance/maintenance.component';
+import { SiteScreenComponent } from './features/proof-verification/components/site-screen/site-screen.component';
+import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,9 @@ import { MaintenanceComponent } from './features/maintenance/maintenance.compone
     TransactionDetailsComponent,
     ErrorIdComponent,
     ProofPocComponent,
-    MaintenanceComponent
+    MaintenanceComponent,
+    SiteScreenComponent,
+    VerificationScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -60,10 +65,12 @@ import { MaintenanceComponent } from './features/maintenance/maintenance.compone
     BrowserAnimationsModule,
     ClipboardModule,
     CarouselModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    SweetAlert2Module.forRoot()
   ],
+  entryComponents: [SiteScreenComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
 
 
