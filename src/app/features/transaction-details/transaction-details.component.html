@@ -113,21 +113,30 @@
           </div>
         </div>
 
-        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.status">
-          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
-            Status
-          </div>
-          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
-            {{txnItem.status}}
-          </div>
-        </div>
-
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.blockchain">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Blockchain
           </div>
           <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.blockchain}}
+          </div>
+        </div>
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.ledger">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Ledger
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.ledger}}
+          </div>
+        </div>
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.status">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Status
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.status}}
           </div>
         </div>
 
@@ -167,7 +176,7 @@
           </div>
         </div>
 
-        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.sequence">
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.sequence.toString">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Sequence
           </div>

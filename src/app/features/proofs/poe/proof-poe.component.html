@@ -143,11 +143,11 @@
 
       <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4"
         *ngFor="let item of tracifiedCoreData.data | keyvalue">
-        <div class="col-sm-12 col-md-4  col-lg-3 pt-md-0 trasactionDataMobileResponsive" style="font-size: 18px; font-weight:500;"
+        <div class="col-sm-12 col-md-3  col-lg-3  pl-md-4  pt-3 pt-md-0 trasactionDataMobileResponsive" style="font-size: 18px; font-weight:500;"
           *ngIf="item.key != 'photos'">
           {{item.key}}
         </div>
-        <div class="col-sm-12 col-md-8 col-lg-9 align-item-center" style=" overflow-y: auto; max-height:150px;" >
+        <div class="col-sm-12 col-md-9 col-lg-9 align-item-center" style=" overflow-y: auto; max-height:150px;" >
           <div class="row align-self-center " *ngIf="!isObject(item.value)">
             <div class="col-sm-12 col-md-8 col-lg-9 align-self-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  >
               <p>  {{item.value }}</p>
@@ -175,7 +175,7 @@
         </div>
       </div>
 
-      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="transactionData.SequenceNo">
+      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="transactionData.SequenceNo.toString">
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
           Sequence
         </div>
@@ -214,7 +214,7 @@
         </div>
       </div>
 
-      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='tracifiedCoreData.header.stageID'>
+      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='tracifiedCoreData.header.stageID.toString'>
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
           Stage ID
         </div>
@@ -241,7 +241,7 @@
         </div>
       </div>
 
-      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.Ledger'>
+      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.Ledger.toString'>
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
           Ledger
         </div>
@@ -250,7 +250,7 @@
         </div>
       </div>
 
-      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.FeePaid'>
+      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.FeePaid.toString'>
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
           Fee
         </div>
@@ -271,7 +271,7 @@
 
       <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.BlockchainName'>
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
-          Public Blockchain
+          Blockchain
         </div>
         <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
           {{transactionData.BlockchainName}}
