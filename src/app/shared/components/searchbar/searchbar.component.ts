@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-searchbar',
   templateUrl: './searchbar.component.html',
@@ -10,15 +10,21 @@ import { FormControl } from '@angular/forms';
 export class SearchbarComponent {
 
   searchForm = new FormControl('');
-  private searchText: string;
+  searchText:string
 
   popSearch: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
+  ngOnInit() {
+    const urlPaths = this.activatedRoute["_routerState"].snapshot.url.split("/");
+    if(urlPaths[1] == "search") this.searchText = this.activatedRoute.snapshot.params.id;
+    else this.searchText = "";
+  }
 
   search() {
-    console.log("Searchbar button");
+  //  console.log("Searchbar button",this.searchForm.value);
     if (this.searchForm.value) {
+      this.searchText=this.searchForm.value
       this.router.navigate(['/search', this.searchForm.value]);
       this.popSearch = false;
     }

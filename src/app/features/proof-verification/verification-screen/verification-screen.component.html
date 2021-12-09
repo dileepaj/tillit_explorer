@@ -1,0 +1,26 @@
+<app-header></app-header>
+<div class="container">
+  <div class="container mt-5">
+    <div class="row mb-3">
+      <div class="col-12">
+        <h4>PROOF Verification (POE)</h4>
+        <p>Prove the exsistence of a given data packet through blockchain</p>
+      </div>
+    </div>
+  </div>
+  
+  <div id="proofContainer" style="height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+      <!-- Global Information -->
+      <div id="globalInformation"></div>
+      <!-- Verification screen -->
+      <div id="verificationScreen">
+        <ng-template #ProofDemoDirective></ng-template>
+      </div>
+  </div>
+  <div class="container" *ngIf="loadingComplete && errorOccurred">
+    <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle" [errorMessage]="error.errorMessage"
+      [errorMessageSecondary]="error.errorMessageSecondary">
+    </app-error-id>
+  </div>
+</div>
+<app-footer></app-footer>
