@@ -1,0 +1,49 @@
+<div id="siteScreen" [@spinAnimation]>
+  <div id="browser">
+    <div class="header">
+      <div class="input-group">
+        <div class="input-group-text" id="basic-addon1">
+          <i class="bi bi-globe2"></i>
+          <span tabindex="0" data-toggle="tooltip" title="Open in new window" (click)="openInNewWindowFn()">
+            <input
+              type="text"
+              class="form-control form-control-sm border-0"
+              [value]="displayPageUrl"
+              aria-label="url"
+              disabled
+              aria-describedby="basic-addon1"
+            />
+          </span>
+          <span tabindex="0" data-toggle="tooltip" title="Zoom In" (click)="scaleFn(1)">
+            <i class="bi bi-zoom-in"></i>
+          </span>
+          <span tabindex="0" data-toggle="tooltip" title="Zoom Out" (click)="scaleFn(-1)">
+            <i class="bi bi-zoom-out"></i>
+          </span>
+          <span tabindex="0" data-toggle="tooltip" title="Copy to Clipboard" (click)="copyToClipboardFn()">
+            <i class="bi bi-clipboard-check" *ngIf="isCopied; else notCopied" [style.color]="'blue'"></i>
+            <ng-template #notCopied>
+              <i class="bi bi-clipboard"></i>
+            </ng-template>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+     <div class="mt-5 d-flex justify-content-center align-items-center" *ngIf="!loadingComplete" [@spinAnimation]>
+      <mat-spinner color="primary" mode="indeterminate" [value]="1" [diameter]="40">
+      </mat-spinner>
+    </div>
+        <iframe *ngIf="pageUrl != null" #iframe [src]="pageUrl" (load)="onIframeLoadFn()" [@iframeAnimation] frameborder="0" width="100%" height="100%"></iframe>
+    </div>
+  </div>
+  <div id="title">
+    <input
+      type="text"
+      value="Frame 1 - Retrieve Transaction from Stellar Network"
+      aria-label="url"
+      disabled
+      aria-describedby="basic-addon1"
+    />
+  </div>
+</div>
