@@ -40,8 +40,24 @@ export class VerificationScreenComponent implements OnInit {
         screenComponentRef.instance.setPage(
           "https://emn178.github.io/online-tools/base64_decode.html"
         );
+        setTimeout(
+                  () => screenComponentRef.instance.scrollToQuery(".output"),
+                  14000
+                );
       },
       2000
+    );
+
+    setTimeout(
+      () => {
+        const screenComponentRef: ComponentRef<SiteScreenComponent> = this.createFrameInProofDemo(
+          "site-screen"
+        );
+        screenComponentRef.instance.setPage(
+          "https://emn178.github.io/online-tools/base64_decode.html"
+        );
+      },
+      3000
     );
 
     this.cdr.detectChanges();

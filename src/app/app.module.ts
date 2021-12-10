@@ -29,7 +29,6 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MaintenanceComponent } from './features/maintenance/maintenance.component';
 import { SiteScreenComponent } from './features/proof-verification/components/site-screen/site-screen.component';
 import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -66,7 +65,6 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     ClipboardModule,
     CarouselModule,
     NgxPaginationModule,
-    SweetAlert2Module.forRoot()
   ],
   entryComponents: [SiteScreenComponent],
   bootstrap: [AppComponent]

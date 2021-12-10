@@ -6,9 +6,18 @@
   flex: none;
   margin-right: 4%;
   min-width: auto;
-
   overflow: hidden;
   resize: horizontal;
+  position: relative;
+}
+
+.copy-notification {
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px;
+  position: absolute;
+  top: 20;
+  right: 0;
 }
 
 #siteScreen {
@@ -30,6 +39,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 #browser .header .input-group-text {
@@ -83,6 +93,7 @@
   padding: 0px 0px;
   margin: 0px 0px 0px 0px;
   box-sizing: border-box;
+  position: relative;
 }
 
 #siteScreen #title input {
