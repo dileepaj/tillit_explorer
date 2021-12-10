@@ -113,7 +113,7 @@
   font-size: 12px;
   display: flex;
   width: 100%;
-  justify-content: start;
+  justify-content: flex-start;
   border: 0px;
   margin: 0;
   padding: 4px 20px 4px 10px;
