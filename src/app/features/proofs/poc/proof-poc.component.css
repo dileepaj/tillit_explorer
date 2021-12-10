@@ -1,3 +1,13 @@
 .mat-spinner::ng-deep circle {
   stroke: #0062cc;
 }
+
+.clickableAwesomeFont{
+  cursor: pointer;
+  width: 30px;
+  height: 40px;
+}
+
+.clickableAwesomeFont:hover{
+  color:blue !important;
+}
