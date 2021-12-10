@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { VerificationServiceService } from "../../../../services/verification-service.service";
-import Swal from "sweetalert2";
+import URL from "url-parse";
 
 
 @Component({
@@ -30,6 +30,16 @@ import Swal from "sweetalert2";
       transition(":enter", [
         style({ transform: "translateY(100%)", opacity: 1 }),
         animate("1000ms", style({ transform: "translateY(0%)", opacity: 1 }))
+      ])
+    ]),
+    trigger("inOutAnimation", [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate("100ms ease-out", style({ opacity: 1 }))
+      ]),
+      transition(":leave", [
+        style({ opacity: 1 }),
+        animate("100ms ease-in", style({ opacity: 0 }))
       ])
     ])
   ]
@@ -53,14 +63,94 @@ export class SiteScreenComponent implements OnInit {
 
   ngOnInit() {}
 
-  scrollToText(text: string) {
-    this.text = text;
+  scrollToQuery(query: string) {
+    const iframe = this.iframe.nativeElement;
+    this.scrollToDemoFrame();
+    const left = iframe.offsetLeft;
+    console.log(left, iframe.scrollWidth);
+    // document.getElementById("verificationScreen").scrollLeft =
+    //   left - iframe.scrollWidth;
+    const currentFrame = iframe.contentWindow;
+    const outputFrame = iframe.contentWindow.document
+      .querySelectorAll(query)[0]
+      .getBoundingClientRect();
+    // iframe.contentWindow.scrollTo(
+    //   currentFrame.scrollX + outputFrame.x,
+    //   currentFrame.scrollY + outputFrame.y
+    // );
+  }
+
+  private scrollToDemoFrame() {
+    const bodyRect: any = document.body.getBoundingClientRect();
+    const pcRect: any = document
+      .getElementById("proofContainer")
+      .getBoundingClientRect();
+    const pcWidth = pcRect.x - bodyRect.x;
+    const pcHeight = pcRect.y - bodyRect.y;
+    window.scroll(pcWidth, pcHeight);
   }
 
   setPage(pageUrl: string) {
     setTimeout(() => {
-      this.pageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pageUrl);
+      // this.pageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pageUrl);
       this.displayPageUrl = pageUrl;
+      this.verificationHttpService.loadPage(pageUrl).subscribe(
+        data => {
+          var domainUrl = pageUrl
+            .split("/")
+            .filter(n => n)
+            .join("/");
+          if (
+            pageUrl
+              .split("/")
+              .slice(-1)[0]
+              .search(".") != -1
+          )
+            domainUrl = pageUrl
+              .split("/")
+              .slice(0, -1)
+              .join("/");
+          this.HTMLData = data.replace(
+            /href="(?!http)[\/]?/g,
+            `href="${domainUrl}/`
+          );
+          this.HTMLData = this.HTMLData.replace(
+            /src="(?!http)[\/]?/g,
+            `href="${domainUrl}/`
+          );
+          let doc = this.iframe.nativeElement.contentDocument;
+          doc.open();
+          doc.write(this.HTMLData);
+          // doc.write(this.sanitizer.bypassSecurityTrustHtml(data));
+          // execute srcipts
+          const scripts = doc.getElementsByTagName("script");
+          for (let script of scripts) {
+            this.iframe.nativeElement.contentWindow.eval(script.text);
+          }
+
+          doc.close();
+          // this.HTMLData = data;
+
+          //  setTimeout(()=> {
+          //     const scripts = this.iframe.nativeElement.contentWindow.document.getElementsByTagName("script");
+          //     const mainUrl = new URL(this.displayPageUrl);
+          //     console.log(mainUrl);
+          //     var scriptList = Array.prototype.slice.call(scripts);
+          //     scriptList.forEach(customize);
+          //     function customize(script, index, ar) {
+          //       var upUrl = new URL(script.src);
+          //       var newScript = document.createElement("script");
+          //       newScript.type = "text/javascript";
+          //       newScript.innerHTML = script.innerHTML;
+          //       newScript.src = mainUrl.origin + "/online-tools" + upUrl.pathname;
+          //       doc.body.appendChild(newScript);
+          //     }
+          //  }, 8000)
+        },
+        err => {
+          console.log(err);
+        }
+      );
     }, 1400);
   }
 
@@ -73,7 +163,7 @@ export class SiteScreenComponent implements OnInit {
   }
 
   copyToClipboardFn() {
-    if (this.pageUrl) {
+    if (this.pageUrl || this.HTMLData) {
       const selBox = document.createElement("textarea");
       selBox.style.position = "fixed";
       selBox.style.left = "0";
@@ -86,20 +176,6 @@ export class SiteScreenComponent implements OnInit {
       document.execCommand("copy");
       document.body.removeChild(selBox);
       this.isCopied = true;
-      Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: false,
-        didOpen: toast => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        }
-      }).fire({
-        icon: "success",
-        title: "Copied to ClipBoard"
-      });
       setTimeout(() => (this.isCopied = false), 2000);
     }
   }
@@ -122,6 +198,10 @@ export class SiteScreenComponent implements OnInit {
       this.renderer.setStyle(this.iframe.nativeElement, "width", `${w}px`);
       this.renderer.setStyle(this.iframe.nativeElement, "height", `${h}px`);
     }
-    this.renderer.setStyle(this.iframe.nativeElement, "transform", `scale(${this.scale})`);
+    this.renderer.setStyle(
+      this.iframe.nativeElement,
+      "transform",
+      `scale(${this.scale})`
+    );
   }
 }

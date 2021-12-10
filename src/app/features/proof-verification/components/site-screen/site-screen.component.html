@@ -21,7 +21,9 @@
             <i class="bi bi-zoom-out"></i>
           </span>
           <span tabindex="0" data-toggle="tooltip" title="Copy to Clipboard" (click)="copyToClipboardFn()">
-            <i class="bi bi-clipboard-check" *ngIf="isCopied; else notCopied" [style.color]="'blue'"></i>
+            <ng-container *ngIf="isCopied; else notCopied">
+              <i class="bi bi-clipboard-check" [style.color]="'blue'"></i>
+            </ng-container>
             <ng-template #notCopied>
               <i class="bi bi-clipboard"></i>
             </ng-template>
@@ -34,7 +36,11 @@
       <mat-spinner color="primary" mode="indeterminate" [value]="1" [diameter]="40">
       </mat-spinner>
     </div>
-        <iframe *ngIf="pageUrl != null" #iframe [src]="pageUrl" (load)="onIframeLoadFn()" [@iframeAnimation] frameborder="0" width="100%" height="100%"></iframe>
+    <div *ngIf="isCopied" class="copy-notification float-right px-2" [@inOutAnimation]>
+      <p class="m-0">Copied</p>
+    </div>
+        <!-- <iframe *ngIf="pageUrl != null" #iframe [src]="pageUrl" (load)="onIframeLoadFn()" [@iframeAnimation] frameborder="0" width="100%" height="100%"></iframe> -->
+        <iframe #iframe (load)="onIframeLoadFn()" [@iframeAnimation] frameborder="0" width="100%" height="100%" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation"></iframe>
     </div>
   </div>
   <div id="title">
