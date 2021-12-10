@@ -6,7 +6,7 @@ import { ErrorMessage } from '../../../shared/models/error-message.model';
 import * as dracula from 'graphdracula';
 import { NullAstVisitor } from '@angular/compiler';
 import dagreD3 from 'dagre-d3';
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-poc',
   templateUrl: './proof-poc.component.html',
@@ -30,7 +30,7 @@ export class ProofPocComponent implements OnInit {
   mode = "indeterminate";
   value = 10;
 
-  constructor(private route: ActivatedRoute, private pocDataService: PocDataService) { }
+  constructor(private route: ActivatedRoute, private pocDataService: PocDataService,  private _location: Location) { }
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
@@ -38,6 +38,10 @@ export class ProofPocComponent implements OnInit {
     this.getProofTree(this.txnId);
     // this.renderGraph(this.getData().Nodes);
   }
+
+  goBack():void{
+    this._location.back();
+    }
 
   getProofData(id: string) {
     this.pocDataService.getPocProofData(id).subscribe((data) => {
