@@ -149,21 +149,23 @@
         </div>
         <div class="col-sm-12 col-md-9 col-lg-9 align-item-center" style=" overflow-y: auto; max-height:150px;" >
           <div class="row align-self-center " *ngIf="!isObject(item.value)">
-            <div class="col-sm-12 col-md-8 col-lg-9 align-self-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  >
+            <div class="col-sm-12 col-md-8 col-lg-9 align-self-center" style=" font-size: 14px;  overflow-wrap:break-word;"  >
               <p>  {{item.value }}</p>
             </div>
           </div>
           <div *ngIf="isObject(item.value)">
           <div class="row align-self-center"  *ngFor="let subItem of item.value  | keyvalue" style="overflow-y: auto; "> 
-            <div class="col-sm-12 col-md-4 col-lg-3 align-item-center" style=" font-size: 14px; font-weight:420; overflow-wrap:normal;"
+            
+            <div class="col-sm-12 col-md-6 col-lg-6 align-item-center" style=" font-size: 14px; font-weight:420; overflow-wrap:break-word; "
              *ngIf="item.key != 'photos'">
               <p>{{subItem.key}} :</p> 
             </div>
-            <div class="col-sm-12 col-md-8 col-lg-9 align-item-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  >
+            <div class="col-sm-12 col-md-6 col-lg-6 align-item-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  *ngIf="item.key != 'photos'" >
               <p>  {{subItem.value }}</p>
             </div>
           </div>
         </div>
+        
         </div>
       </div>
       <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.Txnhash'>
