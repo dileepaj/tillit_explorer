@@ -42,7 +42,7 @@
           <div class="row ">
             <div class="col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-3 ">
               <h5 class="card-title font-weight-bold" *ngIf="transactionData.productName">{{transactionData.productName}}</h5>
-              <h5 class="card-title" *ngIf="transactionData.assetCode">{{transactionData.assetCode}}</h5>
+              <h5 class="card-title font-weight-bold" *ngIf="transactionData.assetCode">{{transactionData.assetCode}}</h5>
             </div>
             <div class="col-xs-12 col-sm-7 col-md-7 col-lg-9 col-xl-9" style="font-weight: 600;color:#818E94;"  *ngFor="let proof of transactionData.availableProofs">           
                 <span class="pl-3 pr-3 pt-2 pb-2 badge badge-pill badge-primary"
