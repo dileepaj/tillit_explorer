@@ -1,14 +1,17 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
 :host {
-  width: 96%;
+  width: 100%;
   /* flex-grow: 1; */
   flex: none;
-  margin-right: 4%;
   min-width: auto;
   overflow: hidden;
   resize: horizontal;
   position: relative;
+}
+
+:host:not(:first-child) {
+  margin-left: 3%;
 }
 
 .copy-notification {
@@ -141,7 +144,7 @@
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
   :host {
-    width: 46%;
+    /* width: 46%; */
   }
 }
 

@@ -8,14 +8,96 @@
       </div>
     </div>
   </div>
-  
-  <div id="proofContainer" style="height: 100vh; display: flex; flex-direction: column; justify-content: center;">
-      <!-- Global Information -->
-      <div id="globalInformation"></div>
-      <!-- Verification screen -->
-      <div id="verificationScreen">
+
+  <div
+    id="proofContainer"
+    style="height: 100%; display: flex; flex-direction: column; justify-content: center;"
+  >
+    <!-- Global Information -->
+    <div
+      id="globalInformation"
+      [ngStyle]="{ height: gsHeightExpand ? '96vh' : '32vh' }"
+    >
+      <div class="d-flex justify-content-between">
+        <div><h5>Global Storage</h5></div>
+        <div (click)="resizeGlobalScreen()" style="cursor: pointer;">
+          <svg
+            *ngIf="vsHeightExpand"
+            width="20px"
+            height="20px"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.1 14.1L1 17l2 2 2.9-3.1L8 18v-6H2l2.1 2.1zM19 3l-2-2-2.9 3.1L12 2v6h6l-2.1-2.1L19 3z"
+            />
+          </svg>
+          <svg
+            *ngIf="!vsHeightExpand"
+            width="16px"
+            height="16px"
+            viewBox="0 0 16 16"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <rect width="16" height="16" id="icon-bound" fill="none" />
+            <path
+              d="M1.986,12.6L6.586,8L8,9.414L3.414,14L5.986,14L5.986,16L1.986,16L-0.014,16L-0.014,10L1.986,10L1.986,12.6ZM12.586,2L10.014,2L10.014,0L16.014,0L16.014,6L14.014,6L14.014,3.4L9.414,8L8,6.586L12.586,2Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div id="frames">
+        <ng-template #globalScreenDirective></ng-template>
+      </div>
+    </div>
+    <!-- Verification screen -->
+    <div
+      id="verificationScreen"
+      [ngStyle]="{ height: vsHeightExpand ? '96vh' : '64vh' }"
+    >
+      <div class="d-flex justify-content-between">
+        <div>
+          <h5>
+            Verification Demo
+            <span style="font-size: 14px; color: rgb(161, 159, 159);"
+              >(1/4)</span
+            >
+          </h5>
+        </div>
+        <div (click)="resizeVerifyScreen()" style="cursor: pointer;">
+          <svg
+            *ngIf="vsHeightExpand"
+            width="20px"
+            height="20px"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.1 14.1L1 17l2 2 2.9-3.1L8 18v-6H2l2.1 2.1zM19 3l-2-2-2.9 3.1L12 2v6h6l-2.1-2.1L19 3z"
+            />
+          </svg>
+          <svg
+            *ngIf="!vsHeightExpand"
+            width="16px"
+            height="16px"
+            viewBox="0 0 16 16"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <rect width="16" height="16" id="icon-bound" fill="none" />
+            <path
+              d="M1.986,12.6L6.586,8L8,9.414L3.414,14L5.986,14L5.986,16L1.986,16L-0.014,16L-0.014,10L1.986,10L1.986,12.6ZM12.586,2L10.014,2L10.014,0L16.014,0L16.014,6L14.014,6L14.014,3.4L9.414,8L8,6.586L12.586,2Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div id="frames">
         <ng-template #ProofDemoDirective></ng-template>
       </div>
+    </div>
   </div>
   <!-- <div class="container" *ngIf="loadingComplete && errorOccurred">
     <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle" [errorMessage]="error.errorMessage"
