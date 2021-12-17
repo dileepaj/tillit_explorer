@@ -13,51 +13,39 @@ import { encode, decode } from 'js-base64';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
   results: any = [];
   loadingComplete: boolean = false;
   errorOccurred: boolean = false;
   otherResultsAvailable: boolean = false;
-
   tdpObsCount: number = 0;
   tdpObsResCount: number = 0;
   tdpObsResolved: boolean = true;
   tdpErrorCount: number = 0;
-
   error: ErrorMessage;
-  
   page:number = 1;
   perPage:number = 10;
   NoPage:number = 3;
-
   // Loader Variables
-
   color = "primary";
   mode = "indeterminate";
   value = 20;
-
-  constructor(private transactionDataService: TransactionDataService) {
-
-  }
-
+  constructor(private transactionDataService: TransactionDataService) {}
   ngOnInit() {
     this.getRecentTransactions();
   }
-
   onChangePage(event:number){
     this.page = event
     this.results = []
     this.loadingComplete = false;
     this.getRecentTransactions();
   }
-
   getRecentTransactions() {
     this.transactionDataService.getRecentTransactions(this.page, this.perPage, this.NoPage).subscribe((transactions) => {
       // this.loadingComplete = true;
+      console.log("Blockchain: ", !!transactions);
+      if(!!transactions){
       transactions.forEach(element => {
-       // console.log("Blockchain: ", element);
-
-
+        //console.log("Blockchain: ", element);
         if (element.TxnType == "tdp") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -89,18 +77,13 @@ export class HomeComponent implements OnInit {
           this.otherResultsAvailable = true;
 
         } 
-
-       
         else if (element.TxnType == "genesis") {
-
           let index = element.AvailableProof.findIndex((proof) => {
             return proof == "poc";
           });
-
           if (index != -1) {
             element.AvailableProof.splice(index, 1);
           }
-
           let txnItem = {
             status: element.Status,
             txnHash: element.Txnhash,
@@ -117,15 +100,10 @@ export class HomeComponent implements OnInit {
             productId: "Not Available",
             productName: element.ProductName
           }
-
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-
-        } 
-       
-        
+        }      
         else if (element.TxnType == "coc") {
-
           let index = element.AvailableProof.findIndex((proof) => {
             return proof == "poc";
           });
@@ -221,8 +199,16 @@ export class HomeComponent implements OnInit {
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
         }
-      });
-
+      })}else{ 
+        this.loadingComplete = true;
+        this.errorOccurred = true;
+        this.error = {
+          errorTitle: "No matching results found",
+          errorMessage: "There is no data associated with the given transaction hashes",
+          errorMessageSecondary: "Please try again later",
+          errorType: "empty"
+        }
+      }
       if (this.otherResultsAvailable) {
         this.loadingComplete = true;
       } else if (!this.otherResultsAvailable && this.error && this.tdpErrorCount == this.tdpObsCount) {
@@ -233,29 +219,33 @@ export class HomeComponent implements OnInit {
       } else {
         this.loadingComplete = true;
       }
-
     }, (err) => {
-   //   console.log("Blockchain Error: ", err);
+    // console.log("Blockchain Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
-
-      if (err.status === 400) {
+      if (err.error.code === 400) {
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
-          errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
+          errorMessage: !!err.error.message?err.error.message:"There is no data associated with the given ID. Check if the entered ID is correct and try again.",
+          errorMessageSecondary: "Please try again later",
+          errorType: "empty"
+        }
+      }
+      else if(err.error.code === 500){
+        this.error = {
+          errorTitle: "Internal server error",
+          errorMessage:  !!err.error.message?err.error.message:"There is no data associated with the given ID. Check if the entered ID is correct and try again",
+          errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       } else {
         this.error = {
           errorTitle: "No Transactions",
           errorMessage: "Currently there aren't any transactions to be shown. Please try again later.",
-          errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
+          errorMessageSecondary: err.message,
           errorType: "empty"
         }
       }
-
     });
   }
-
 }

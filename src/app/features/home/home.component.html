@@ -20,10 +20,12 @@
                 <pagination-controls class="text-center" (pageChange) = "onChangePage($event)" autoHide = "true" ></pagination-controls>
             </div>
         </div>
-        <div class="row content-area" *ngIf="loadingComplete && errorOccurred">
+        <div class="row content-area text-center" *ngIf="loadingComplete && errorOccurred">
+            <div class="col-12">
             <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"
                 [errorMessage]="error.errorMessage" [errorMessageSecondary]="error.errorMessageSecondary">
             </app-error-id>
+        </div>
         </div>
     </div>
 </div>
