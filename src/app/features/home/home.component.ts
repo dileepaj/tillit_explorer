@@ -204,7 +204,7 @@ export class HomeComponent implements OnInit {
         this.errorOccurred = true;
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: "There is no data associated with the given transaction hashes",
+          errorMessage: "Transaction could not be retrieved from Stellar Network",
           errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }

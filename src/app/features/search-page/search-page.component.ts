@@ -233,8 +233,8 @@ export class SearchPageComponent implements OnInit {
         this.errorOccurred = true;
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
-          errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
+          errorMessage: "Transaction could not be retrieved from Stellar Network",
+          errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       }
