@@ -18,6 +18,7 @@ const routes: Routes = [
   {path: 'pococ/:txnhash', component: ProofPococComponent},
   {path: 'poc/:txnhash', component: ProofPocComponent},
   {path: 'txn/:txnId', component: TransactionDetailsComponent},
+  {path: 'proof-verification/:txnhash', component: VerificationScreenComponent},
   {path: '**', component: InvalidLinkComponent}
 
   // { path: '', component: MaintenanceComponent },
