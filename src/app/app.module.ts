@@ -29,6 +29,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MaintenanceComponent } from './features/maintenance/maintenance.component';
 import { SiteScreenComponent } from './features/proof-verification/components/site-screen/site-screen.component';
 import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
+import { GlobalStorageComponent } from './features/proof-verification/components/global-storage/global-storage.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { VerificationScreenComponent } from './features/proof-verification/verif
     ProofPocComponent,
     MaintenanceComponent,
     SiteScreenComponent,
-    VerificationScreenComponent
+    VerificationScreenComponent,
+    GlobalStorageComponent
   ],
   imports: [
     BrowserModule,
