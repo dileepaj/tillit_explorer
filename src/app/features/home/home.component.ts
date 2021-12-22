@@ -234,7 +234,7 @@ export class HomeComponent implements OnInit {
       else if(err.error.code === 500){
         this.error = {
           errorTitle: "Internal server error",
-          errorMessage:  !!err.error.message?err.error.message:"There is no data associated with the given ID. Check if the entered ID is correct and try again",
+          errorMessage:  "We can not find the requested records in Stellar blockchain",
           errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
