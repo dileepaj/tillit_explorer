@@ -7,7 +7,10 @@
   <div class="container mt-5" *ngIf="loadingComplete && !errorOccurred">
     <div class="row mb-3">
       <div class="col-12">
+        <div class="row">
+        <div class="mr-3 ml-3 "><span  (click)="goBack()">   <i class="fas fa-angle-left clickableAwesomeFont" style="font-size: 30px;"></i></span></div>
         <h4>Transaction Details</h4>
+      </div>
       </div>
     </div>
 
@@ -26,18 +29,15 @@
         </div>
       </div>
     </div>
-
+    <div class="col-12 col-md-12 pb-3 ml-0 pt-md-4 pl-md-4 pr-md-4" style="background-color: white;">
     <div class="col-xs-12 col-md-12 mt-3 mt-md-4">
-      <div class="col-xs-12 col-md-12 text-left pt-2 pb-1"
+      <div class="col-xs-12 col-md-12 text-left  pb-1"
         style="background-color: white; border-bottom: 0.5px solid #dee2e6;">
-        <h2 style="font-weight: 500;color: #2D2F39;font-size: 28px;">Transaction Data</h2>
-      </div>
-      <div class="col-12 col-md-12 pb-3 ml-0 pt-md-4 pl-md-4 pr-md-4" style="background-color: white;">
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.txnHash">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Transaction Hash
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.txnHash}}
           </div>
         </div>
@@ -46,7 +46,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Transaction Type
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.transferType}}
           </div>
         </div>
@@ -55,7 +55,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Available Proofs
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;">
             <div class="text-md-left text-center pl-md-1 mr-2" style="font-weight: 600;color:#818E94; float: left;"
               *ngFor="let proof of txnItem.availableProofs">
               <a href="#" onclick="return false;"><span (click)="navigateToProof(proof)"
@@ -71,7 +71,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             TDP ID
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.tdpId}}
           </div>
         </div>
@@ -80,7 +80,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Identifier
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.identifier}}
           </div>
         </div>
@@ -89,7 +89,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Product ID
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.productId}}
           </div>
         </div>
@@ -98,7 +98,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Product Name
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.productName}}
           </div>
         </div>
@@ -107,8 +107,26 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Stage ID
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.stageId}}
+          </div>
+        </div>
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.blockchain">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Blockchain
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.blockchain}}
+          </div>
+        </div>
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.ledger">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Ledger
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.ledger}}
           </div>
         </div>
 
@@ -116,17 +134,8 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Status
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.status}}
-          </div>
-        </div>
-
-        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.block">
-          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
-            Block
-          </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
-            {{txnItem.block}}
           </div>
         </div>
 
@@ -134,7 +143,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Timestamp
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.timestamp | date: 'medium'}}
           </div>
         </div>
@@ -143,7 +152,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             From
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.sender}}
           </div>
         </div>
@@ -152,7 +161,7 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             To
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.receiver}}
           </div>
         </div>
@@ -166,11 +175,11 @@
           </div>
         </div>
 
-        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.sequence">
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.sequence.toString">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Sequence
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.sequence}}
           </div>
         </div>
@@ -179,25 +188,19 @@
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Input Data
           </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.inputData}}
           </div>
         </div>
-
-        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.blockchain">
-          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
-            Blockchain
-          </div>
-          <div class="col-12 col-md-9 " style="overflow: hidden; text-overflow: ellipsis;">
-            {{txnItem.blockchain}}
-          </div>
-        </div>
+      </div>
       </div>
     </div>
     <div class="col-xs-12 col-md-12 center pt-5" style="color: #6C757D;">
       View this Transaction in Stellar<br>
-      <a href="{{txnItem.txnUrl}}" target="_blank"><button class="mt-2 btn btn-primary btn-main" type="button"
-          style="width: fit-content;background-color: #3182BD;border:none">View Transaction</button></a>
+      <a href="{{txnItem.labTxnUrl}}" target="_blank"><button class="mt-2 mb-2 mr-2 ml-2 btn btn-primary btn-main btnFixSize" type="button"
+        style="width: fit-content;background-color: #3182BD;border:none">View on Stellar Lab</button></a>
+        <a href="{{txnItem.txnUrl}}" target="_blank"><button class="mt-2 mb-2 mr-2 ml-2 btn btn-primary btn-main btnFixSize" type="button"
+          style="width: fit-content;background-color: #3182BD;border:none">JSON View</button></a>
     </div>
 
   </div>

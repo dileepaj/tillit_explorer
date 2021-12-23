@@ -8,7 +8,7 @@ import { ErrorMessage } from '../../../shared/models/error-message.model';
 import { ClipboardService } from 'ngx-clipboard';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { encode, decode } from 'js-base64';
-
+import {Location} from '@angular/common';
 
 @Component({
   templateUrl: './proof-poe.component.html',
@@ -58,17 +58,25 @@ export class ProofPoeComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
 
-  constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService, private _location: Location) { }
 
   ngOnInit() {
     this.tdpId = this.route.snapshot.paramMap.get('txnhash');
     this.getProofData(this.tdpId);
   }
+ 
+  goBack():void{
+  this._location.back();
+  }
+
+  isObject(val: any): boolean { 
+    return typeof val === 'object'; 
+  }
 
   getProofData(tdpId: string): void {
     this.poeDataService.getHashValues(tdpId).subscribe((data) => {
       this.transactionData = data[0];
-      console.log("PoE Hash Data: ", this.transactionData);
+     // console.log("PoE Hash Data: ", this.transactionData);
 
       if (this.transactionData.TxnType != "tdp") {
         this.errorOccurred = true;
@@ -85,9 +93,9 @@ export class ProofPoeComponent implements OnInit {
         this.hashesMatch = true;
       }
 
-      console.log("Hashes: ", this.hashesMatch);
+    //  console.log("Hashes: ", this.hashesMatch);
       this.poeDataService.getTransactionData(tdpId).subscribe((data) => {
-        console.log("Base64: ", data);
+     //   console.log("Base64: ", data);
         this.tracifiedCoreB64Data = data.data;
         this.tracifiedCoreData = JSON.parse(decode(this.tracifiedCoreB64Data));
 
@@ -99,10 +107,10 @@ export class ProofPoeComponent implements OnInit {
         //   this.error.errorType = "empty";
         // }
         this.loadingComplete = true;
-
-        console.log("Backend Data: ", this.tracifiedCoreData);
+      //console.log(`object`,this.tracifiedCoreData)
+      //  console.log("Backend Data: ", this.tracifiedCoreData);
       }, (err) => {
-        console.log("Error Transaction Data: ", err);
+       // console.log("Error Transaction Data: ", err);
         this.loadingComplete = true;
         this.errorOccurred = true;
         if (err.status === 400) {
@@ -122,7 +130,7 @@ export class ProofPoeComponent implements OnInit {
         }
       });
     }, (err) => {
-      console.log("Error Hash Value: ", err);
+    //  console.log("Error Hash Value: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
       if (err.status === 400) {

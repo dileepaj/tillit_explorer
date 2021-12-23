@@ -35,25 +35,49 @@ export class SearchPageComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
 
+  page:number = 1;
+  perPage:number = 10;
+  NoItems:number;
+  
+
   constructor(private route: ActivatedRoute, private transactionDataService: TransactionDataService) { }
 
   ngOnInit() {
-
     this.route.params.subscribe((data) => {
       this.results = [];
       this.loadingComplete = false;
       this.searchId = data.id;
       this.search(this.searchId);
+      if ( this.page != 1){
+        this.reloadCurrentPage()
+      }
     });
   }
+  
+  onChangePage(event:number){
+    this.route.params.subscribe((data) => {
+     this.page = event;
+     this.results = [];
+     this.loadingComplete = false;
+     this.searchId = data.id;
+     this.search(this.searchId);
+     if (this.page == 1) {
+      this.reloadCurrentPage()
+    }
+  });
+  }
+
+  reloadCurrentPage() {
+    window.location.reload();
+   }
 
   search(id: string): void {
-    this.transactionDataService.getTransactions(id).subscribe((transactions) => {
-      console.log("Transactions: ", transactions);
+    this.transactionDataService.getTransactions(id,this.page,this.perPage).subscribe((transactions) => {
+   //   console.log("Transactions: ", transactions);
       this.errorOccurred = false;
       transactions.forEach(element => {
-        console.log("Blockchain: ", element);
-
+      // console.log("Blockchain: ", element);
+        this.NoItems = element.Itemcount 
        
         if (element.TxnType == "tdp") {
 
@@ -78,9 +102,9 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
 
-            productId: "Not Sending",
-            productName: "Not Sending",
-            blockchainName: "Not Sending"
+            productId: element.ProductId,
+            productName: element.ProductName,
+            blockchainName: "Stellar"
           }
 
           this.results.push(txnItem);
@@ -111,9 +135,9 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
 
-            productId: "Not Sending",
-            productName: "Not Sending",
-            blockchainName: "Not Sending"
+            productId: element.ProductId,
+            productName: element.ProductName,
+            blockchainName: "Stellar"
           }
 
           this.results.push(txnItem);
@@ -143,19 +167,19 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
 
-            assetCode: "Not Sending",
+            assetCode: element.AssetCode,
             quantity: 0,
-
-            inputData: "Not Sending",
-            blockchain: "Not Sending",
-            cocStatus: "Not Sending",
+            productName: element.ProductName,
+            inputData: element.inputData,
+            blockchainName: "Stellar",
+            cocStatus: element.cocStatus,
             senderSigned: false,
             receiverSigned: false
           }
 
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-          console.log("ELSE: ", txnItem);
+      //   console.log("ELSE: ", txnItem);
         } else if (element.TxnType == "splitChild") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -177,9 +201,9 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
-            productId: "Not Available",
-            productName: "Not Available",
+            blockchainName: "Stellar",
+            productId: element.ProductId,
+            productName: element.ProductName,
             identifier: "Not Available"
           }
           this.results.push(txnItem);
@@ -205,15 +229,15 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
-            productId: "Not Available",
-            productName: "Not Available",
+            blockchainName: "Stellar",
+            productId: element.ProductId,
+            productName: element.ProductName,
             identifier: "Not Available"
           }
 
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-          console.log("ELSE: ", txnItem);
+       //   console.log("ELSE: ", txnItem);
         }
       });
 
@@ -229,7 +253,7 @@ export class SearchPageComponent implements OnInit {
       }
 
     }, (err) => {
-      console.log("Blockchain Error: ", err);
+     // console.log("Blockchain Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
       if (err.status === 400) {

@@ -6,18 +6,22 @@
                         <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
                         </mat-spinner>
                 </div>
-                <div *ngIf="loadingComplete">
+                <div *ngIf="loadingComplete" >
                         <div class="row content-area" *ngIf="loadingComplete && !errorOccurred">
                                 <div class="container mt-3">
                                         <div class="row mb-3">
-                                                <div class="col-12">
-                                                        <p class="lead search-text overflow-ellipsis">{{results.length}}
-                                                                result{{results.length == 1 ? '' : 's'}} for
+                                                <div class="col-12 ml-3">
+                                                        <p class="lead search-text overflow-ellipsis">{{NoItems}}
+                                                                result{{NoItems == 1 ? '' : 's'}} for
                                                                 {{searchId}}</p>
                                                 </div>
                                         </div>
                                 </div>
-                                <app-card *ngFor="let item of results" [transactionData]="item"></app-card>
+                                <div class="col-12 mt-0" >
+                               
+                                <app-card class="col-12"  *ngFor="let item of results | paginate: {itemsPerPage:perPage, currentPage:page, totalItems:NoItems }" [transactionData]="item"></app-card>
+                                <pagination-controls class="text-center" (pageChange) = "onChangePage($event)" (pageBoundsCorrection) = "onChangePage($event)" autoHide = "true" responsive = "true" ></pagination-controls>
+                                </div>
                         </div>
                         <div class="row content-area" *ngIf="loadingComplete && errorOccurred">
                                 <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"

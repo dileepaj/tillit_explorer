@@ -84,3 +84,30 @@
     box-shadow: inset 0px 0px 0px 30px #007bff;
   }
 }
+
+@media screen and (max-width: 600px) {
+.trasactionDataMobileResponsive{
+  white-space: initial;
+}
+}
+
+.trasactionDataMobileResponsive{
+  white-space: initial;
+  word-wrap: break-word;
+  align-items: center!important;
+
+}
+
+.btnFixSize{
+  width: 180px !important;
+}
+
+.clickableAwesomeFont{
+  cursor: pointer;
+  width: 30px;
+  height: 40px;
+}
+
+.clickableAwesomeFont:hover{
+  color:blue !important;
+}

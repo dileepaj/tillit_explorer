@@ -1,2 +1,76 @@
 /* This file contains the styling of the item cards */
 
+@media screen and (max-width: 768px) {
+    .contentPadding{     
+       padding-top: 20px;
+    }
+    .buttonPadding{
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+}
+
+.imageCardCenter{
+    justify-content: center;
+}
+
+.contentMargin{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.btnFixSize{
+    width: 150px !important;
+    margin-right: 14px;
+}
+
+.cardcontent{
+    font-size: 15px;
+    font-weight: 460;
+}
+
+.cardMargin{
+  
+    margin-top:20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 20px;
+}
+
+.fieldStyle{
+    font-weight: 600; 
+    font-size:16px;
+}
+
+@media screen and (max-width: 1200px) {
+    .cardMargin{
+        margin-top:20px;
+        margin-left: 25px;
+        margin-right: 25px;
+        margin-bottom: 20px;
+    }
+    .btnFixSize{
+      margin-right: 14px;
+       
+    }
+    .cardcontent{
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .fieldStyle{
+        font-weight: 600; 
+        font-size:15px;
+    }
+
+    .cardcontent{
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 575px) {
+   .viewButton{
+        justify-content: center!important;
+   }
+}

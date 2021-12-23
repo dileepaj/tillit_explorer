@@ -1,26 +1,42 @@
 <app-header></app-header>
-
 <div class="container">
-  <div class="progress-loader-container mt-5" *ngIf="!loadingComplete">
-    <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
-    </mat-spinner>
-  </div>
-
   <div class="container mt-5">
     <div class="row mb-3">
       <div class="col-12">
-        <h4>PROOF OF CHANGE OF CUSTODY (POC)</h4>
-        <p>Proof that a given data packet existed in the blockchain</p>
+        <div class="row">
+          <div class="mr-1 ml-3 "><span  (click)="goBack()">   <i class="fas fa-angle-left clickableAwesomeFont" style="font-size: 30px;"></i></span></div>
+       <div>
+          <h4>PROOF OF CONTINUITY (POC)</h4>
+          <p>Prove the history of a given data packet through blockchain</p>
+      </div>
+        </div>
+      </div>
+      <div class="col-12 mt-2 ml-3">
+        <ul class="p-2 ml-4">
+          <li class="text-muted m-0" style="font-size: 14px;">Click on a <b>node</b> to view and verify it's transaction information.</li>
+          <li class="text-muted" style="font-size: 14px;">Click on a <b>edge</b> to verify it's associated backlink.</li>
+        </ul>
       </div>
     </div>
-    <div class="col-xs-12 col-md-12 text-left pt-2 pb-1"
+    <div class="mt-5 d-flex justify-content-center align-items-center" *ngIf="!loadingComplete" style="height: 300px;">
+      <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
+      </mat-spinner>
+    </div>
+    <div [style.opacity]="loadingComplete ? '1' : '0'" [style.height.px]="loadingComplete ? '460' : '0'" id="body" style="width: 100% !important;  border:2px solid #000;  overflow: scroll !important;" class="px-5 py-4 bg-white d-flex align-items-center" >
+      <div [attr.width.px]="pocTreeWidth" [attr.height.px]="pocTreeHeight">
+        <svg [attr.width.px]="pocTreeWidth" [attr.height.px]="pocTreeHeight">
+          <g id="pocTree"/>
+        </svg>
+      </div>
+    </div>
+    <!-- <div class="col-xs-12 col-md-12 text-left pt-2 pb-1 mt-5"
       style="background-color: white; border-bottom: 0.5px solid #dee2e6;">
-      <h2 style="font-weight: 500;color: #2D2F39;font-size: 28px;">Blockchain Proofs</h2>
+      <h2 style="font-weight: 500;color: #2D2F39;font-size: 28px;">Blockchain Information</h2>
     </div>
     <div class="col-12 pl-0 pr-0" style="background-color: white;">
       <p class="pt-3 pl-3">Click each of the nodes to view the transaction data</p>
       <div style="overflow: scroll;" class="chart"></div>
-    </div>
+    </div> -->
     <div *ngIf="selectedItem">
       <div class="col-xs-12 col-md-12 text-left mt-4 pt-2 pb-1"
         style="background-color: white; border-bottom: 0.5px solid #dee2e6;">

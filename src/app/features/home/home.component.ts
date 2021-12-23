@@ -25,7 +25,10 @@ export class HomeComponent implements OnInit {
   tdpErrorCount: number = 0;
 
   error: ErrorMessage;
-
+  
+  page:number = 1;
+  perPage:number = 10;
+  NoPage:number = 3;
 
   // Loader Variables
 
@@ -41,11 +44,18 @@ export class HomeComponent implements OnInit {
     this.getRecentTransactions();
   }
 
+  onChangePage(event:number){
+    this.page = event
+    this.results = []
+    this.loadingComplete = false;
+    this.getRecentTransactions();
+  }
+
   getRecentTransactions() {
-    this.transactionDataService.getRecentTransactions(10).subscribe((transactions) => {
+    this.transactionDataService.getRecentTransactions(this.page, this.perPage, this.NoPage).subscribe((transactions) => {
       // this.loadingComplete = true;
       transactions.forEach(element => {
-        console.log("Blockchain: ", element);
+       // console.log("Blockchain: ", element);
 
 
         if (element.TxnType == "tdp") {
@@ -70,7 +80,7 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            //blockchainName: "Not Available",
+            BlockchainName: "Stellar",
             productId: "Not Available",
             productName: element.ProductName
           }
@@ -103,7 +113,7 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
+            BlockchainName: "Stellar",
             productId: "Not Available",
             productName: element.ProductName
           }
@@ -145,7 +155,7 @@ export class HomeComponent implements OnInit {
             receiverSigned: false,
             cocStatus: "Not Available",
             inputData: "Not Available",
-            blockchain: "Not Available"
+            BlockchainName: "Stellar",
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
@@ -172,7 +182,7 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
+            BlockchainName: "Stellar",
             productId: "Product ID Not Available",
             productName: element.ProductName,
             identifier: "Not Available"
@@ -203,7 +213,7 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Not Available",
+            BlockchainName: "Stellar",
             productId: "Product ID Not Available",
             productName: element.ProductName,
             identifier: "Not Available"
@@ -225,7 +235,7 @@ export class HomeComponent implements OnInit {
       }
 
     }, (err) => {
-      console.log("Blockchain Error: ", err);
+   //   console.log("Blockchain Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
 

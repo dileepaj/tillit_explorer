@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PococDataService } from '../../../services/pococ-data.service';
 import { ITransactionCoc } from 'src/app/shared/models/transaction-coc.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
-
+import {Location} from '@angular/common';
 @Component({
   templateUrl: './proof-pococ.component.html',
   styleUrls: ['./proof-pococ.component.css']
@@ -23,17 +23,21 @@ export class ProofPococComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
 
-  constructor(private route: ActivatedRoute, private pococDataService: PococDataService) { }
+  constructor(private route: ActivatedRoute, private pococDataService: PococDataService, private _location: Location) { }
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
     this.getProofDataFromGateway(this.txnId);
   }
 
+  goBack():void{
+    this._location.back();
+  } 
+
   getProofDataFromGateway(txnId: string) {
     this.pococDataService.getPococProofData(txnId).subscribe((data) => {
       this.loadingComplete = true;
-      console.log("PoCoC Data: ", data);
+   //   console.log("PoCoC Data: ", data);
       let element = data[0];
 
       if (element.TxnType != "coc") {
@@ -51,6 +55,7 @@ export class ProofPococComponent implements OnInit {
         proofStatus: element.Status,
         txnHash: element.Txnhash,
         txnUrl: element.Url,
+        txnLabUrl:element.LabUrl,
         identifier: element.Identifier,
         blockchain: element.BlockchainName,
         timestamp: element.Timestamp,
@@ -70,7 +75,7 @@ export class ProofPococComponent implements OnInit {
       }
 
     }, (err) => {
-      console.log("PoCoC Data Error: ", err);
+     // console.log("PoCoC Data Error: ", err);
 
       this.loadingComplete = true;
 
