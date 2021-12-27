@@ -1,63 +1,68 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactionDataService } from '../../services/transaction-data.service';
-import { ITransactionTDP } from '../../shared/models/transaction-tdp.model';
-import { IBase64 } from '../../shared/models/base64.model';
-import { ITransactionCoc } from '../../shared/models/transaction-coc.model';
-import { ITransactionGenesis } from '../../shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
-import { encode, decode } from 'js-base64';
-
+import { Observable, Subscription, timer } from 'rxjs';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
 export class HomeComponent implements OnInit {
 
   results: any = [];
   loadingComplete: boolean = false;
   errorOccurred: boolean = false;
   otherResultsAvailable: boolean = false;
-
   tdpObsCount: number = 0;
   tdpObsResCount: number = 0;
   tdpObsResolved: boolean = true;
   tdpErrorCount: number = 0;
-
   error: ErrorMessage;
-  
   page:number = 1;
   perPage:number = 10;
   NoPage:number = 3;
-
-  // Loader Variables
-
   color = "primary";
   mode = "indeterminate";
   value = 20;
+  totalRecords:number=0;
+  lastTrasactionSequenceNo:number=0;
+  subscription: Subscription;
 
-  constructor(private transactionDataService: TransactionDataService) {
-
+  constructor(private transactionDataService: TransactionDataService) { 
   }
-
   ngOnInit() {
-    this.getRecentTransactions();
+    sessionStorage.clear();
+    this.getRecentTransactionsCount()
+    this.addResultToSessionStorage(this.page);
   }
 
   onChangePage(event:number){
     this.page = event
-    this.results = []
-    this.loadingComplete = false;
-    this.getRecentTransactions();
+    this.addResultToSessionStorage(event)
   }
 
-  getRecentTransactions() {
-    this.transactionDataService.getRecentTransactions(this.page, this.perPage, this.NoPage).subscribe((transactions) => {
+  addResultToSessionStorage(event:number){
+    this.results=[];
+    if(sessionStorage.getItem(`results${event}`)){
+    this.results=JSON.parse(sessionStorage.getItem(`results${event}`))
+    this.loadingComplete = true;  
+    }else{
+    this.loadingComplete = false;
+    this.getRecentTransactions(event);
+    }
+  }
+
+  getRecentTransactionsCount(){
+    this.transactionDataService.getTransactionsCount().subscribe((count)=>{
+    this.totalRecords=count||0
+    })
+  }
+  getRecentTransactions(event:number) {
+    this.transactionDataService.getRecentTransactions(this.page,this.perPage, this.NoPage).subscribe((transactions) => {
       // this.loadingComplete = true;
       transactions.forEach(element => {
        // console.log("Blockchain: ", element);
-
-
         if (element.TxnType == "tdp") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -87,10 +92,9 @@ export class HomeComponent implements OnInit {
 
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-
+          // this.addResult(txnItem);
         } 
-
-       
+    
         else if (element.TxnType == "genesis") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -120,7 +124,7 @@ export class HomeComponent implements OnInit {
 
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-
+          // this.addResult(txnItem);
         } 
        
         
@@ -159,7 +163,7 @@ export class HomeComponent implements OnInit {
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-
+          // this.addResult(txnItem);
         
         } else if (element.TxnType == "splitChild") {
 
@@ -189,6 +193,7 @@ export class HomeComponent implements OnInit {
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
+          // this.addResult(txnItem);
         } 
         
   
@@ -220,8 +225,11 @@ export class HomeComponent implements OnInit {
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
+          // this.addResult(txnItem);
         }
       });
+
+      sessionStorage.setItem(`results${event}`,JSON.stringify(this.results))
 
       if (this.otherResultsAvailable) {
         this.loadingComplete = true;
@@ -233,6 +241,7 @@ export class HomeComponent implements OnInit {
       } else {
         this.loadingComplete = true;
       }
+    
 
     }, (err) => {
    //   console.log("Blockchain Error: ", err);

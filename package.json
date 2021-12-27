@@ -41,6 +41,7 @@
     "ngx-clipboard": "^12.3.0",
     "ngx-owl-carousel-o": "^2.0.3",
     "ngx-pagination": "^5.1.1",
+    "ngx-skeleton-loader": "^4.0.0",
     "raphael": "^2.3.0",
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.5.3",

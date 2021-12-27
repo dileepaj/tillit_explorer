@@ -30,6 +30,7 @@ import { MaintenanceComponent } from './features/maintenance/maintenance.compone
 import { SiteScreenComponent } from './features/proof-verification/components/site-screen/site-screen.component';
 import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
 import { GlobalStorageComponent } from './features/proof-verification/components/global-storage/global-storage.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { GlobalStorageComponent } from './features/proof-verification/components
     ClipboardModule,
     CarouselModule,
     NgxPaginationModule,
+    NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' }),
   ],
   entryComponents: [SiteScreenComponent],
   bootstrap: [AppComponent]
