@@ -226,7 +226,7 @@ export class HomeComponent implements OnInit {
       if (err.error.code === 400) {
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: !!err.error.message?err.error.message:"There is no data associated with the given ID. Check if the entered ID is correct and try again.",
+          errorMessage:  "We can not find the requested records in Stellar blockchain",
           errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
@@ -240,9 +240,9 @@ export class HomeComponent implements OnInit {
         }
       } else {
         this.error = {
-          errorTitle: "No Transactions",
-          errorMessage: "Currently there aren't any transactions to be shown. Please try again later.",
-          errorMessageSecondary: err.message,
+          errorTitle: "No matching results found",
+          errorMessage: "We can not find the requested records in Stellar blockchain",
+          errorMessageSecondary: "Check if the entered ID is correct and try again.",
           errorType: "empty"
         }
       }

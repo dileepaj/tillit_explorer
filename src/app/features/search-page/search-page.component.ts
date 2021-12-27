@@ -233,7 +233,7 @@ export class SearchPageComponent implements OnInit {
         this.errorOccurred = true;
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: "Transaction could not be retrieved from Stellar Network",
+          errorMessage: "We can not find the requested records in Stellar blockchain",
           errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
@@ -249,13 +249,14 @@ export class SearchPageComponent implements OnInit {
         this.loadingComplete = true;
       }
     }, (err) => {
-     // console.log("Blockchain Error: ", err);
+     console.log("Blockchain Erroraaaaaaaaaaaaaaaaa: ", err);
+    console.log("err.error.code",err.error.code)
       this.loadingComplete = true;
       this.errorOccurred = true;
       if (err.error.code === 400) {
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: !!err.error.message?err.error.message:"There is no data associated with the given ID. Check if the entered ID is correct and try again.",
+          errorMessage:  "We can not find the requested records in Stellar blockchain",
           errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
@@ -263,15 +264,15 @@ export class SearchPageComponent implements OnInit {
       else if(err.error.code === 500){
         this.error = {
           errorTitle: "Internal server error",
-          errorMessage:  !!err.error.message?err.error.message:"There is no data associated with the given ID. Check if the entered ID is correct and try again",
+          errorMessage:  "We can not find the requested records in Stellar blockchain",
           errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       } else {
         this.error = {
-          errorTitle: "No Transactions",
-          errorMessage: "Currently there aren't any transactions to be shown. Please try again later.",
-          errorMessageSecondary: err.message,
+          errorTitle: "No matching results found",
+          errorMessage: "We can not find the requested records in Stellar blockchain",
+          errorMessageSecondary: "Check if the entered ID is correct and try again.",
           errorType: "empty"
         }
       }
