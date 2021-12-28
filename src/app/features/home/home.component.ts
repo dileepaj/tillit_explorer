@@ -11,6 +11,7 @@ import { Observable, Subscription, timer } from 'rxjs';
 export class HomeComponent implements OnInit {
 
   results: any = [];
+  results1:any=[];
   loadingComplete: boolean = false;
   errorOccurred: boolean = false;
   otherResultsAvailable: boolean = false;
@@ -26,13 +27,11 @@ export class HomeComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
   totalRecords:number=0;
-  lastTrasactionSequenceNo:number=0;
   subscription: Subscription;
 
   constructor(private transactionDataService: TransactionDataService) { 
   }
   ngOnInit() {
-    sessionStorage.clear();
     this.getRecentTransactionsCount()
     this.addResultToSessionStorage(this.page);
   }
@@ -43,7 +42,6 @@ export class HomeComponent implements OnInit {
   }
 
   addResultToSessionStorage(event:number){
-    this.results=[];
     if(sessionStorage.getItem(`results${event}`)){
     this.results=JSON.parse(sessionStorage.getItem(`results${event}`))
     this.loadingComplete = true;  
@@ -55,9 +53,11 @@ export class HomeComponent implements OnInit {
 
   getRecentTransactionsCount(){
     this.transactionDataService.getTransactionsCount().subscribe((count)=>{
-    this.totalRecords=count||0
+      if(!!count.TotalTransactionCount)
+    this.totalRecords=count.TotalTransactionCount||0
     })
   }
+
   getRecentTransactions(event:number) {
     this.transactionDataService.getRecentTransactions(this.page,this.perPage, this.NoPage).subscribe((transactions) => {
       // this.loadingComplete = true;
@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
             productName: element.ProductName
           }
 
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
           // this.addResult(txnItem);
         } 
@@ -122,7 +122,7 @@ export class HomeComponent implements OnInit {
             productName: element.ProductName
           }
 
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
           // this.addResult(txnItem);
         } 
@@ -151,17 +151,15 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-
             quantity: element.Quantity,
             assetCode: element.AssetCode,
-
             senderSigned: false,
             receiverSigned: false,
             cocStatus: "Not Available",
             inputData: "Not Available",
             BlockchainName: "Stellar",
           }
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
           // this.addResult(txnItem);
         
@@ -191,7 +189,7 @@ export class HomeComponent implements OnInit {
             productName: element.ProductName,
             identifier: "Not Available"
           }
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
           // this.addResult(txnItem);
         } 
@@ -223,12 +221,12 @@ export class HomeComponent implements OnInit {
             productName: element.ProductName,
             identifier: "Not Available"
           }
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
           // this.addResult(txnItem);
         }
       });
-
+      this.results=this.results1
       sessionStorage.setItem(`results${event}`,JSON.stringify(this.results))
 
       if (this.otherResultsAvailable) {
