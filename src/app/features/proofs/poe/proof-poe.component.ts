@@ -43,20 +43,16 @@ export class ProofPoeComponent implements OnInit {
   loadingComplete: boolean = false;
   errorOccurred: boolean = false;
   textCopied = false;
-
   tracifiedCoreData;
   tracifiedCoreB64Data;
   transactionData;
   tdpId: string;
   hashesMatch: boolean = false;
-
   error: ErrorMessage;
-
-  // Loader Variables
-
   color = "primary";
   mode = "indeterminate";
   value = 20;
+  public isCollapsed = true;
 
   constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService, private _location: Location) { }
 

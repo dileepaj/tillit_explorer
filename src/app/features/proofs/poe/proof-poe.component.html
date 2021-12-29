@@ -57,6 +57,10 @@
     </mat-spinner>
   </div>
 
+
+
+
+
   <div class="container mt-5" *ngIf="loadingComplete && !errorOccurred">
     <div class="row mb-3">  
       <div class="col-12">
@@ -71,17 +75,24 @@
     </div>
     <div class="mb-3" style="background-color: #fff;">
       <div class="d-flex justify-content-between m-2">
-      <div class="pt-2 pb-2 pl-3 ml-2 row no-gutters status-border {{ hashesMatch ? 'matched' : 'not-matched'}} ">
-        <div class="card-topic col-md-12 col-sm-12 col-xs-12 text-left pt-sm-2 pt-2 pb-sm-1 pb-1">
-          <h2 style="font-weight: 500;color: #2D2F39;font-size: 24px;">
-            {{ hashesMatch ? 'Hashes Matched' : 'Hashes Not Matched'}}
-            <i class="fas ml-5 {{ hashesMatch ? 'fa-check-circle status-text-matched' : 'fa-times-circle status-text-not-matched'}} "
-              style="font-size: 18px;"></i>
-          </h2>
+        <div class="pt-2 pb-2 pl-3 ml-2 row no-gutters status-border {{ hashesMatch ? 'matched' : 'not-matched'}} ">
+          <div class="card-topic col-md-12 col-sm-12 col-xs-12 text-left pt-sm-2 pt-2 pb-sm-1 pb-1">
+            <h2 style="font-weight: 500;color: #2D2F39;font-size: 24px;">
+              {{ hashesMatch ? 'Hashes Matched' : 'Hashes Not Matched'}}
+              <i class="fas ml-5 {{ hashesMatch ? 'fa-check-circle status-text-matched' : 'fa-times-circle status-text-not-matched'}} "
+                style="font-size: 18px;"></i>
+            </h2>
+          </div>
+        </div>
+        <div class="row  align-self-center ">
+          <div class="col-12 text-right align-self-center">
+        <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"[attr.aria-expanded]="!isCollapsed" aria-controls="collapseshowResult">Show Result <i class="fas ml-5 fa-caret-down"
+          style="font-size: 18px;"></i></button>
         </div>
       </div>
-
-    </div>  
+      </div>  
+    <div class="showResult">       
+      <div id="collapseshowResult" [ngbCollapse]="isCollapsed">  
       <div class="row mb-3 mt-3 ">
         <div class="col-12 col-md-12 ">
           <div class="row pl-3">
@@ -114,8 +125,8 @@
           </div>
         </div>
       </div>
-
- 
+      </div>
+      </div>
     </div>
     <div class="col-xs-12 col-md-12 text-left pt-2 pb-1"
       style="background-color: white; border-bottom: 0.5px solid #dee2e6;">
