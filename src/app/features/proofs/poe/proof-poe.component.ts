@@ -69,6 +69,17 @@ export class ProofPoeComponent implements OnInit {
     return typeof val === 'object'; 
   }
 
+  CapitalFirstLetterAndPutSpace(text:string):string{
+    text = text.replace(/(_|-)/g, ' ')
+    .trim()
+    .replace(/\w\S*/g, function(str) {
+      return str.charAt(0).toUpperCase() + str.substr(1)
+    })   
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')  
+    return text
+  }
+
   getProofData(tdpId: string): void {
     this.poeDataService.getHashValues(tdpId).subscribe((data) => {
       this.transactionData = data[0];
