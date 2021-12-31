@@ -33,6 +33,10 @@ export class HomeComponent implements OnInit {
   }
   ngOnInit() {
     this.getRecentTransactionsCount()
+    window.onunload = function () {
+      sessionStorage.clear();
+    }
+
     this.addResultToSessionStorage(this.page);
   }
 

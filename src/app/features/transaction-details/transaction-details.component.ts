@@ -118,7 +118,9 @@ export class TransactionDetailsComponent implements OnInit {
             this.tdpImages = tdp.data.photos;
             this.enableSlider = true;
           }
-
+          if(!!this.txnItem){
+            sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
+          }
         }, (err) => {
         //  console.log("Get TDP Error: ", err);
           this.loadingComplete = true;
@@ -295,7 +297,9 @@ export class TransactionDetailsComponent implements OnInit {
           productName: transaction[0].ProductName,
         }
       }
+      if(!!this.txnItem){
         sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
+      }
     }, (err) => {
     //  console.log("Get Transaction Error: ", err);
       this.loadingComplete = true;
