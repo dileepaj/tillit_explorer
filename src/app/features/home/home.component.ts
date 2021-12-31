@@ -240,9 +240,9 @@ export class HomeComponent implements OnInit {
         }
       } else {
         this.error = {
-          errorTitle: "No matching results found",
-          errorMessage: "We can not find the requested records in Stellar blockchain",
-          errorMessageSecondary: "Check if the entered ID is correct and try again.",
+          errorTitle: "Somthing Went Wrong",
+          errorMessage: "Unable to reach Tillit explorer gateway",
+          errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       }

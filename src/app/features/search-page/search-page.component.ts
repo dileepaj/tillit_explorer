@@ -234,7 +234,7 @@ export class SearchPageComponent implements OnInit {
         this.error = {
           errorTitle: "No matching results found",
           errorMessage: "We can not find the requested records in Stellar blockchain",
-          errorMessageSecondary: "Please try again later",
+          errorMessageSecondary: "Check if the entered ID is correct and try again.",
           errorType: "empty"
         }
       }
@@ -249,7 +249,7 @@ export class SearchPageComponent implements OnInit {
         this.loadingComplete = true;
       }
     }, (err) => {
-     console.log("Blockchain Erroraaaaaaaaaaaaaaaaa: ", err);
+
     console.log("err.error.code",err.error.code)
       this.loadingComplete = true;
       this.errorOccurred = true;
@@ -270,9 +270,9 @@ export class SearchPageComponent implements OnInit {
         }
       } else {
         this.error = {
-          errorTitle: "No matching results found",
-          errorMessage: "We can not find the requested records in Stellar blockchain",
-          errorMessageSecondary: "Check if the entered ID is correct and try again.",
+          errorTitle: "Somthing Went Wrong",
+          errorMessage: "Unable to reach Tillit explorer gateway",
+          errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       }
