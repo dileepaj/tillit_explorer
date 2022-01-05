@@ -73,6 +73,7 @@ import { ElementDividerComponent } from './features/proof-verification/component
     ClipboardModule,
     CarouselModule,
     NgxPaginationModule,
+    NgbModule
   ],
   entryComponents: [SiteScreenComponent, ElementDividerComponent],
   bootstrap: [AppComponent]
