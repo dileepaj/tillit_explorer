@@ -43,20 +43,16 @@ export class ProofPoeComponent implements OnInit {
   loadingComplete: boolean = false;
   errorOccurred: boolean = false;
   textCopied = false;
-
   tracifiedCoreData;
   tracifiedCoreB64Data;
   transactionData;
   tdpId: string;
   hashesMatch: boolean = false;
-
   error: ErrorMessage;
-
-  // Loader Variables
-
   color = "primary";
   mode = "indeterminate";
   value = 20;
+  public isCollapsed = true;
 
   constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService, private _location: Location) { }
 
@@ -71,6 +67,17 @@ export class ProofPoeComponent implements OnInit {
 
   isObject(val: any): boolean { 
     return typeof val === 'object'; 
+  }
+
+  CapitalFirstLetterAndPutSpace(text:string):string{
+    text = text.replace(/(_|-)/g, ' ')
+    .trim()
+    .replace(/\w\S*/g, function(str) {
+      return str.charAt(0).toUpperCase() + str.substr(1)
+    })   
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')  
+    return text
   }
 
   getProofData(tdpId: string): void {
