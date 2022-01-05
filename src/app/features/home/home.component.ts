@@ -23,14 +23,16 @@ export class HomeComponent implements OnInit {
   page:number = 1;
   perPage:number = 10;
   NoPage:number = 3;
+
+  // Loader Variables
+
   color = "primary";
   mode = "indeterminate";
   value = 20;
   totalRecords:number=0;
   subscription: Subscription;
 
-  constructor(private transactionDataService: TransactionDataService) { 
-  }
+  constructor(private transactionDataService: TransactionDataService) {}
   ngOnInit() {
     this.getRecentTransactionsCount()
     window.onunload = function () {
@@ -48,7 +50,7 @@ export class HomeComponent implements OnInit {
   addResultToSessionStorage(event:number){
     if(sessionStorage.getItem(`results${event}`)){
     this.results=JSON.parse(sessionStorage.getItem(`results${event}`))
-    this.loadingComplete = true;  
+    this.loadingComplete = true;
     }else{
     this.loadingComplete = false;
     this.getRecentTransactions(event);
@@ -67,6 +69,8 @@ export class HomeComponent implements OnInit {
       // this.loadingComplete = true;
       transactions.forEach(element => {
        // console.log("Blockchain: ", element);
+
+
         if (element.TxnType == "tdp") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -96,9 +100,10 @@ export class HomeComponent implements OnInit {
 
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-          // this.addResult(txnItem);
+
         } 
-    
+
+       
         else if (element.TxnType == "genesis") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -128,7 +133,7 @@ export class HomeComponent implements OnInit {
 
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-          // this.addResult(txnItem);
+
         } 
        
         
@@ -165,7 +170,7 @@ export class HomeComponent implements OnInit {
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-          // this.addResult(txnItem);
+
         
         } else if (element.TxnType == "splitChild") {
 
@@ -195,7 +200,6 @@ export class HomeComponent implements OnInit {
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-          // this.addResult(txnItem);
         } 
         
   
@@ -227,7 +231,6 @@ export class HomeComponent implements OnInit {
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-          // this.addResult(txnItem);
         }
       });
       this.results=this.results1
@@ -243,7 +246,6 @@ export class HomeComponent implements OnInit {
       } else {
         this.loadingComplete = true;
       }
-    
 
     }, (err) => {
    //   console.log("Blockchain Error: ", err);
