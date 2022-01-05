@@ -24,10 +24,12 @@
                                 </div>
                         </div>
                         <div class="row content-area" *ngIf="loadingComplete && errorOccurred">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"
                                         [errorMessage]="error.errorMessage"
                                         [errorMessageSecondary]="error.errorMessageSecondary">
                                 </app-error-id>
+                        </div>
                         </div>
                 </div>
         </div>
