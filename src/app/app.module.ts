@@ -31,6 +31,8 @@ import { SiteScreenComponent } from './features/proof-verification/components/si
 import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
 import { GlobalStorageComponent } from './features/proof-verification/components/global-storage/global-storage.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { HomeSkeletonComponent } from './features/skeleton-view/home-skeleton/home-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     MaintenanceComponent,
     SiteScreenComponent,
     VerificationScreenComponent,
-    GlobalStorageComponent
+    GlobalStorageComponent,
+    HomeSkeletonComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +71,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ClipboardModule,
     CarouselModule,
     NgxPaginationModule,
-    NgbModule
+    NgbModule,
+    NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' })
   ],
   entryComponents: [SiteScreenComponent],
   bootstrap: [AppComponent]

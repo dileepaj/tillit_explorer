@@ -1,12 +1,11 @@
 <app-header></app-header>
 <div class="main-container">
     <div class="container" >
-        <div *ngIf="!loadingComplete">
-            <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
-            </mat-spinner>
-        </div>
-        <div class="row" *ngIf="loadingComplete && !errorOccurred">
-            <div class="col-12 mt-2">
+    <div *ngIf="!loadingComplete">
+<app-home-skeleton></app-home-skeleton>
+    </div>
+        <div class="row justify-content-md-center align-items-center" *ngIf="loadingComplete && !errorOccurred">
+            <div class="col-12 align-self-center mt-2">
                 <div class="row mb-1">
                     <div class="col-12">
                         <div class="pl-3">
@@ -15,9 +14,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 mt-0">
-                <app-card class="col-12" *ngFor="let item of results  | paginate: {itemsPerPage:perPage, currentPage:page, totalItems:NoPage*perPage }" [transactionData]="item"></app-card>
-                <pagination-controls class="text-center" (pageChange) = "onChangePage($event)" autoHide = "true" ></pagination-controls>
+            <div class="col-12 align-self-center mt-0">
+                <app-card class="col-12" *ngFor="let item of results  | paginate: {id:'paginateId', itemsPerPage:perPage, currentPage:page, totalItems:totalRecords }" [transactionData]="item"></app-card>
+               
+            </div>
+            <div class="col-12 align-self-center paginationControl">
+              <pagination-controls clas=""  maxSize='6' autoHide="true"  responsive="true" id='paginateId' class="text-center"  diractionLinks="true" (pageChange) = "onChangePage($event)"  ></pagination-controls>
             </div>
         </div>
         <div class="row content-area text-center" *ngIf="loadingComplete && errorOccurred">
