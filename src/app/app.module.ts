@@ -73,7 +73,8 @@ import { ElementDividerComponent } from './features/proof-verification/component
     ClipboardModule,
     CarouselModule,
     NgxPaginationModule,
-    NgbModule
+    NgbModule,
+    NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' })
   ],
   entryComponents: [SiteScreenComponent, ElementDividerComponent],
   bootstrap: [AppComponent]

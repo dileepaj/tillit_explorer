@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { TransactionDataService } from '../../services/transaction-data.service';
-import { ITransactionTDP } from '../../shared/models/transaction-tdp.model';
-import { IBase64 } from '../../shared/models/base64.model';
-import { ITransactionCoc } from '../../shared/models/transaction-coc.model';
-import { ITransactionGenesis } from '../../shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
-import { encode, decode } from 'js-base64';
-
+import { Observable, Subscription, timer } from 'rxjs';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
+
 export class HomeComponent implements OnInit {
 
   results: any = [];
+  results1:any=[];
   loadingComplete: boolean = false;
   errorOccurred: boolean = false;
   otherResultsAvailable: boolean = false;
@@ -25,7 +22,7 @@ export class HomeComponent implements OnInit {
   tdpErrorCount: number = 0;
 
   error: ErrorMessage;
-  
+
   page:number = 1;
   perPage:number = 10;
   NoPage:number = 3;
@@ -35,24 +32,44 @@ export class HomeComponent implements OnInit {
   color = "primary";
   mode = "indeterminate";
   value = 20;
+  totalRecords:number=0;
+  subscription: Subscription;
 
-  constructor(private transactionDataService: TransactionDataService) {
-
-  }
-
+  constructor(private transactionDataService: TransactionDataService) {}
   ngOnInit() {
-    this.getRecentTransactions();
+    this.getRecentTransactionsCount()
+    window.onunload = function () {
+      sessionStorage.clear();
+    }
+
+    this.addResultToSessionStorage(this.page);
   }
 
   onChangePage(event:number){
     this.page = event
-    this.results = []
-    this.loadingComplete = false;
-    this.getRecentTransactions();
+    this.addResultToSessionStorage(event)
   }
 
-  getRecentTransactions() {
-    this.transactionDataService.getRecentTransactions(this.page, this.perPage, this.NoPage).subscribe((transactions) => {
+  addResultToSessionStorage(event:number){
+    if(sessionStorage.getItem(`results${event}`)){
+    this.results=JSON.parse(sessionStorage.getItem(`results${event}`))
+    this.loadingComplete = true;
+    }else{
+    this.loadingComplete = false;
+    this.getRecentTransactions(event);
+    }
+  }
+
+  getRecentTransactionsCount(){
+    this.transactionDataService.getTransactionsCount().subscribe((count)=>{
+      if(!!count.TotalTransactionCount)
+    this.totalRecords=count.TotalTransactionCount||0
+    })
+  }
+
+  getRecentTransactions(event:number) {
+    this.transactionDataService.getRecentTransactions(this.page,this.perPage, this.NoPage).subscribe((transactions) => {
+
       // this.loadingComplete = true;
       transactions.forEach(element => {
        // console.log("Blockchain: ", element);
@@ -85,12 +102,10 @@ export class HomeComponent implements OnInit {
             productName: element.ProductName
           }
 
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
 
-        } 
-
-       
+        }
         else if (element.TxnType == "genesis") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -117,13 +132,9 @@ export class HomeComponent implements OnInit {
             productId: "Not Available",
             productName: element.ProductName
           }
-
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-
-        } 
-       
-        
+        }
         else if (element.TxnType == "coc") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -147,20 +158,18 @@ export class HomeComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-
             quantity: element.Quantity,
             assetCode: element.AssetCode,
-
             senderSigned: false,
             receiverSigned: false,
             cocStatus: "Not Available",
             inputData: "Not Available",
             BlockchainName: "Stellar",
           }
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
 
-        
+
         } else if (element.TxnType == "splitChild") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -187,11 +196,11 @@ export class HomeComponent implements OnInit {
             productName: element.ProductName,
             identifier: "Not Available"
           }
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-        } 
-        
-  
+        }
+
+
         else if (element.TxnType == "splitParent") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -218,11 +227,22 @@ export class HomeComponent implements OnInit {
             productName: element.ProductName,
             identifier: "Not Available"
           }
-          this.results.push(txnItem);
+          this.results1.push(txnItem);
           this.otherResultsAvailable = true;
         }
       });
-
+      this.results=this.results1
+      sessionStorage.setItem(`results${event}`,JSON.stringify(this.results))
+      }else{
+        this.loadingComplete = true;
+        this.errorOccurred = true;
+        this.error = {
+          errorTitle: "No matching results found",
+          errorMessage: "Transaction could not be retrieved from Stellar Network",
+          errorMessageSecondary: "Please try again later",
+          errorType: "empty"
+        }
+      }
       if (this.otherResultsAvailable) {
         this.loadingComplete = true;
       } else if (!this.otherResultsAvailable && this.error && this.tdpErrorCount == this.tdpObsCount) {
