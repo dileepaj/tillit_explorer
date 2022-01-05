@@ -9,7 +9,6 @@ import { Observable, Subscription, timer } from 'rxjs';
 })
 
 export class HomeComponent implements OnInit {
-
   results: any = [];
   results1:any=[];
   loadingComplete: boolean = false;
@@ -23,9 +22,7 @@ export class HomeComponent implements OnInit {
   page:number = 1;
   perPage:number = 10;
   NoPage:number = 3;
-
   // Loader Variables
-
   color = "primary";
   mode = "indeterminate";
   value = 20;
@@ -41,7 +38,6 @@ export class HomeComponent implements OnInit {
 
     this.addResultToSessionStorage(this.page);
   }
-
   onChangePage(event:number){
     this.page = event
     this.addResultToSessionStorage(event)
@@ -66,11 +62,12 @@ export class HomeComponent implements OnInit {
 
   getRecentTransactions(event:number) {
     this.transactionDataService.getRecentTransactions(this.page,this.perPage, this.NoPage).subscribe((transactions) => {
+
       // this.loadingComplete = true;
+      console.log("Blockchain: ", !!transactions);
+      if(!!transactions){
       transactions.forEach(element => {
-       // console.log("Blockchain: ", element);
-
-
+        //console.log("Blockchain: ", element);
         if (element.TxnType == "tdp") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -101,19 +98,14 @@ export class HomeComponent implements OnInit {
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
 
-        } 
-
-       
+        }
         else if (element.TxnType == "genesis") {
-
           let index = element.AvailableProof.findIndex((proof) => {
             return proof == "poc";
           });
-
           if (index != -1) {
             element.AvailableProof.splice(index, 1);
           }
-
           let txnItem = {
             status: element.Status,
             txnHash: element.Txnhash,
@@ -130,15 +122,10 @@ export class HomeComponent implements OnInit {
             productId: "Not Available",
             productName: element.ProductName
           }
-
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-
-        } 
-       
-        
+        }
         else if (element.TxnType == "coc") {
-
           let index = element.AvailableProof.findIndex((proof) => {
             return proof == "poc";
           });
@@ -171,7 +158,7 @@ export class HomeComponent implements OnInit {
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
 
-        
+
         } else if (element.TxnType == "splitChild") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -200,9 +187,9 @@ export class HomeComponent implements OnInit {
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
-        } 
-        
-  
+        }
+
+
         else if (element.TxnType == "splitParent") {
 
           let index = element.AvailableProof.findIndex((proof) => {
@@ -235,7 +222,16 @@ export class HomeComponent implements OnInit {
       });
       this.results=this.results1
       sessionStorage.setItem(`results${event}`,JSON.stringify(this.results))
-
+      }else{
+        this.loadingComplete = true;
+        this.errorOccurred = true;
+        this.error = {
+          errorTitle: "No matching results found",
+          errorMessage: "Transaction could not be retrieved from Stellar Network",
+          errorMessageSecondary: "Please try again later",
+          errorType: "empty"
+        }
+      }
       if (this.otherResultsAvailable) {
         this.loadingComplete = true;
       } else if (!this.otherResultsAvailable && this.error && this.tdpErrorCount == this.tdpObsCount) {
@@ -246,29 +242,33 @@ export class HomeComponent implements OnInit {
       } else {
         this.loadingComplete = true;
       }
-
     }, (err) => {
-   //   console.log("Blockchain Error: ", err);
+    // console.log("Blockchain Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
-
-      if (err.status === 400) {
+      if (err.error.code === 400) {
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
-          errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
+          errorMessage:  "We can not find the requested records in Stellar blockchain",
+          errorMessageSecondary: "Please try again later",
+          errorType: "empty"
+        }
+      }
+      else if(err.error.code === 500){
+        this.error = {
+          errorTitle: "Internal server error",
+          errorMessage:  "We can not find the requested records in Stellar blockchain",
+          errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       } else {
         this.error = {
-          errorTitle: "No Transactions",
-          errorMessage: "Currently there aren't any transactions to be shown. Please try again later.",
-          errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
+          errorTitle: "Somthing Went Wrong",
+          errorMessage: "Unable to reach Tillit explorer gateway",
+          errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       }
-
     });
   }
-
 }
