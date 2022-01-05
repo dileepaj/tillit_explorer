@@ -43,11 +43,7 @@ export class TransactionDetailsComponent implements OnInit {
   tdpImages = [];
   errorOccurred: boolean = false;
   loadingComplete: boolean = false;
-
   error: ErrorMessage;
-
-  // Loader Variables
-
   color = "primary";
   mode = "indeterminate";
   value = 20;
@@ -56,7 +52,17 @@ export class TransactionDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnId');
-    this.getTransactionDetails(this.txnId);
+    this.addTransactionDetailsToSessionStorage(this.txnId)
+  }
+
+  addTransactionDetailsToSessionStorage(txnId:string){
+    if(sessionStorage.getItem(`${txnId}`)){
+    this.txnItem=JSON.parse(sessionStorage.getItem(`${txnId}`))
+    this.loadingComplete = true;  
+    }else{
+    this.loadingComplete = false;
+    this.getTransactionDetails(txnId)
+    }
   }
 
   goBack():void{
@@ -112,7 +118,9 @@ export class TransactionDetailsComponent implements OnInit {
             this.tdpImages = tdp.data.photos;
             this.enableSlider = true;
           }
-
+          if(!!this.txnItem){
+            sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
+          }
         }, (err) => {
         //  console.log("Get TDP Error: ", err);
           this.loadingComplete = true;
@@ -288,7 +296,9 @@ export class TransactionDetailsComponent implements OnInit {
           productId: "Not Sending",
           productName: transaction[0].ProductName,
         }
-
+      }
+      if(!!this.txnItem){
+        sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
       }
     }, (err) => {
     //  console.log("Get Transaction Error: ", err);
