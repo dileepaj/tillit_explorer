@@ -21,7 +21,7 @@
 
 .btnFixSize{
     width: 150px !important;
-    font-size: 13px;
+    font-size: 14px;
     margin-right: 14px;
 }
 
@@ -55,8 +55,7 @@
         margin-bottom: 20px;
     }
     .btnFixSize{
-      margin-right: 14px;
-       
+      margin-right: 14px;  
     }
     .cardcontent{
         font-size: 13px;
@@ -77,6 +76,9 @@
 }
 
 @media screen and (max-width: 575px) {
+    .btnFixSize{
+        margin-right: 0;
+    }
    .viewButton{
         justify-content: center!important;
    }
