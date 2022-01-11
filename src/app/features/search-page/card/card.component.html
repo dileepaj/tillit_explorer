@@ -1,8 +1,8 @@
 <!-- This is the item card component. -->
 <!-- Enable only when testing -->
 <!-- <app-loader *ngIf ="showLoaderNew"></app-loader> -->
-<div class="container-fluid justify-content-center">
-  <div class="card  cardshadow">
+<div class="row justify-content-center">
+  <div class="card w-75 cardshadow">
  
     <div class="row cardMargin no-gutters">
       <!-- Item image -->
@@ -37,16 +37,16 @@
       </div> -->
 
       <!-- Item content -->
-      <div class="col-xs-12 col-sm-7 col-md-9 col-lg-10 col-xl-10 ">
+      <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10 col-xl-10 ">
     
           <div class="row ">
-            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-3 ">
-              <h5 class="card-title font-weight-bold" *ngIf="transactionData.productName">{{transactionData.productName}}</h5>
-              <h5 class="card-title font-weight-bold" *ngIf="transactionData.assetCode">{{transactionData.assetCode}}</h5>
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3">
+              <h5 class="card-title font-weight-bold productName" *ngIf="transactionData.productName">{{transactionData.productName}}</h5>
+              <h5 class="card-title font-weight-bold productName" *ngIf="transactionData.assetCode">{{transactionData.assetCode}}</h5>
             </div>
-            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-9 col-xl-9" style="font-weight: 600;color:#818E94;"  *ngFor="let proof of transactionData.availableProofs">           
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9" style="font-weight: 600;color:#818E94;"  *ngFor="let proof of transactionData.availableProofs">           
                 <span class="pl-3 pr-3 pt-2 pb-2 badge badge-pill badge-primary"
-                  style="font-size: 14px;background-color: #F3F1FF;color:#818E94;font-weight: 700;">{{proof | uppercase}}</span>           
+                  style="font-size: 12px;background-color: #F3F1FF;color:#818E94;font-weight: 700;">{{proof | uppercase}}</span>           
             </div>
           </div>
           <!-- <div class="row" style="width:100%;" *ngIf="transactionData.productId">
@@ -58,51 +58,51 @@
             </div>
           </div> -->
           <div class="row contentMargin" *ngIf="transactionData.identifier">
-            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-3 ">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3">
               <span class="fieldStyle" >Identifier : </span>
             </div>
-            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-10 col-xl-9">
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9">
               <span class="cardcontent">{{transactionData.identifier}}</span>
             </div>
           </div>
           <div class="row contentMargin" >
-            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-3 " *ngIf="transactionData.sender">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3" *ngIf="transactionData.sender">
               <span class="fieldStyle" >Sender : </span>
             </div>
-            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-10 col-xl-9">
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9">
               <span class="cardcontent">{{transactionData.sender}}</span>
             </div>
           </div>
           <div class="row contentMargin" *ngIf="transactionData.receiver">
-            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-3 ">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3">
               <span class="fieldStyle" >Receiver : </span>
             </div>
-            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-10 col-xl-9">
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9">
               <span class="cardcontent">{{transactionData.receiver}}</span>
             </div>
           </div>
-          <div class="row contentMargin"  *ngIf="transactionData.timestamp">
-            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-3 " >
-              <span class="fieldStyle" >Timestamp : </span>
-            </div>
-            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-10 col-xl-9">
-              <span class="cardcontent">{{transactionData.timestamp | date: 'medium'}}</span>
-            </div>
-          </div>
           <div class="row contentMargin" *ngIf="transactionData.transferType">
-            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-3 ">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3">
               <span class="fieldStyle" >Type : </span>
             </div>
-            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-10 col-xl-9">
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9">
               <span class="cardcontent">{{transactionData.transferType | titlecase}}</span>
+            </div>
+          </div>
+          <div class="row contentMargin"  *ngIf="transactionData.timestamp">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3" >
+              <span class="fieldStyle" >Timestamp : </span>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9">
+              <span class="cardcontent">{{transactionData.timestamp | date: 'medium'}}</span>
             </div>
           </div>
 
 </div>
       <!-- Item button Need to fix -->
-      <div class="col-xs-12 col-sm-5 col-md-3 col-lg-2 col-xl-2  align-self-center justify-content-center">
+      <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 col-xl-2  align-self-center justify-content-center">
         <div class="row  justify-content-end viewButton">
-        
+   
           <a [routerLink]="['/txn', transactionData.txnHash]"
             class="btn btn-main btn-view btn-outline-primary btnFixSize">View Item</a>
        

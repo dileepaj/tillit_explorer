@@ -18,16 +18,18 @@
                                         </div>
                                 </div>
                                 <div class="col-12 mt-0" >
-                               
+
                                 <app-card class="col-12"  *ngFor="let item of results | paginate: {itemsPerPage:perPage, currentPage:page, totalItems:NoItems }" [transactionData]="item"></app-card>
                                 <pagination-controls class="text-center" (pageChange) = "onChangePage($event)" (pageBoundsCorrection) = "onChangePage($event)" autoHide = "true" responsive = "true" ></pagination-controls>
                                 </div>
                         </div>
                         <div class="row content-area" *ngIf="loadingComplete && errorOccurred">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"
                                         [errorMessage]="error.errorMessage"
                                         [errorMessageSecondary]="error.errorMessageSecondary">
                                 </app-error-id>
+                        </div>
                         </div>
                 </div>
         </div>

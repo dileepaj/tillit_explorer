@@ -140,14 +140,14 @@ export class HomeComponent implements OnInit {
             transferType: element.TxnType,
             sequence: element.SequenceNo,
             txnUrl: element.Url,
-            sender: element.From,
-            receiver: element.To,
+            sender: "",
+            receiver: "",
             identifier: element.Identifier,
             timestamp: element.Timestamp,
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-
+            productName: element.ProductName,
             quantity: element.Quantity,
             assetCode: element.AssetCode,
 
@@ -185,7 +185,7 @@ export class HomeComponent implements OnInit {
             BlockchainName: "Stellar",
             productId: "Product ID Not Available",
             productName: element.ProductName,
-            identifier: "Not Available"
+            identifier: element.identifier
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
@@ -216,7 +216,7 @@ export class HomeComponent implements OnInit {
             BlockchainName: "Stellar",
             productId: "Product ID Not Available",
             productName: element.ProductName,
-            identifier: "Not Available"
+            identifier: element.identifier
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;

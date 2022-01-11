@@ -1,3 +1,30 @@
 .mat-spinner::ng-deep circle {
  stroke: #0062cc;
 }
+
+@media screen and (min-width: 1200px) {
+    .titleMargin{
+        margin-left: 11.5%;
+    } 
+}
+
+@media screen and (max-width: 1200px) {
+    .titleMargin{
+        margin-left: 11%;
+    } 
+}
+@media screen and (max-width: 1000px) {
+    .titleMargin{
+        margin-left: 10.7%;
+    } 
+}
+@media screen and (max-width: 824px) {
+    .titleMargin{
+        margin-left: 10.5%;
+    } 
+}
+@media screen and (max-width: 597px) {
+    .titleMargin{
+        margin-left: 9.4%;
+    } 
+}
