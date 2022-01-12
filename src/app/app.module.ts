@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AlertModule } from 'ngx-bootstrap/alert';
+import { AlertModule } from 'ngx-bootstrap';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { SearchbarComponent } from './shared/components/searchbar/searchbar.component';
@@ -24,15 +24,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorIdComponent } from './shared/components/error-id/error-id.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ProofPocComponent } from './features/proofs/poc/proof-poc.component';
-import {NgxPaginationModule} from 'ngx-pagination'; 
+import {NgxPaginationModule} from 'ngx-pagination';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MaintenanceComponent } from './features/maintenance/maintenance.component';
 import { SiteScreenComponent } from './features/proof-verification/components/site-screen/site-screen.component';
 import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
-import { GlobalStorageComponent } from './features/proof-verification/components/global-storage/global-storage.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { HomeSkeletonComponent } from './features/skeleton-view/home-skeleton/home-skeleton.component';
 
 @NgModule({
   declarations: [
@@ -55,9 +51,7 @@ import { HomeSkeletonComponent } from './features/skeleton-view/home-skeleton/ho
     ProofPocComponent,
     MaintenanceComponent,
     SiteScreenComponent,
-    VerificationScreenComponent,
-    GlobalStorageComponent,
-    HomeSkeletonComponent
+    VerificationScreenComponent
   ],
   imports: [
     BrowserModule,

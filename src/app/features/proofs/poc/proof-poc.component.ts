@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 import { ErrorMessage } from '../../../shared/models/error-message.model';
 import * as dracula from 'graphdracula';
 import { NullAstVisitor } from '@angular/compiler';
-import * as dagreD3 from 'dagre-d3';
+import dagreD3 from 'dagre-d3';
 import {Location} from '@angular/common';
 @Component({
   selector: 'app-poc',
@@ -91,7 +91,7 @@ export class ProofPocComponent implements OnInit {
   renderGraph(Nodes: Object) {
 
     // Create a new directed graph
-    var g: any = new dagreD3.graphlib.Graph({ directed: true });
+    var g = new dagreD3.graphlib.Graph({ directed: true });
 
     // Set an object for the graph label
     g.setGraph({});
@@ -142,9 +142,7 @@ export class ProofPocComponent implements OnInit {
     d3.selectAll("g.edgeLabel").on('click', function (d: any) {
         const from = Nodes[d.v].TrustLinks[0];
         const to = Nodes[d.w].TrustLinks[0];
-        if(Nodes[d.w].Data.TxnType == 2) 
-            window.open("/proof-verification/" + to);
-        else alert("At the moment, proof verification is only available for TDPs.")
+        console.log({from, to})
     });
     d3.selectAll("g.node").on('click', function (d: any) {
         window.open("/txn/" + Nodes[d].TrustLinks[0])
