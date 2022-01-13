@@ -143,7 +143,7 @@ export class ProofPocComponent implements OnInit {
         const from = Nodes[d.v].TrustLinks[0];
         const to = Nodes[d.w].TrustLinks[0];
         if(Nodes[d.w].Data.TxnType == 2) 
-            window.open("/proof-verification/" + to);
+            window.open(`/proof-verification?type=pobl&txn=${to}&txn2=${from}`);
         else alert("At the moment, proof verification is only available for TDPs.")
     });
     d3.selectAll("g.node").on('click', function (d: any) {
