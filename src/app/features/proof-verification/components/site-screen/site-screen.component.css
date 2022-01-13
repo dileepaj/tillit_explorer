@@ -9,10 +9,10 @@
   /* resize: horizontal; */
   position: relative;
 }
-
+/* 
 :host:not(:first-child) {
   margin-left: 3%;
-}
+} */
 
 .copy-notification {
   background-color: #007bff;
