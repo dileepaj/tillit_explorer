@@ -33,6 +33,7 @@ import { GlobalStorageComponent } from './features/proof-verification/components
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { HomeSkeletonComponent } from './features/skeleton-view/home-skeleton/home-skeleton.component';
+import { ElementDividerComponent } from './features/proof-verification/components/element-divider/element-divider.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { HomeSkeletonComponent } from './features/skeleton-view/home-skeleton/ho
     SiteScreenComponent,
     VerificationScreenComponent,
     GlobalStorageComponent,
-    HomeSkeletonComponent
+    HomeSkeletonComponent,
+    ElementDividerComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +76,7 @@ import { HomeSkeletonComponent } from './features/skeleton-view/home-skeleton/ho
     NgbModule,
     NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' })
   ],
-  entryComponents: [SiteScreenComponent],
+  entryComponents: [SiteScreenComponent, ElementDividerComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

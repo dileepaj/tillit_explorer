@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class GlobalStorageComponent implements OnInit {
 
-  @Input() frameData: object = {};
+  @Input() frameData: any = {};
 
   constructor() { }
 
