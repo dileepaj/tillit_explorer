@@ -53,7 +53,8 @@ export class HomeComponent implements OnInit {
 
   getRecentTransactions() {
     this.transactionDataService.getRecentTransactions(this.page, this.perPage, this.NoPage).subscribe((transactions) => {
-      // this.loadingComplete = true;
+      this.loadingComplete = true;
+      if(!!transactions){
       transactions.forEach(element => {
        // console.log("Blockchain: ", element);
 
@@ -71,7 +72,7 @@ export class HomeComponent implements OnInit {
           let txnItem = {
             status: element.Status,
             txnHash: element.Txnhash,
-            transferType: element.TxnType,
+            transferType: element.TxnType=="tdp"?"TDP":element.TxnType,
             sequence: element.SequenceNo,
             txnUrl: element.Url,
             publickKey: element.SourceAccount,
@@ -104,7 +105,7 @@ export class HomeComponent implements OnInit {
           let txnItem = {
             status: element.Status,
             txnHash: element.Txnhash,
-            transferType: element.TxnType,
+            transferType:  element.TxnType=="genesis"?"Genesis":element.TxnType,
             sequence: element.SequenceNo,
             txnUrl: element.Url,
             publicKey: element.SourceAccount,
@@ -137,7 +138,7 @@ export class HomeComponent implements OnInit {
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
-            transferType: element.TxnType,
+            transferType: element.TxnType=="coc"?"Change of custody":element.TxnType,
             sequence: element.SequenceNo,
             txnUrl: element.Url,
             sender: "",
@@ -167,14 +168,10 @@ export class HomeComponent implements OnInit {
             return proof == "poc";
           });
 
-          if (index != -1) {
-            element.AvailableProof.splice(index, 1);
-          }
-
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
-            transferType: element.TxnType,
+            transferType: element.TxnType=="splitChild"?"SplitChild":element.TxnType,
             sequence: element.SequenceNo,
             txnUrl: element.Url,
             publicKey: element.SourceAccount,
@@ -198,14 +195,10 @@ export class HomeComponent implements OnInit {
             return proof == "poc";
           });
 
-          if (index != -1) {
-            element.AvailableProof.splice(index, 1);
-          }
-
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
-            transferType: element.TxnType,
+            transferType: element.TxnType=="splitParent"?"SplitParent":element.TxnType,
             sequence: element.SequenceNo,
             txnUrl: element.Url,
             publicKey: element.SourceAccount,
@@ -222,7 +215,16 @@ export class HomeComponent implements OnInit {
           this.otherResultsAvailable = true;
         }
       });
-
+    }else{
+      this.loadingComplete = true;
+      this.errorOccurred = true;
+      this.error = {
+        errorTitle: "No matching results found",
+        errorMessage: "We can not find the requested records in Stellar blockchain",
+        errorMessageSecondary: "Please try again later",
+        errorType: "empty"
+      }
+    }
       if (this.otherResultsAvailable) {
         this.loadingComplete = true;
       } else if (!this.otherResultsAvailable && this.error && this.tdpErrorCount == this.tdpObsCount) {

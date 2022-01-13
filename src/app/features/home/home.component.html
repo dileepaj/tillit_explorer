@@ -18,7 +18,7 @@
                 <pagination-controls  style="margin: 0!important;" (pageChange) = "onChangePage($event)" autoHide = "true" ></pagination-controls> 
             </div>     
         </div>
-        <div class="row content-area" *ngIf="loadingComplete && errorOccurred">
+        <div class="row justify-content-md-center align-items-center content-area" *ngIf="loadingComplete && errorOccurred">
             <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"
                 [errorMessage]="error.errorMessage" [errorMessageSecondary]="error.errorMessageSecondary">
             </app-error-id>
