@@ -10,6 +10,7 @@ import {
   ViewContainerRef
 } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { ElementDividerComponent } from "../components/element-divider/element-divider.component";
 import { SiteScreenComponent } from "../components/site-screen/site-screen.component";
 
 @Component({
@@ -28,13 +29,24 @@ import { SiteScreenComponent } from "../components/site-screen/site-screen.compo
         style({ transform: "translateY(400px)", opacity: 0 }),
         animate("1200ms", style({ transform: "translateY(0%)", opacity: 1 }))
       ])
+    ]),
+    trigger("inOutAnimation", [
+      transition(":enter", [
+        style({ opacity: 0 }),
+        animate("100ms ease-out", style({ opacity: 1 }))
+      ]),
+      transition(":leave", [
+        style({ opacity: 1 }),
+        animate("100ms ease-in", style({ opacity: 0 }))
+      ])
     ])
   ]
 })
 export class VerificationScreenComponent implements OnInit {
-  StorageTitle: string = "Storage";
+  StorageTitle: string = "Storage Container";
   ProofContainerTitle: string = "Proof Container";
   currentStep: number = 0;
+  lastCompletedStep: number = 0;
   totalSteps: number = 0;
   gsHeightExpand: boolean = false;
   vsHeightExpand: boolean = false;
@@ -42,6 +54,7 @@ export class VerificationScreenComponent implements OnInit {
   isPause: boolean = false;
   isReplay: boolean = false;
   isLoading: boolean = false;
+  isPlayCompleted: boolean = false;
   variableStorage: any = {};
   proofJSON: any = {};
   globalData: object[] = [];
@@ -53,17 +66,30 @@ export class VerificationScreenComponent implements OnInit {
   gsOverflowX: string = "hidden";
   vsOverflowX: string = "hidden";
   ActionDescription: string = "";
-  txnId: string = "";
+  TXNhash: string = "";
+  playbackSpeed: number = 1;
+  routerParams: any = {};
+  isDisableGlobalInformationL: boolean = true;
+  isDisableGlobalInformationR: boolean = true;
+  isBackToStep: boolean = false;
+  isToast: boolean = false;
+  toastMSG: string;
+  toastTop: string = "40%";
+  toastLeft: string = "32%";
 
   @ViewChild("ProofDemoDirective", { read: ViewContainerRef, static: false })
   proofDemoRef: ViewContainerRef;
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.queryParamMap.subscribe(params => {
+      this.routerParams = { ...params.keys, ...params };
+    });
+  }
 
   async ngAfterViewInit() {
     this.scrollToFrameById("proofContainer");
@@ -98,18 +124,22 @@ export class VerificationScreenComponent implements OnInit {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
       component
     );
+    const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(
+      ElementDividerComponent
+    );
     const ref = this.proofDemoRef.createComponent(componentFactory);
+    this.proofDemoRef.createComponent(componentDividerFactory);
     this.demoScreenChildRefs[FrameId] = {
       Id: FrameId,
       type: Type,
       ref,
       ShortFrameTitle
     };
-    ref.location.nativeElement.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "start"
-    });
+    // ref.location.nativeElement.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "start",
+    //   inline: "start"
+    // });
     this.cdr.detectChanges();
     return ref;
   }
@@ -128,41 +158,71 @@ export class VerificationScreenComponent implements OnInit {
 
   togglePlayPauseFn() {
     this.isPause = !this.isPause;
+    if (this.isPlayCompleted) this.currentStep = 0;
     this.playProofDemo();
   }
 
   replayFn() {
+    this.StorageTitle = "Storage";
+    this.ProofContainerTitle = "Proof Container";
     this.currentStep = 0;
+    // this.lastCompletedStep= 0;
+    this.totalSteps = 0;
     this.gsHeightExpand = false;
     this.vsHeightExpand = false;
-    this.isStartDemo = true;
+    // this.isStartDemo = false;
     this.isPause = false;
+    this.isReplay = true;
     this.isLoading = false;
-    this.variableStorage = {};
+    this.isPlayCompleted = false;
+    // this.variableStorage= {};
+    // this.proofJSON = {};
     this.globalData = [];
-    this.demoScreenChildRefs = {};
     this.steppers = [];
+    this.demoScreenChildRefs = {};
+    // this.color = "primary";
+    // this.mode = "indeterminate";
+    // this.value = 10;
+    // this.gsOverflowX= "hidden";
+    // this.vsOverflowX= "hidden";
+    this.ActionDescription = "";
+    // this.TXNhash= "";
+    this.playbackSpeed = 1;
+    // this.routerParams = {};
+    this.isDisableGlobalInformationL = true;
+    this.isDisableGlobalInformationR = true;
+    this.isBackToStep = false;
+
     this.proofDemoRef.clear();
     this.cdr.detectChanges();
     this.playProofDemo();
   }
 
   async startDemoFn() {
-    this.txnId = this.route.snapshot.paramMap.get('txnhash');
-    this.isLoading = true;
-    await new Promise(resolveTime => setTimeout(resolveTime, 4200));
-    this.isStartDemo = true;
-    this.isPause = true;
-    this.initiateProofDemo();
-    await new Promise(resolveTime => setTimeout(resolveTime, 600));
-    this.isPause = false;
-    this.playProofDemo(0);
+    if (
+      this.routerParams &&
+      this.routerParams.params &&
+      this.routerParams.params.type == "pobl"
+    ) {
+      this.TXNhash = this.routerParams.params.txn;
+      this.isLoading = true;
+      await new Promise(resolveTime => setTimeout(resolveTime, 4200));
+      this.isStartDemo = true;
+      this.isPause = true;
+      this.initiateProofDemo();
+      await new Promise(resolveTime => setTimeout(resolveTime, 600));
+      this.isPause = false;
+      await this.scrollToFrameById("proofHeaderTitle", 20);
+      this.playProofDemo(0);
+    } else
+      alert("Proof verification is not yet available for the selected type.");
   }
 
   stopFn() {
     this.StorageTitle = "Storage";
     this.ProofContainerTitle = "Proof Container";
     this.currentStep = 0;
+    this.lastCompletedStep = 0;
     this.totalSteps = 0;
     this.gsHeightExpand = false;
     this.vsHeightExpand = false;
@@ -170,16 +230,56 @@ export class VerificationScreenComponent implements OnInit {
     this.isPause = false;
     this.isReplay = false;
     this.isLoading = false;
+    this.isPlayCompleted = false;
     this.variableStorage = {};
     this.proofJSON = {};
     this.globalData = [];
-    this.demoScreenChildRefs = {};
     this.steppers = [];
-    this.proofDemoRef.clear();
-    this.cdr.detectChanges();
+    this.demoScreenChildRefs = {};
+    // this.color = "primary";
+    // this.mode = "indeterminate";
+    // this.value = 10;
+    // this.gsOverflowX= "hidden";
+    // this.vsOverflowX= "hidden";
+    this.ActionDescription = "";
+    // this.TXNhash= "";
+    this.playbackSpeed = 1;
+    // this.routerParams = {};
+    this.isDisableGlobalInformationL = true;
+    this.isDisableGlobalInformationR = true;
+    this.isBackToStep = false;
   }
 
-  initiateProofDemo() {
+  backToStep(stepNo: number) {
+    var i: number = this.proofJSON.Steps.findIndex(
+      (cur: any) => cur.StepTo == stepNo
+    );
+    if (this.lastCompletedStep >= i) {
+      this.isBackToStep = true;
+      this.currentStep = i;
+      if (this.isPause) {
+        this.isPause = false;
+        this.playProofDemo();
+      }
+    }
+    if (this.isPlayCompleted) this.playProofDemo();
+  }
+
+  selectSpeedFn() {
+    let speed: any = prompt(
+      "Playback speed (0.5, 0.25, 1, 1.5, 2)",
+      this.playbackSpeed.toString()
+    );
+    if (!speed || isNaN(speed) || speed == 0)
+      alert("Please enter a valid playback speed.");
+    else this.setSpeed(speed);
+  }
+
+  setSpeed(speed: number) {
+    this.playbackSpeed = speed;
+  }
+
+  async initiateProofDemo() {
     this.proofJSON = this.getSampleUI();
     this.playProofDemo(0);
   }
@@ -189,31 +289,52 @@ export class VerificationScreenComponent implements OnInit {
     this.currentStep = step;
     this.StorageTitle = data.StorageTitle;
     this.ProofContainerTitle = data.ProofContainerTitle;
-    this.totalSteps = data.Actions.length;
+    this.totalSteps = data.Steps.length;
     this.steppers = data.Steppers;
     this.cdr.detectChanges();
     this.isReplay = false;
-    for (; this.currentStep < data.Actions.length; this.currentStep++) {
-      if (this.isPause) break;
-      if (this.isReplay) break;
-      const action = this.parseActionData(data.Actions[this.currentStep]);
+    this.isPlayCompleted = false;
+    this.playbackSpeed = data.PlaybackSpeed;
+    // console.log(this.currentStep);
+    for (; this.currentStep < data.Steps.length; ) {
+      this.isBackToStep = false;
+      if (this.isPause) return;
+      if (this.isReplay) return;
+      const action = this.parseActionData(data.Steps[this.currentStep]);
+      // console.log(action.Id, this.demoScreenChildRefs);
+      this.currentStep++;
       this.ActionDescription = action.ActionDescription;
       if (action.StepTo) {
         this.toStepper(action.StepTo);
       }
       const frameID = action.FrameId;
       this.cdr.detectChanges();
+
+      // set global values
+      this.setGlobalValuesOnFrames(data, action);
+
       switch (action.Type) {
         case "site-screen":
           var scRef: ComponentRef<SiteScreenComponent>;
           if (this.demoScreenChildRefs[frameID])
             scRef = this.demoScreenChildRefs[frameID].ref;
-          else scRef = await this.createFrameInProofDemo(action);
-
-          if (scRef && action.PageURL) {
+          else {
+            scRef = await this.createFrameInProofDemo(action);
+            scRef.instance.setFrameIndex(
+              Object.keys(this.demoScreenChildRefs).length - 1
+            );
+          }
+          this.setGlobalValuesOnFrames(data, action);
+          if (scRef && action.InnerHTML) {
+            scRef.instance.setFrameTitle(action.FrameTitle);
+            await scRef.instance.setPageHTML(action.PageURL, action.InnerHTML);
+          } else if (scRef && action.PageURL) {
             scRef.instance.setFrameTitle(action.FrameTitle);
             await scRef.instance.setPage(action.PageURL);
           }
+          break;
+        case "element-attribute":
+          await this.handleFormatElementAttribute(action);
           break;
         case "text-style":
           await this.handleTextStyle(action);
@@ -235,13 +356,83 @@ export class VerificationScreenComponent implements OnInit {
         default:
           break;
       }
+
+      this.isDisableGlobalInformationL = this.isDisableGlobalStorageScroll("L");
+      this.isDisableGlobalInformationR = this.isDisableGlobalStorageScroll("R");
+
+      if (action.ToastMessage) {
+        this.toastMSG = action.ToastMessage;
+        this.toastTop = action.ToastPosition[0];
+        this.toastLeft = action.ToastPosition[1];
+        this.isToast = true;
+      }
       this.cdr.detectChanges();
       await new Promise(resolveTime =>
         setTimeout(
           resolveTime,
-          100 * (action.ActionSpeed ? action.ActionSpeed : 1)
+          (100 * (action.ActionSpeed ? action.ActionSpeed : 1)) /
+            this.playbackSpeed
         )
       );
+      this.isToast = false;
+      if (this.lastCompletedStep < this.currentStep)
+        this.lastCompletedStep = this.currentStep;
+    }
+
+    if (this.currentStep == data.Steps.length) {
+      this.isPlayCompleted = true;
+      this.isPause = true;
+    }
+  }
+
+  setGlobalValuesOnFrames(data: any, action: any) {
+    const { FrameId } = action;
+    var ds = this.demoScreenChildRefs[FrameId];
+    if (ds) {
+      switch (ds.type) {
+        case "site-screen":
+          var scRef: ComponentRef<SiteScreenComponent>;
+          if (this.demoScreenChildRefs[FrameId])
+            scRef = this.demoScreenChildRefs[FrameId].ref;
+          if (scRef) {
+            if (Object.keys(action).includes("ScrollToPointer")) {
+              scRef.instance.isPointToElement = action.ScrollToPointer;
+            } else if (Object.keys(data).includes("ScrollToPointer")) {
+              scRef.instance.isPointToElement = data.ScrollToPointer;
+            }
+          }
+      }
+    }
+  }
+
+  async handleFormatElementAttribute(action: any) {
+    const {
+      FrameId,
+      Query,
+      EIndex,
+      Attribute,
+      Value,
+      ValueReplacement,
+      AutoScroll
+    } = action;
+    var ds = this.demoScreenChildRefs[FrameId];
+    if (ds) {
+      switch (ds.type) {
+        case "site-screen":
+          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
+          if (scRef && Query)
+            await scRef.instance.addAttributeToElement(
+              Query,
+              EIndex,
+              ValueReplacement,
+              Attribute,
+              Value,
+              AutoScroll
+            );
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -358,17 +549,24 @@ export class VerificationScreenComponent implements OnInit {
     const allSteps = document.querySelectorAll(
       ".bs-stepper-header.cs-stepper-header .step"
     );
-    const el: any =  allSteps[no - 1];
+    const el: any = allSteps[no - 1];
     el.classList.add("glow");
     // allSteps[no - 1].scrollIntoView();
     steppersFrame.scroll({
-      top:  0,
-      left: el.offsetLeft - steppersFrame.getBoundingClientRect().width + el.getBoundingClientRect().width,
+      top: 0,
+      left:
+        el.offsetLeft -
+        steppersFrame.getBoundingClientRect().width +
+        el.getBoundingClientRect().width,
       behavior: "smooth"
     });
-    for (let index = 0; index < no - 1; index++) {
-      allSteps[index].classList.remove("glow");
-      allSteps[index].classList.add("success");
+    for (let i = 0; i < no - 1; i++) {
+      allSteps[i].classList.remove("glow");
+      allSteps[i].classList.add("success");
+    }
+    for (let j = no; j < allSteps.length; j++) {
+      allSteps[j].classList.remove("glow");
+      allSteps[j].classList.remove("success");
     }
   }
 
@@ -444,7 +642,7 @@ export class VerificationScreenComponent implements OnInit {
     const el: any = document.querySelectorAll(
       "#globalInformation #frames proof-global-storage"
     )[index];
-    await this.scrollToFrameById("globalInformation", 10);
+    await this.scrollToFrameById("proofContainer", 0);
     document.querySelectorAll("#globalInformation #frames")[0].scroll({
       top: 0,
       left: el.offsetLeft - 66,
@@ -461,15 +659,21 @@ export class VerificationScreenComponent implements OnInit {
 
   async addDataToGlobalData(Id: number, Title: string, Data: object[]) {
     var index = this.globalData.findIndex((curr: any) => curr.Id == Id);
-    if (index == -1)
+    if (index == -1) {
+      index = this.globalData.length;
       this.globalData.push({
         Id,
         Title,
         Data
       });
-    else {
+    } else {
       const curr: any = this.globalData[index];
-      curr.Data = [...curr.Data, ...Data];
+      for (let j = 0; j < Data.length; j++) {
+        const dataItem: any = Data[j];
+        var i = curr.Data.findIndex((curr: any) => curr.Key == dataItem.Key);
+        if (i != -1) curr.Data[i].Value = dataItem.Value;
+        else curr.Data = [...curr.Data, dataItem];
+      }
       this.globalData = [
         ...this.globalData.slice(0, index),
         curr,
@@ -479,6 +683,10 @@ export class VerificationScreenComponent implements OnInit {
     this.cdr.detectChanges();
     await new Promise(resolveTime => setTimeout(resolveTime, 400));
     await this.scrollIntoStorageView(Id);
+    var indexTable: any = document
+      .querySelectorAll("#globalInformation #frames proof-global-storage")
+      [index].querySelectorAll(".data-table")[0];
+    indexTable.scrollTop = indexTable.scrollHeight;
   }
 
   parseActionData(action: any): any {
@@ -493,6 +701,70 @@ export class VerificationScreenComponent implements OnInit {
     return JSON.parse(data);
   }
 
+  scrollWithinGlobalStorage(side: string) {
+    var globalInformationScrollPos = document.querySelectorAll(
+      "#globalInformation #frames"
+    )[0].scrollLeft;
+    var minScrollWidth =
+      document
+        .querySelectorAll("#globalInformation #frames")[0]
+        .getBoundingClientRect().width / 4;
+    switch (side) {
+      case "L":
+        if (globalInformationScrollPos - minScrollWidth >= 0)
+          globalInformationScrollPos -= minScrollWidth;
+        else globalInformationScrollPos = 0;
+        break;
+      default:
+        var maxRange = document.querySelectorAll(
+          "#globalInformation #frames"
+        )[0].scrollWidth;
+        if (globalInformationScrollPos + minScrollWidth <= maxRange)
+          globalInformationScrollPos += minScrollWidth;
+        else globalInformationScrollPos = maxRange;
+    }
+    document.querySelectorAll("#globalInformation #frames")[0].scrollTo({
+      top: 0,
+      left: globalInformationScrollPos,
+      behavior: "smooth"
+    });
+
+    this.isDisableGlobalInformationL = this.isDisableGlobalStorageScroll("L");
+    this.isDisableGlobalInformationR = this.isDisableGlobalStorageScroll("R");
+  }
+
+  isDisableGlobalStorageScroll(side: string): boolean {
+    try {
+      var globalInformationScrollPos = document.querySelectorAll(
+        "#globalInformation #frames"
+      )[0].scrollLeft;
+      switch (side) {
+        case "L":
+          if (globalInformationScrollPos == 0) return true;
+          break;
+        default:
+          var globalInformationFrame: any = document.querySelectorAll(
+            "#globalInformation #frames"
+          )[0];
+          if (
+            globalInformationFrame.scrollLeft +
+              globalInformationFrame.offsetWidth >=
+            globalInformationFrame.scrollWidth
+          )
+            return true;
+      }
+    } catch (error) {
+      return true;
+    }
+    return false;
+  }
+
+  setServices() {}
+
+  //this.history.pushState({}, "", '/multiplecompare/[{"title":"sasasa","t1":"qwqwqw","t2":"212dsdsd"}]')
+  //location.reload()
+  //https://text-comparison-server.herokuapp.com/multiplecompare/[{"title":"sasasa","t1":"qwqwqw","t2":"212dsdsd"}]
+
   getSampleUI() {
     return {
       Title: "",
@@ -501,6 +773,8 @@ export class VerificationScreenComponent implements OnInit {
       ProofContainerTitle: "",
       NoOfFrames: 4,
       NoOFActions: 40,
+      PlaybackSpeed: 1,
+      ScrollToPointer: true,
       Steppers: [
         {
           NO: 1,
@@ -552,10 +826,53 @@ export class VerificationScreenComponent implements OnInit {
         },
         {
           NO: 13,
-          Name: "Conclusion"
+          Name: "Summary"
         }
       ],
-      Actions: [
+      Steps: [
+        {
+          StepNo: 1,
+          StepTo: 1,
+          SegmentNo: 1,
+          Title: "Step 1 - Retrieve Current Transaction",
+          Discription: "Step 1 - Retrieve Current Transaction .....",
+          Action: {
+            Type: "BrowserScreen",
+            Speed: 30,
+            Description:
+              "Retrieve the current transaction from Stellar Blockchain.",
+            Toast: "Retrieve Blockchain Transaction",
+            Parameters: {
+              ServiceURL: `https://horizon-testnet.stellar.org/transactions/${this.TXNhash}/operations`,
+              InnerHTML: ``,
+
+              Query: "",
+              QuerySelector: "",
+              ElementIndex: "",
+
+              FormatData: "",
+              FormatType: "",
+              FormatParameters: "",
+
+              InputData: "",
+              OutputVariable: "",
+              EventProperty: "",
+
+              TextSelector: "${MainTXNCurentTXNHash}",
+              CaseSensitive: true,
+              TextIndex: 0,
+              TextStyle: "",
+
+              StorageView: [
+                {
+                  Key: "TXN2 CurrentTXN",
+                  Value: "${var_currenttxn}"
+                }
+              ],
+              DocumentationLink: ""
+            }
+          }
+        },
         {
           Id: 1,
           StepTo: 1,
@@ -566,10 +883,10 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Retrieve the current transaction from Stellar Blockchain.",
           FrameId: 1,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
-          PageURL:
-            `https://horizon-testnet.stellar.org/transactions/${this.txnId}/operations`
+          PageURL: `https://horizon-testnet.stellar.org/transactions/${this.TXNhash}/operations`,
+          ScrollToPointer: false
         },
         {
           Id: 2,
@@ -577,12 +894,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Format transaction data to JSON (Javascript Object Notation)",
           FrameId: 1,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "get-data",
           Query: "body",
           EIndex: 0,
           selector: "innerText",
-          RVariable: "MainTXNData"
+          RVariable: "MainTXNDataString",
+          ScrollToPointer: false
         },
         {
           Id: 3,
@@ -590,12 +908,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Format transaction data to JSON (Javascript Object Notation)",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
-          Variable: "MainTXNData",
+          Variable: "MainTXNDataString",
           Formater: "parseJson",
           Data: null,
-          RVariable: "MainTXNData"
+          RVariable: "MainTXNData",
+          ScrollToPointer: false
         },
         {
           Id: 4,
@@ -604,7 +923,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the CurrentTXN Hash (base64 encoded) from the transaction details.",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
           Variable: "MainTXNData",
           Formater: "jsonValueObjectPicker",
@@ -618,13 +937,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded CurrentTXN Hash from the transaction details.",
           FrameId: 1,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "CurrentTXN",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
         },
         {
           Id: 6,
@@ -632,15 +951,29 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded CurrentTXN Hash from the transaction details.",
           FrameId: 1,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "${MainTXNCurentTXNHash}",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
         },
-
+        {
+          FrameTitle: "",
+          FrameDescription: "",
+          ActionDescription:
+            "Save the base64 encoded CurrentTXN Hash value for future usage.",
+          FrameId: 1,
+          ActionSpeed: 30,
+          Type: "save-data",
+          Data: [
+            {
+              Key: "TXN2 CurrentTXN (base64)",
+              Value: "${MainTXNCurentTXNHash}"
+            }
+          ]
+        },
         // decode currenttxnhash
         {
           Id: 7,
@@ -650,16 +983,17 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded CurrentTXN Hash value",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html"
+          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
+          ScrollToPointer: false
         },
         {
           Id: 8,
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded CurrentTXN Hash value.",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "set-data",
           Query: ".input textarea",
           EIndex: 0,
@@ -671,7 +1005,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded CurrentTXN Hash value.",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "trigger-fn",
           Query: ".btn.btn-default",
           EIndex: 0,
@@ -688,7 +1022,9 @@ export class VerificationScreenComponent implements OnInit {
           Query: ".output textarea",
           EIndex: 0,
           selector: "value",
-          RVariable: "var_currenttxn"
+          RVariable: "var_currenttxn",
+          ToastMessage: "Decoded CurrentTXN Hash",
+          ToastPosition: ["60%", "10%"]
         },
         {
           Id: 11,
@@ -697,7 +1033,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Save the decoded CurrentTXN Hash value for future usage.",
           FrameId: 2,
-          ActionSpeed: 60,
+          ActionSpeed: 30,
           Type: "save-data",
           Data: [
             {
@@ -717,10 +1053,11 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Retrieve the current transaction of the gateway transaction from Stellar Blockchain.",
           FrameId: 3,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
           PageURL:
-            "https://horizon-testnet.stellar.org/transactions/${var_currenttxn}/operations"
+            "https://horizon-testnet.stellar.org/transactions/${var_currenttxn}/operations",
+          ScrollToPointer: false
         },
 
         {
@@ -728,24 +1065,26 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Parse transaction data to JSON",
           FrameId: 3,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "get-data",
           Query: "body",
           EIndex: 0,
           selector: "innerText",
-          RVariable: "MainTXNCurentTXNData"
+          RVariable: "MainTXNCurentTXNDataString",
+          ScrollToPointer: false
         },
         {
           Id: 14,
           ActionTitle: "",
           ActionDescription: "Parse transaction data to JSON",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
-          Variable: "MainTXNCurentTXNData",
+          Variable: "MainTXNCurentTXNDataString",
           Formater: "parseJson",
           Data: null,
-          RVariable: "MainTXNCurentTXNData"
+          RVariable: "MainTXNCurentTXNData",
+          ScrollToPointer: false
         },
         {
           Id: 15,
@@ -754,12 +1093,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Identifier from the transaction details.",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
           Variable: "MainTXNCurentTXNData",
           Formater: "jsonValueObjectPicker",
           Data: ["identifier", "value"],
-          RVariable: "MainTXNCurentTXNDataIdentifier"
+          RVariable: "MainTXNCurentTXNDataIdentifier",
+          ScrollToPointer: false
         },
 
         // highlight identifier
@@ -769,13 +1109,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Identifier from the transaction details.",
           FrameId: 3,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "identifier",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
         },
 
         // highlight identifier value
@@ -785,13 +1125,29 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Identifier from the transaction details.",
           FrameId: 3,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "${MainTXNCurentTXNDataIdentifier}",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
+        },
+
+        {
+          FrameTitle: "",
+          FrameDescription: "",
+          ActionDescription:
+            "Save the base64 encoded Identifier value for future usage.",
+          FrameId: 3,
+          ActionSpeed: 30,
+          Type: "save-data",
+          Data: [
+            {
+              Key: "Identifier (base64)",
+              Value: "${MainTXNCurentTXNDataIdentifier}"
+            }
+          ]
         },
 
         // decode identifier
@@ -803,16 +1159,17 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Identifier value.",
           FrameId: 4,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html"
+          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
+          ScrollToPointer: false
         },
         {
           Id: 19,
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Identifier value.",
           FrameId: 4,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "set-data",
           Query: ".input textarea",
           EIndex: 0,
@@ -824,7 +1181,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Identifier value.",
           FrameId: 4,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "trigger-fn",
           Query: ".btn.btn-default",
           EIndex: 0,
@@ -841,7 +1198,9 @@ export class VerificationScreenComponent implements OnInit {
           Query: ".output textarea",
           EIndex: 0,
           selector: "value",
-          RVariable: "MainTXNCurentTXNDataIdentifierDecoded"
+          RVariable: "MainTXNCurentTXNDataIdentifierDecoded",
+          ToastMessage: "Decoded Identifier",
+          ToastPosition: ["60%", "10%"]
         },
         {
           Id: 22,
@@ -850,7 +1209,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Save the decoded Identifier value for future usage.",
           FrameId: 4,
-          ActionSpeed: 60,
+          ActionSpeed: 30,
           Type: "save-data",
           Data: [
             {
@@ -867,12 +1226,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Product ID from the transaction details.",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
           Variable: "MainTXNCurentTXNData",
           Formater: "jsonValueObjectPicker",
           Data: ["productId", "value"],
-          RVariable: "MainTXNCurentTXNDataProductId"
+          RVariable: "MainTXNCurentTXNDataProductId",
+          ScrollToPointer: false
         },
 
         // highlight Datahash
@@ -882,13 +1242,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Product ID from the transaction details.",
           FrameId: 3,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "productId",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
         },
 
         // highlight productId value
@@ -898,13 +1258,29 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Product ID from the transaction details.",
           FrameId: 3,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "${MainTXNCurentTXNDataProductId}",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
+        },
+
+        {
+          FrameTitle: "",
+          FrameDescription: "",
+          ActionDescription:
+            "Save the base64 encoded Product Id value for future usage.",
+          FrameId: 3,
+          ActionSpeed: 30,
+          Type: "save-data",
+          Data: [
+            {
+              Key: "Product ID (base64)",
+              Value: "${MainTXNCurentTXNDataProductId}"
+            }
+          ]
         },
 
         // Decode productId
@@ -916,9 +1292,10 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Product Id value",
           FrameId: 5,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html"
+          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
+          ScrollToPointer: false
         },
         {
           Id: 27,
@@ -937,7 +1314,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Product Id value",
           FrameId: 5,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "trigger-fn",
           Query: ".btn.btn-default",
           EIndex: 0,
@@ -954,7 +1331,9 @@ export class VerificationScreenComponent implements OnInit {
           Query: ".output textarea",
           EIndex: 0,
           selector: "value",
-          RVariable: "MainTXNCurentTXNDataProductIdDecoded"
+          RVariable: "MainTXNCurentTXNDataProductIdDecoded",
+          ToastMessage: "Decoded Product Id",
+          ToastPosition: ["60%", "10%"]
         },
         {
           Id: 30,
@@ -963,7 +1342,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Save the decoded Product Id value for future usage.",
           FrameId: 5,
-          ActionSpeed: 60,
+          ActionSpeed: 30,
           Type: "save-data",
           Data: [
             {
@@ -980,12 +1359,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded PreviousTXN Hash value from the transaction details.",
           FrameId: 1,
-          ActionSpeed: 60,
+          ActionSpeed: 2,
           Type: "format-data",
           Variable: "MainTXNData",
           Formater: "jsonValueObjectPicker",
           Data: ["PreviousTXN", "value"],
-          RVariable: "MainTXNPreviousTXN"
+          RVariable: "MainTXNPreviousTXN",
+          ScrollToPointer: false
         },
 
         // Highlight Previous hash
@@ -995,13 +1375,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded PreviousTXN Hash value from the transaction details.",
           FrameId: 1,
-          ActionSpeed: 40,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "PreviousTXN",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
         },
         {
           Id: 33,
@@ -1010,13 +1390,29 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded PreviousTXN Hash value from the transaction details.",
           FrameId: 1,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "${MainTXNPreviousTXN}",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
+        },
+
+        {
+          FrameTitle: "",
+          FrameDescription: "",
+          ActionDescription:
+            "Save the base64 encoded Previous TXN Hash value for future usage.",
+          FrameId: 1,
+          ActionSpeed: 30,
+          Type: "save-data",
+          Data: [
+            {
+              Key: "PreviousTXN Hash (base64)",
+              Value: "${MainTXNPreviousTXN}"
+            }
+          ]
         },
 
         // Decode Previous hash
@@ -1029,9 +1425,10 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Decode the base64 encoded MainTXN Previous hash value.",
           FrameId: 7,
-          ActionSpeed: 50,
+          ActionSpeed: 10,
           Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html"
+          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
+          ScrollToPointer: false
         },
         {
           Id: 35,
@@ -1039,7 +1436,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Decode the base64 encoded MainTXN Previous hash value.",
           FrameId: 7,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "set-data",
           Query: ".input textarea",
           EIndex: 0,
@@ -1052,7 +1449,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Decode the base64 encoded MainTXN Previous hash value.",
           FrameId: 7,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "trigger-fn",
           Query: ".btn.btn-default",
           EIndex: 0,
@@ -1070,7 +1467,9 @@ export class VerificationScreenComponent implements OnInit {
           Query: ".output textarea",
           EIndex: 0,
           selector: "value",
-          RVariable: "MainTXNPreviousTXNDecoded"
+          RVariable: "MainTXNPreviousTXNDecoded",
+          ToastMessage: "Decoded MainTXN Previous Hash",
+          ToastPosition: ["60%", "10%"]
         },
         {
           Id: 38,
@@ -1078,11 +1477,11 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Save the decoded MainTXN Previous hash value for future usage.",
           FrameId: 7,
-          ActionSpeed: 40,
+          ActionSpeed: 30,
           Type: "save-data",
           Data: [
             {
-              Key: "Previoushash",
+              Key: "PreviousTXN Hash",
               Value: "${MainTXNPreviousTXNDecoded}"
             }
           ]
@@ -1099,10 +1498,11 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Retrieve the Backlink transaction from Stellar Blockchain.",
           FrameId: 8,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
           PageURL:
-            "https://horizon-testnet.stellar.org/transactions/${MainTXNPreviousTXNDecoded}/operations"
+            "https://horizon-testnet.stellar.org/transactions/${MainTXNPreviousTXNDecoded}/operations",
+          ScrollToPointer: false
         },
 
         {
@@ -1110,21 +1510,21 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Parse transaction data to JSON",
           FrameId: 8,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "get-data",
           Query: "body",
           EIndex: 0,
           selector: "innerText",
-          RVariable: "MainTXNPreviousTXNData"
+          RVariable: "MainTXNPreviousTXNDataString"
         },
         {
           Id: 41,
           ActionTitle: "",
           ActionDescription: "Parse transaction data to JSON",
           FrameId: 8,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
-          Variable: "MainTXNPreviousTXNData",
+          Variable: "MainTXNPreviousTXNDataString",
           Formater: "parseJson",
           Data: null,
           RVariable: "MainTXNPreviousTXNData"
@@ -1136,7 +1536,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
           FrameId: 2,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
           Variable: "MainTXNPreviousTXNData",
           Formater: "jsonValueObjectPicker",
@@ -1150,13 +1550,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
           FrameId: 8,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "CurrentTXN",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
         },
         {
           Id: 44,
@@ -1164,13 +1564,29 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
           FrameId: 8,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "${MainTXNPreviousTXNCurrentTXNHash}",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
+        },
+
+        {
+          FrameTitle: "",
+          FrameDescription: "",
+          ActionDescription:
+            "Save the base64 encoded CurrentTXN Hash value of the Previuos TXN for future usage.",
+          FrameId: 8,
+          ActionSpeed: 30,
+          Type: "save-data",
+          Data: [
+            {
+              Key: "CurentTXNHash (base64)",
+              Value: "${MainTXNPreviousTXNCurrentTXNHash}"
+            }
+          ]
         },
 
         // decode current hash
@@ -1183,9 +1599,10 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Decode the base64 encoded CurrentTXN Hash value from the PreviousTXN details.",
           FrameId: 9,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html"
+          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
+          ScrollToPointer: false
         },
         {
           Id: 46,
@@ -1193,7 +1610,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Decode the base64 encoded CurrentTXN Hash value from the PreviousTXN details.",
           FrameId: 9,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "set-data",
           Query: ".input textarea",
           EIndex: 0,
@@ -1206,7 +1623,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Decode the base64 encoded CurrentTXN Hash value from the PreviousTXN details.",
           FrameId: 9,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "trigger-fn",
           Query: ".btn.btn-default",
           EIndex: 0,
@@ -1224,7 +1641,9 @@ export class VerificationScreenComponent implements OnInit {
           Query: ".output textarea",
           EIndex: 0,
           selector: "value",
-          RVariable: "MainTXNPreviousTXNCurrentTXNHashDecoded"
+          RVariable: "MainTXNPreviousTXNCurrentTXNHashDecoded",
+          ToastMessage: "Decoded PreviousTXN's CurrentTXN Hash",
+          ToastPosition: ["60%", "10%"]
         },
         {
           Id: 49,
@@ -1233,7 +1652,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Save the decoded CurrentTXN Hash value from the Backlink transaction for future usage.",
           FrameId: 9,
-          ActionSpeed: 60,
+          ActionSpeed: 30,
           Type: "save-data",
           Data: [
             {
@@ -1254,35 +1673,37 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Retrieve the current transaction of the backlink transaction from Stellar Blockchain.",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
           PageURL:
-            "https://horizon-testnet.stellar.org/transactions/${MainTXNPreviousTXNCurrentTXNHashDecoded}/operations"
+            "https://horizon-testnet.stellar.org/transactions/${MainTXNPreviousTXNCurrentTXNHashDecoded}/operations",
+          ScrollToPointer: false
         },
-
         {
           Id: 51,
           ActionTitle: "",
           ActionDescription: "Parse transaction data to JSON",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "get-data",
           Query: "body",
           EIndex: 0,
           selector: "innerText",
-          RVariable: "MainTXNPreviousTXNCurrentTXNData"
+          RVariable: "MainTXNPreviousTXNCurrentTXNDataString",
+          ScrollToPointer: false
         },
         {
           Id: 52,
           ActionTitle: "",
           ActionDescription: "Parse transaction data to JSON",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
-          Variable: "MainTXNPreviousTXNCurrentTXNData",
+          Variable: "MainTXNPreviousTXNCurrentTXNDataString",
           Formater: "parseJson",
           Data: null,
-          RVariable: "MainTXNPreviousTXNCurrentTXNData"
+          RVariable: "MainTXNPreviousTXNCurrentTXNData",
+          ScrollToPointer: false
         },
         {
           Id: 53,
@@ -1291,12 +1712,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Identifier from the transaction details.",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
           Variable: "MainTXNPreviousTXNCurrentTXNData",
           Formater: "jsonValueObjectPicker",
           Data: ["identifier", "value"],
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataIdentifier"
+          RVariable: "MainTXNPreviousTXNCurrentTXNDataIdentifier",
+          ScrollToPointer: false
         },
 
         {
@@ -1305,13 +1727,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Identifier from the transaction details.",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "Identifier",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
         },
         {
           Id: 55,
@@ -1319,13 +1741,29 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Identifier from the transaction details.",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "${MainTXNPreviousTXNCurrentTXNDataIdentifier}",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
+        },
+
+        {
+          FrameTitle: "",
+          FrameDescription: "",
+          ActionDescription:
+            "Save the base64 encoded Identifier value of the Previuos TXN for future usage.",
+          FrameId: 10,
+          ActionSpeed: 30,
+          Type: "save-data",
+          Data: [
+            {
+              Key: "Identifier (base64)",
+              Value: "${MainTXNPreviousTXNCurrentTXNDataIdentifier}"
+            }
+          ]
         },
 
         // decode current hash
@@ -1338,16 +1776,17 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Identifier value.",
           FrameId: 11,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html"
+          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
+          ScrollToPointer: false
         },
         {
           Id: 57,
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Identifier value.",
           FrameId: 11,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "set-data",
           Query: ".input textarea",
           EIndex: 0,
@@ -1359,7 +1798,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Identifier value.",
           FrameId: 11,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "trigger-fn",
           Query: ".btn.btn-default",
           EIndex: 0,
@@ -1376,16 +1815,18 @@ export class VerificationScreenComponent implements OnInit {
           Query: ".output textarea",
           EIndex: 0,
           selector: "value",
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataIdentifierDecoded"
+          RVariable: "MainTXNPreviousTXNCurrentTXNDataIdentifierDecoded",
+          ToastMessage: "Decoded Identifier",
+          ToastPosition: ["60%", "10%"]
         },
         {
           Id: 60,
           FrameTitle: "",
           FrameDescription: "",
           FrameId: 11,
-          ActionSpeed: 60,
+          ActionSpeed: 40,
           ActionDescription:
-            "Save the decoded Identifier value for future usage.",
+            "Save the dec3ded Identifier value for future usage.",
           Type: "save-data",
           Data: [
             {
@@ -1402,12 +1843,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Product ID from the transaction details.",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "format-data",
           Variable: "MainTXNPreviousTXNCurrentTXNData",
           Formater: "jsonValueObjectPicker",
           Data: ["productId", "value"],
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataProductID"
+          RVariable: "MainTXNPreviousTXNCurrentTXNDataProductID",
+          ScrollToPointer: false
         },
 
         {
@@ -1416,13 +1858,13 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Product ID from the transaction details.",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "productId",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
         },
         {
           Id: 63,
@@ -1430,13 +1872,29 @@ export class VerificationScreenComponent implements OnInit {
           ActionDescription:
             "Select the encoded Product ID from the transaction details.",
           FrameId: 10,
-          ActionSpeed: 30,
+          ActionSpeed: 20,
           Type: "text-style",
           HText: "${MainTXNPreviousTXNCurrentTXNDataProductID}",
           CaseSensitive: true,
           TextIndex: 0,
           StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; font-size: 14px; display: inline-block; border-radius: 6px"
+            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
+        },
+
+        {
+          FrameTitle: "",
+          FrameDescription: "",
+          ActionDescription:
+            "Save the base64 encoded Product ID value of the Previuos TXN for future usage.",
+          FrameId: 10,
+          ActionSpeed: 30,
+          Type: "save-data",
+          Data: [
+            {
+              Key: "Product ID (base64)",
+              Value: "${MainTXNPreviousTXNCurrentTXNDataProductID}"
+            }
+          ]
         },
 
         {
@@ -1448,16 +1906,17 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Product ID value.",
           FrameId: 12,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html"
+          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
+          ScrollToPointer: false
         },
         {
           Id: 65,
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Product ID value.",
           FrameId: 12,
-          ActionSpeed: 30,
+          ActionSpeed: 10,
           Type: "set-data",
           Query: ".input textarea",
           EIndex: 0,
@@ -1469,7 +1928,7 @@ export class VerificationScreenComponent implements OnInit {
           ActionTitle: "",
           ActionDescription: "Decode the base64 encoded Product ID value.",
           FrameId: 12,
-          ActionSpeed: 30,
+          ActionSpeed: 2,
           Type: "trigger-fn",
           Query: ".btn.btn-default",
           EIndex: 0,
@@ -1486,14 +1945,16 @@ export class VerificationScreenComponent implements OnInit {
           Query: ".output textarea",
           EIndex: 0,
           selector: "value",
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataProductIDDecoded"
+          RVariable: "MainTXNPreviousTXNCurrentTXNDataProductIDDecoded",
+          ToastMessage: "Decoded Product ID",
+          ToastPosition: ["60%", "10%"]
         },
         {
           Id: 68,
           FrameTitle: "",
           FrameDescription: "",
           FrameId: 12,
-          ActionSpeed: 60,
+          ActionSpeed: 30,
           Type: "save-data",
           ActionDescription:
             "Save the decoded Product ID value for future usage.",
@@ -1503,6 +1964,186 @@ export class VerificationScreenComponent implements OnInit {
               Value: "${MainTXNPreviousTXNCurrentTXNDataProductIDDecoded}"
             }
           ]
+        },
+        {
+          Id: 69,
+          StepTo: 12,
+          FrameTitle: "Step 13 - Compare the base64 decoded Identifier",
+          ShortFrameTitle: "Step 13 - Compare the base64 decoded Identifier",
+          FrameDescription: "",
+          ActionTitle: "",
+          ActionDescription:
+            "Compare the base64 decoded Identifier values from the transactions.",
+          FrameId: 13,
+          ActionSpeed: 10,
+          Type: "site-screen",
+          PageURL: "https://text-comparison-server.herokuapp.com",
+          ScrollToPointer: false
+        },
+        {
+          Id: 70,
+          ActionTitle: "",
+          ActionDescription:
+            "Compare the base64 decoded Identifier values from the transactions.",
+          FrameId: 13,
+          ActionSpeed: 20,
+          Type: "set-data",
+          Query: "textarea",
+          EIndex: 0,
+          Selector: "value",
+          Data:
+            '[{"title": "Identifiers from the Main transaction and Backlink transaction", "t1": "${MainTXNCurentTXNDataIdentifierDecoded}", "t2": "${MainTXNPreviousTXNCurrentTXNDataIdentifierDecoded}"}]'
+        },
+        {
+          Id: 71,
+          ActionTitle: "",
+          ActionDescription:
+            "Compare the base64 decoded Identifier values from the transactions.",
+          FrameId: 13,
+          ActionSpeed: 10,
+          Type: "trigger-fn",
+          Query: "button",
+          EIndex: 0,
+          Event: "click",
+          Data: []
+        },
+        {
+          Id: 72,
+          ActionTitle: "",
+          ActionDescription:
+            "Compare the base64 decoded Identifier values from the transactions.",
+          FrameId: 13,
+          ActionSpeed: 40,
+          Type: "element-attribute",
+          Query: ".comparissonBannerMargin",
+          EIndex: 0,
+          Attribute: "style",
+          Value: "",
+          ValueReplacement: 2,
+          AutoScroll: true
+        },
+        {
+          Id: 73,
+          StepTo: 13,
+          FrameTitle: "Step 14 - Verification Summary",
+          ShortFrameTitle: "Step 14 - Verification Summary",
+          FrameDescription: "",
+          ActionTitle: "",
+          ActionDescription:
+            "Verification summary on the proof of the backlink.",
+          FrameId: 14,
+          ActionSpeed: 10,
+          Type: "site-screen",
+          InnerHTML: `
+          <!DOCTYPE html>
+<html>
+  <head>
+    <link
+      href="https://www.online-html-editor.org/assets/minimalist-blocks/content.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body style="height: 100vh; display: flex; justify-content: center; align-items: center;">
+    <div class="container">
+      <div class="row clearfix">
+        <div class="column full">
+          <h2
+            class="size-18"
+            style="font-weight: 800; text-align: center; letter-spacing: 8px; text-transform: uppercase;"
+          >
+            Verification summary
+          </h2>
+        </div>
+        <div class="is-tool is-row-tool">
+          <div
+            class="row-handle"
+            data-title="Move"
+            style="width:100%;cursor:move;text-align:center;"
+            title="Move"
+          >
+            <br />
+          </div>
+        </div>
+        <div class="is-rowadd-tool" style="height:0;"><br /></div>
+      </div>
+      <div class="row clearfix">
+        <div class="column full">
+          <p
+            class="size-12"
+            style="text-align: center; letter-spacing: 3px; color: rgb(94, 94, 94); text-transform: uppercase;"
+          >
+            <b
+              style="color: rgb(71, 88, 204); background-color: rgb(240, 249, 254);"
+              >PROOF OF THE BACKLINK</b
+            >
+          </p>
+        </div>
+        <div class="is-tool is-row-tool">
+          <div
+            class="row-handle"
+            data-title="Move"
+            style="width:100%;cursor:move;text-align:center;"
+            title="Move"
+          >
+            <br />
+          </div>
+        </div>
+        <div class="is-rowadd-tool" style="height:0;"><br /></div>
+      </div>
+      <div class="row clearfix">
+        <div class="column half">
+          <p style="text-align: justify;">
+            <strong
+              ><span class="size-14">Current Transaction Hash</span></strong
+            >
+          </p>
+          <p
+            class="size-14"
+            style="text-align: justify; overflow-wrap: break-word;"
+          >
+          \${var_currenttxn}
+          </p>
+        </div>
+        <div class="column half">
+          <p class="size-14" style="text-align: justify; ">
+            <strong>Previous Transaction Hash</strong>
+          </p>
+          <p
+            class="size-14"
+            style="text-align: justify; overflow-wrap: break-word;"
+          >
+            \${MainTXNPreviousTXNCurrentTXNHashDecoded}
+          </p>
+        </div>
+        <div class="is-tool is-row-tool">
+          <div
+            class="row-handle"
+            data-title="Move"
+            style="width:100%;cursor:move;text-align:center;"
+            title="Move"
+          >
+            <br />
+          </div>
+        </div>
+        <div class="is-rowadd-tool" style="height:0;"><br /></div>
+      </div>
+      <div class="row clearfix">
+        <pre
+          class="size-14"
+          style="background-color: rgb(46, 125, 50); color: rgb(245, 243, 252); font-weight: bold; text-align: center; border-radius: 8px; margin: 0; padding: 8px;"
+        >
+Verification Completed</pre
+        >
+        <div class="is-rowadd-tool" style="height:0;"><br /></div>
+      </div>
+    </div>
+  </body>
+</html>
+
+          `,
+          PageURL: "about: Verification Summary - PROOF OF THE BACKLINK",
+          ScrollToPointer: false
         }
       ]
     };

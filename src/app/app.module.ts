@@ -30,6 +30,7 @@ import { MaintenanceComponent } from './features/maintenance/maintenance.compone
 import { SiteScreenComponent } from './features/proof-verification/components/site-screen/site-screen.component';
 import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
 import { GlobalStorageComponent } from './features/proof-verification/components/global-storage/global-storage.component';
+import { ElementDividerComponent } from './features/proof-verification/components/element-divider/element-divider.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { GlobalStorageComponent } from './features/proof-verification/components
     MaintenanceComponent,
     SiteScreenComponent,
     VerificationScreenComponent,
-    GlobalStorageComponent
+    GlobalStorageComponent,
+    ElementDividerComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +70,7 @@ import { GlobalStorageComponent } from './features/proof-verification/components
     CarouselModule,
     NgxPaginationModule,
   ],
-  entryComponents: [SiteScreenComponent],
+  entryComponents: [SiteScreenComponent, ElementDividerComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
