@@ -90,7 +90,7 @@ export class SiteScreenComponent implements OnInit {
     //   left -= sFrame.getBoundingClientRect().left;
     sFrame.scroll({
       top: 0,
-      left,
+      left: left,
       behavior: "smooth"
     });
     await new Promise(resolveTime => setTimeout(resolveTime, 400));

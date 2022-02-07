@@ -1,5 +1,5 @@
 <div id="globalStorageFrame" >
-  <div class="header">
+  <div class="header" *ngIf="frameData.Title">
     <h6 class="text-nowrap">{{ frameData.Title ? frameData.Title : "Frame " + frameData.Id }}</h6>
   </div>
   <div class="data-table">
