@@ -183,7 +183,7 @@ export class HomeComponent implements OnInit {
             BlockchainName: "Stellar",
             productId: "Product ID Not Available",
             productName: element.ProductName,
-            identifier: "Not Available"
+            identifier: element.Identifier
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
@@ -214,7 +214,7 @@ export class HomeComponent implements OnInit {
             BlockchainName: "Stellar",
             productId: "Product ID Not Available",
             productName: element.ProductName,
-            identifier: "Not Available"
+            identifier: element.Identifier
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
