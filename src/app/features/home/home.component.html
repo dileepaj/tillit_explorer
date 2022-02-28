@@ -1,33 +1,29 @@
 <app-header></app-header>
 <div class="main-container">
     <div class="container" >
-    <div *ngIf="!loadingComplete">
-<app-home-skeleton></app-home-skeleton>
-    </div>
-        <div class="row justify-content-md-center align-items-center" *ngIf="loadingComplete && !errorOccurred">
-            <div class="col-12 align-self-center mt-2">
-                <div class="row mb-1">
-                    <div class="col-12">
-                        <div class="pl-3">
-                        <h4>Recent Transactions</h4>
-                    </div>
-                    </div>
+ 
+        <div class="raw" >
+            <div class="col-sm-12 col-md-12 col-lg-12 mt-2">
+                <div class="row mt-1 titleMargin" >
+                        <h5>Recent Transactions</h5>
                 </div>
             </div>
-            <div class="col-12 align-self-center mt-0">
-                <app-card class="col-12" *ngFor="let item of results  | paginate: {id:'paginateId', itemsPerPage:perPage, currentPage:page, totalItems:totalRecords }" [transactionData]="item"></app-card>
-               
+            <div *ngIf="!loadingComplete && !errorOccurred">
+                <div class="cardSkeltonMargins">
+                <app-home-skeleton></app-home-skeleton>
+                </div>
             </div>
-            <div class="col-12 align-self-center paginationControl">
-              <pagination-controls clas=""  maxSize='6' autoHide="true"  responsive="true" id='paginateId' class="text-center"  diractionLinks="true" (pageChange) = "onChangePage($event)"  ></pagination-controls>
+            <div class="col-sm-12 col-md-12 col-lg-12 mt-0"  *ngIf="loadingComplete && !errorOccurred">
+                <app-card class="col-sm-12 col-md-12 col-lg-12" *ngFor="let item of results  | paginate: {id:'paginateId', itemsPerPage:perPage, currentPage:page, totalItems:totalRecords }" [transactionData]="item"></app-card>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                <pagination-controls maxSize='6' autoHide="true"  responsive="true" id='paginateId' class="text-center"  diractionLinks="true" (pageChange) = "onChangePage($event)"  ></pagination-controls>
             </div>
         </div>
-        <div class="row content-area text-center" *ngIf="loadingComplete && errorOccurred">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row justify-content-md-center align-items-center content-area" *ngIf="loadingComplete && errorOccurred">
             <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle"
                 [errorMessage]="error.errorMessage" [errorMessageSecondary]="error.errorMessageSecondary">
             </app-error-id>
-        </div>
         </div>
     </div>
 </div>
