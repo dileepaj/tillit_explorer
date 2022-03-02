@@ -1,10 +1,20 @@
 <app-header></app-header>
 <div class="container">
   <div class="container mt-5">
-    <div class="row mb-3">
+    <div class="row">
       <div class="col-12 pl-0">
-        <h4 class="text-muted" id="proofHeaderTitle">PROOF OF THE BACKLINK</h4>
-        <p>Verify the backlink of given data packets through blockchain</p>
+        <div *ngIf="proofType == 'pobl'">
+          <h4 class="text-muted" id="proofHeaderTitle">
+            PROOF OF THE BACKLINK
+          </h4>
+          <p>Verify the backlink of given data packets through blockchain</p>
+        </div>
+        <div *ngIf="proofType == 'pog'">
+          <h4 class="text-muted" id="proofHeaderTitle">
+            PROOF OF THE GENESIS
+          </h4>
+          <p>Verify the creation of given data packet through blockchain</p>
+        </div>
       </div>
     </div>
   </div>
@@ -13,7 +23,7 @@
     id="proofContainer"
     style="height: 100%; display: flex; flex-direction: column; justify-content: center;"
   >
-    <div id="proofDemoLoaderFrame" *ngIf="!isStartDemo">
+    <div id="proofDemoLoaderFrame" *ngIf="!isStartDemo" class="mt-2">
       <button class="btn" (click)="startDemoFn()" *ngIf="!isLoading">
         <i class="fa fa-youtube-play" aria-hidden="true"></i>
       </button>
@@ -128,7 +138,7 @@
       id="verificationScreen"
       *ngIf="isStartDemo"
       [@screenAnimationDemo]
-      [ngStyle]="{ height: vsHeightExpand ? '98vh' : '75vh' }"
+      [ngStyle]="{ height: vsHeightExpand ? '98vh' : '82vh' }"
     >
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-center align-items-center">
@@ -302,63 +312,63 @@
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 0.25"
-                (click)="playbackSpeed = 0.25"
+                (click)="setSpeed(0.25)"
                 >0.25x</a
               >
               <a
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 0.5"
-                (click)="playbackSpeed = 0.5"
+                (click)="setSpeed(0.5)"
                 >0.5x</a
               >
               <a
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 0.75"
-                (click)="playbackSpeed = 0.75"
+                (click)="setSpeed(0.75)"
                 >0.75x</a
               >
               <a
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 1"
-                (click)="playbackSpeed = 1"
+                (click)="setSpeed(1)"
                 >Normal</a
               >
               <a
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 1.25"
-                (click)="playbackSpeed = 1.25"
+                (click)="setSpeed(1.25)"
                 >1.25x</a
               >
               <a
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 1.5"
-                (click)="playbackSpeed = 1.5"
+                (click)="setSpeed(1.5)"
                 >1.5x</a
               >
               <a
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 1.75"
-                (click)="playbackSpeed = 1.75"
+                (click)="setSpeed(1.75)"
                 >1.75x</a
               >
               <a
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 2"
-                (click)="playbackSpeed = 2"
+                (click)="setSpeed(2)"
                 >2x</a
               >
               <a
                 ngbDropdownItem
                 class="dropdown-item"
                 [class.active]="playbackSpeed == 40"
-                (click)="playbackSpeed = 40"
+                (click)="setSpeed(40)"
                 >40x</a
               >
             </div>
@@ -431,6 +441,85 @@
           ></proof-global-storage>
         </div>
       </div>
+      <div id="steppersFrame">
+        <div
+          id="segments"
+          class="bs-stepper my-2"
+          style="height: auto; width: 100%; display: flex; flex-direction: column; overflow: hidden;"
+        >
+          <div>
+            <!-- <h6 style="font-size: 13px; padding-left: 18px; margin-top: 14px;">
+              Proof Segments
+            </h6> -->
+            <div
+              style="height: auto; overflow-y: visible; overflow-x: hidden; width: 100%;"
+              id="stepWrapper"
+            >
+              <div class="bs-stepper-header cs-stepper-header" role="tablist">
+                <!-- your steps here -->
+                <ng-container *ngFor="let stepper of steppers">
+                  <div class="step">
+                    <div
+                      type="button"
+                      class="step-trigger stepBtn"
+                      role="tab"
+                      (click)="backToStep(stepper.NO)"
+                    >
+                      <span class="bs-stepper-circle cs-stepper-circle">{{
+                        stepper.NO
+                      }}</span>
+                      <span class="bs-stepper-label cs-stepper-label">{{
+                        stepper.Name
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="line"></div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="subSteppers"
+          class="bs-stepper"
+          style="height: auto; width: 100%; display: flex; flex-direction: column; overflow: hidden;"
+        >
+          <div>
+            <!-- <h6 style="font-size: 13px; padding-left: 18px; margin-top: 14px;">
+              Segment Actions
+            </h6> -->
+            <div
+              style="height: auto; overflow-y: visible; overflow-x: hidden; width: 100%;"
+              id="stepWrapper"
+            >
+              <div class="bs-stepper-header cs-stepper-header" role="tablist">
+                <!-- your steps here -->
+                <ng-container
+                  *ngFor="let subStepper of subSteppers; let index = index"
+                >
+                  <div class="step">
+                    <div
+                      type="button"
+                      class="step-trigger stepBtn"
+                      role="tab"
+                      (click)="backToAction(subStepper.ActionID)"
+                    >
+                      <span class="bs-stepper-circle cs-stepper-circle"
+                        >{{ SegmentNumber }}.{{ index + 1 }}</span
+                      >
+                      <span class="bs-stepper-label cs-stepper-label">{{
+                        subStepper.ActionName
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="line"></div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div>
         <ul style="list-style-position: inside" class="ml-0 pl-0 my-2">
           <li class="m-0 p-0">
@@ -455,85 +544,8 @@
         <div class="spanner" [class.show]="isBackToStep">
           <div class="loader"></div>
         </div>
-        <div id="steppersFrame">
-          <div
-            id="segments"
-            class="bs-stepper"
-            style="height: 100%; display: flex; flex-direction: column; overflow: hidden; flex: 50%;"
-          >
-            <div>
-              <h6
-                style="font-size: 13px; padding-left: 18px; margin-top: 14px;"
-              >
-                Proof Segments
-              </h6>
-              <div style="overflow-y: hidden; height: 100%;" id="stepWrapper">
-                <div class="bs-stepper-header cs-stepper-header" role="tablist">
-                  <!-- your steps here -->
-                  <ng-container *ngFor="let stepper of steppers">
-                    <div class="step">
-                      <div
-                        type="button"
-                        class="step-trigger stepBtn"
-                        role="tab"
-                        (click)="backToStep(stepper.NO)"
-                      >
-                        <span class="bs-stepper-circle cs-stepper-circle">{{
-                          stepper.NO
-                        }}</span>
-                        <span class="bs-stepper-label cs-stepper-label">{{
-                          stepper.Name
-                        }}</span>
-                      </div>
-                    </div>
-                    <div class="line"></div>
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            id="subSteppers"
-            class="bs-stepper"
-            style="height: 100%; display: flex; flex-direction: column; overflow: hidden; flex: 50%;"
-          >
-            <div>
-              <h6
-                style="font-size: 13px; padding-left: 18px; margin-top: 14px;"
-              >
-                Segment Actions
-              </h6>
-              <div style="overflow-y: hidden; height: 100%;" id="stepWrapper">
-                <div class="bs-stepper-header cs-stepper-header" role="tablist">
-                  <!-- your steps here -->
-                  <ng-container
-                    *ngFor="let subStepper of subSteppers; let index = index"
-                  >
-                    <div class="step">
-                      <div
-                        type="button"
-                        class="step-trigger stepBtn"
-                        role="tab"
-                        (click)="backToAction(subStepper.ActionID)"
-                      >
-                        <span class="bs-stepper-circle cs-stepper-circle"
-                          >{{ SegmentNumber }}.{{ index + 1 }}</span
-                        >
-                        <span class="bs-stepper-label cs-stepper-label">{{
-                          subStepper.ActionName
-                        }}</span>
-                      </div>
-                    </div>
-                    <div class="line"></div>
-                  </ng-container>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <div style="height: 100%;">
-          <button
+          <!-- <button
             class="btn btn-info rounded-pill steppersMenu"
             (click)="toggleSteppers()"
           >
@@ -552,7 +564,7 @@
                 d="M2 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm10.823.323-.396-.396A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2H1zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2h14zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"
               />
             </svg>
-          </button>
+          </button> -->
           <div id="frames" [style.overflow-x]="vsOverflowX">
             <ng-template #ProofDemoDirective></ng-template>
           </div>

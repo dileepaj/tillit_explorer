@@ -13,7 +13,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ElementDividerComponent } from "../components/element-divider/element-divider.component";
 import { SiteScreenComponent } from "../components/site-screen/site-screen.component";
 import * as POBLJSON from "../ProofJSONs/POBL.json";
-import * as POBLJSON_old from "../ProofJSONs/POBL_old.json";
+import * as POGJSON from "../ProofJSONs/POG.json";
 import * as ActionConfigurations from "../ProofJSONs/ActionConfigurations.json";
 
 @Component({
@@ -82,6 +82,8 @@ export class VerificationScreenComponent implements OnInit {
   toastLeft: string = "32%";
   ActionConfigurations: any;
   SegmentNumber: number;
+  availableProofs: any[] = ["pog", "pobl"];
+  proofType: string = "";
 
   @ViewChild("ProofDemoDirective", { read: ViewContainerRef, static: false })
   proofDemoRef: ViewContainerRef;
@@ -95,6 +97,7 @@ export class VerificationScreenComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       this.routerParams = { ...params.keys, ...params };
     });
+    this.proofType = this.routerParams.params.type;
   }
 
   async ngAfterViewInit() {
@@ -102,7 +105,147 @@ export class VerificationScreenComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  async scrollToFrameById(frameID: string, lower = 0) {
+  async startDemoFn() {
+    if (
+      this.routerParams &&
+      this.routerParams.params &&
+      this.availableProofs.includes(this.routerParams.params.type)
+    ) {
+      this.TXNhash = this.routerParams.params.txn;
+      this.variableStorage["TXNhash"] = this.TXNhash;
+      this.isLoading = true;
+
+      // backend call
+      await new Promise(resolveTime => setTimeout(resolveTime, 4200));
+
+      // start demo (not -verifing)
+      this.initiateProofDemo();
+    } else
+      alert("Proof verification is not yet available for the selected type.");
+  }
+
+  async initiateProofDemo() {
+    this.proofJSON = this.getProtocolJSON();
+    this.ActionConfigurations = this.getActionConfigurations();
+
+    // handleMultiStepAction
+    this.handleMultiStepActions();
+
+    // if verification success
+    console.log(this.proofJSON);
+
+    const { Header } = this.proofJSON;
+    this.StorageTitle = Header.StorageTitle;
+    this.ProofContainerTitle = Header.ProofContainerTitle;
+    this.steppers = this.filterSegmentsAndActions(Header.Segments);
+    this.playbackSpeed = Header.PlaybackSpeed;
+    this.gsHeightExpand = Header.GSHeightExpand;
+    this.gsOverflowX = Header.GSOverflowX;
+    this.vsHeightExpand = Header.VSHeightExpand;
+    this.vsOverflowX = Header.VSOverflowX;
+
+    console.log(this.steppers);
+
+    await this.scrollToFrameById("proofHeaderTitle", 20);
+    this.isStartDemo = true;
+    this.playProofDemo(0);
+  }
+
+  getProtocolJSON() {
+    var protocolJson: any;
+    switch (this.proofType) {
+      case "pobl":
+        protocolJson = POBLJSON;
+        break;
+      case "pog":
+        protocolJson = POGJSON;
+        break;
+      default:
+        break;
+    }
+    return protocolJson.default;
+  }
+
+  getActionConfigurations() {
+    var actionConfigs: any = ActionConfigurations;
+    return actionConfigs.default;
+  }
+
+  handleMultiStepActions() {
+    var proofJSONSteps: any = [];
+    var { Steps } = this.proofJSON;
+    for (let index = 0; index < Steps.length; index++) {
+      const step = Steps[index];
+      if (step.Action.ActionType == "MultiStepAction") {
+        var subActions = this.ActionConfigurations[
+          step.Action.ActionParameters.ActionConfigurationID
+        ].Actions;
+        for (let j = 0; j < subActions.length; j++) {
+          const subAction = subActions[j];
+          const formattedAction = this.parseSubActionData(
+            subAction,
+            step.Action.ActionParameters.SubActionArguments
+          );
+          formattedAction.Action._ID = proofJSONSteps.length;
+          proofJSONSteps.push(formattedAction);
+        }
+      } else {
+        step.Action._ID = proofJSONSteps.length;
+        proofJSONSteps.push(step);
+      }
+    }
+    this.proofJSON.Steps = proofJSONSteps;
+  }
+
+  parseSubActionData(action: any, storedData: any = this.variableStorage): any {
+    var data = JSON.stringify(action).toString();
+    [...data.matchAll(/"\#{[^}]+}"|\#{[^}]+}/g)].forEach(a => {
+      try {
+        let key = a[0].match(/\#{([^}]+)}/g)[0].slice(2, -1);
+        if (key && storedData) {
+          var replaceValue = storedData[key];
+          var valueType = typeof replaceValue;
+          if (valueType == "string" && a[0].match(/"\#{[^}]+}"/g)) {
+            try {
+              var result = JSON.stringify(replaceValue);
+              replaceValue = result;
+            } catch (error) {
+              replaceValue = `"${replaceValue}"`;
+            }
+          }
+          data = data.replace(a[0], replaceValue);
+        }
+      } catch (error) {}
+    });
+    return JSON.parse(data);
+  }
+
+  filterSegmentsAndActions(Segments: any) {
+    return Segments.map((Segment: any) => {
+      const SubActions = this.proofJSON.Steps.reduce(
+        (subActions: Array<any>, job: any) => {
+          const {
+            StepHeader: { SegmentNo },
+            Action: { _ID, ActionTitle }
+          } = job;
+          if (SegmentNo == Segment.NO) {
+            subActions.push({
+              ActionID: _ID,
+              ActionName: ActionTitle
+            });
+          }
+          return subActions;
+        },
+        []
+      );
+      return {
+        ...Segment,
+        SubActions
+      };
+    });
+  }
+
+  async scrollToFrameById(frameID: string, offset = 0) {
     const bodyRect: any = document.body.getBoundingClientRect();
     const pcRect: any = document
       .getElementById(frameID)
@@ -110,66 +253,14 @@ export class VerificationScreenComponent implements OnInit {
     const pcWidth = pcRect.x - bodyRect.x;
     const pcHeight = pcRect.y - bodyRect.y;
     window.scroll({
-      top: pcHeight - lower,
+      top: pcHeight - offset,
       left: pcWidth,
       behavior: "smooth"
     });
     await new Promise(resolveTime => setTimeout(resolveTime, 400));
   }
 
-  async createFrameInProofDemo(stepData: any): Promise<ComponentRef<any>> {
-    const { StepHeader, Action, Customizations } = stepData;
-    const { FrameID } = StepHeader;
-    const {
-      ActionTitle,
-      ActionDescription,
-      ActionType,
-      ActionParameters
-    } = Action;
-
-    var component: Type<any>;
-    switch (ActionType) {
-      case "BrowserScreen":
-        component = SiteScreenComponent;
-        break;
-      default:
-        break;
-    }
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      component
-    );
-    const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(
-      ElementDividerComponent
-    );
-    const ref = this.proofDemoRef.createComponent(componentFactory);
-    this.proofDemoRef.createComponent(componentDividerFactory);
-    this.demoScreenChildRefs[FrameID] = {
-      Id: FrameID,
-      type: ActionType,
-      ref,
-      ActionTitle
-    };
-    // ref.location.nativeElement.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "start",
-    //   inline: "start"
-    // });
-    this.cdr.detectChanges();
-    return ref;
-  }
-
-  async resizeGlobalScreen() {
-    this.gsHeightExpand = !this.gsHeightExpand;
-    await new Promise(resolveTime => setTimeout(resolveTime, 800));
-    this.scrollToFrameById("globalInformation", 10);
-  }
-
-  async resizeVerifyScreen() {
-    this.vsHeightExpand = !this.vsHeightExpand;
-    await new Promise(resolveTime => setTimeout(resolveTime, 800));
-    this.scrollToFrameById("verificationScreen", 10);
-  }
-
+  // player controlls
   togglePlayPauseFn() {
     if (this.isPause) {
       this.isPause = false;
@@ -216,27 +307,6 @@ export class VerificationScreenComponent implements OnInit {
     this.playProofDemo();
   }
 
-  async startDemoFn() {
-    if (
-      this.routerParams &&
-      this.routerParams.params &&
-      this.routerParams.params.type == "pobl"
-    ) {
-      this.TXNhash = this.routerParams.params.txn;
-      this.variableStorage["TXNhash"] = this.TXNhash;
-      this.isLoading = true;
-      await new Promise(resolveTime => setTimeout(resolveTime, 4200));
-      this.isStartDemo = true;
-      this.isPause = true;
-      this.initiateProofDemo();
-      await new Promise(resolveTime => setTimeout(resolveTime, 600));
-      this.isPause = false;
-      await this.scrollToFrameById("proofHeaderTitle", 20);
-      this.playProofDemo(0);
-    } else
-      alert("Proof verification is not yet available for the selected type.");
-  }
-
   stopFn() {
     this.StorageTitle = "Storage";
     this.ProofContainerTitle = "Proof Container";
@@ -269,19 +339,22 @@ export class VerificationScreenComponent implements OnInit {
     this.isBackToStep = false;
   }
 
-  backToStep(stepNo: number) {
-    var i: number = this.proofJSON.Steps.findIndex(
-      (cur: any) => cur.StepHeader.SegmentNo == stepNo
-    );
-    if (this.lastCompletedStep >= i) {
-      this.isBackToStep = true;
-      this.currentStep = i;
-      if (this.isPause) {
-        this.isPause = false;
-        this.playProofDemo();
-      }
-    }
-    if (this.isPlayCompleted) this.playProofDemo();
+  setSpeed(speed: number) {
+    if (!speed || isNaN(speed) || speed == 0)
+      alert("Please enter a valid playback speed.");
+    else this.playbackSpeed = speed;
+  }
+
+  async resizeGlobalScreen() {
+    this.gsHeightExpand = !this.gsHeightExpand;
+    await new Promise(resolveTime => setTimeout(resolveTime, 800));
+    this.scrollToFrameById("globalInformation", 10);
+  }
+
+  async resizeVerifyScreen() {
+    this.vsHeightExpand = !this.vsHeightExpand;
+    await new Promise(resolveTime => setTimeout(resolveTime, 800));
+    this.scrollToFrameById("verificationScreen", 10);
   }
 
   backToAction(actionID: number) {
@@ -299,93 +372,129 @@ export class VerificationScreenComponent implements OnInit {
     if (this.isPlayCompleted) this.playProofDemo();
   }
 
-  selectSpeedFn() {
-    let speed: any = prompt(
-      "Playback speed (0.5, 0.25, 1, 1.5, 2)",
-      this.playbackSpeed.toString()
+  backToStep(stepNo: number) {
+    var i: number = this.proofJSON.Steps.findIndex(
+      (cur: any) => cur.StepHeader.SegmentNo == stepNo
     );
-    if (!speed || isNaN(speed) || speed == 0)
-      alert("Please enter a valid playback speed.");
-    else this.setSpeed(speed);
-  }
-
-  setSpeed(speed: number) {
-    this.playbackSpeed = speed;
-  }
-
-  async initiateProofDemo() {
-    this.proofJSON = this.getProtocolJSON();
-    this.ActionConfigurations = this.getActionConfigurations();
-    // handleMultiStepAction
-    this.handleMultiStepActions();
-    console.log(this.proofJSON);
-
-    const { Header } = this.proofJSON;
-    this.StorageTitle = Header.StorageTitle;
-    this.ProofContainerTitle = Header.ProofContainerTitle;
-    this.steppers = this.filterSegmentsAndActions(Header.Segments);
-    this.playbackSpeed = Header.PlaybackSpeed;
-    this.gsHeightExpand = Header.GSHeightExpand;
-    this.gsOverflowX = Header.GSOverflowX;
-    this.vsHeightExpand = Header.VSHeightExpand;
-    this.vsOverflowX = Header.VSOverflowX;
-
-    console.log(this.steppers);
-
-    this.playProofDemo(0);
-  }
-
-  filterSegmentsAndActions(Segments: any) {
-    return Segments.map((Segment: any) => {
-      const SubActions = this.proofJSON.Steps.reduce(
-        (subActions: Array<any>, job: any) => {
-          const {
-            StepHeader: { SegmentNo },
-            Action: { _ID, ActionTitle }
-          } = job;
-          if (SegmentNo == Segment.NO) {
-            subActions.push({
-              ActionID: _ID,
-              ActionName: ActionTitle
-            });
-          }
-          return subActions;
-        },
-        []
-      );
-      return {
-        ...Segment,
-        SubActions
-      };
-    });
-  }
-
-  handleMultiStepActions() {
-    var proofJSONSteps: any = [];
-    var { Steps } = this.proofJSON;
-    for (let index = 0; index < Steps.length; index++) {
-      const step = Steps[index];
-      if (step.Action.ActionType == "MultiStepAction") {
-        var subActions = this.ActionConfigurations[
-          step.Action.ActionParameters.ActionConfigurationID
-        ].Actions;
-        for (let j = 0; j < subActions.length; j++) {
-          const subAction = subActions[j];
-          const formattedAction = this.parseSubActionData(
-            subAction,
-            step.Action.ActionParameters.SubActionArguments
-          );
-          formattedAction.Action._ID = proofJSONSteps.length;
-          proofJSONSteps.push(formattedAction);
-        }
-      } else {
-        step.Action._ID = proofJSONSteps.length;
-        proofJSONSteps.push(step);
+    if (this.lastCompletedStep >= i) {
+      this.isBackToStep = true;
+      this.currentStep = i;
+      if (this.isPause) {
+        this.isPause = false;
+        this.playProofDemo();
       }
     }
-    this.proofJSON.Steps = proofJSONSteps;
+    if (this.isPlayCompleted) this.playProofDemo();
   }
 
+  // controllers for steppers
+  async toStepper(no: number, _ID: number) {
+    this.SegmentNumber = no;
+    document
+      .querySelectorAll("#steppersFrame")[0]
+      .classList.add("steppersShow");
+    const steppersFrame = document.querySelectorAll(
+      "#steppersFrame #segments #stepWrapper"
+    )[0];
+    const allSteps = document.querySelectorAll(
+      "#segments .bs-stepper-header.cs-stepper-header .step"
+    );
+    var allSegmentLines = document.querySelectorAll(
+      "#segments .bs-stepper-header.cs-stepper-header .line"
+    );
+    const el: any = allSteps[no - 1];
+    // allSteps[no - 1].scrollIntoView();
+    steppersFrame.scroll({
+      top:
+        el.offsetTop -
+        steppersFrame.getBoundingClientRect().height +
+        el.getBoundingClientRect().height,
+      left:
+        el.offsetLeft -
+        steppersFrame.getBoundingClientRect().width +
+        el.getBoundingClientRect().width,
+      behavior: "smooth"
+    });
+    el.classList.add("glow");
+    for (let i = 0; i < no - 1; i++) {
+      allSteps[i].classList.remove("glow");
+      allSteps[i].classList.add("success");
+      allSegmentLines[i].classList.add("bg-success");
+    }
+    for (let j = no; j < allSteps.length; j++) {
+      allSteps[j].classList.remove("glow");
+      allSteps[j].classList.remove("success");
+      allSegmentLines[j].classList.remove("bg-success");
+    }
+    await this.toSubStepper(no, _ID);
+    await new Promise(resolveTime =>
+      setTimeout(resolveTime, 1000 / this.playbackSpeed)
+    );
+  }
+
+  async toSubStepper(segmentNo: number, actionID: number) {
+    this.subSteppers = this.steppers.find(
+      (step: any) => step.NO == segmentNo
+    ).SubActions;
+    await new Promise(resolveTime => setTimeout(resolveTime, 1000));
+    var index = this.subSteppers.findIndex(
+      (step: any) => step.ActionID == actionID
+    );
+    this.ActionDescription =
+      this.ActionDescription +
+      ` (Segment NO: ${segmentNo}, Action ID: ${segmentNo}.${actionID + 1})`;
+    var allSubSteps = document.querySelectorAll(
+      "#subSteppers .bs-stepper-header.cs-stepper-header .step"
+    );
+    var allSubLines = document.querySelectorAll(
+      "#subSteppers .bs-stepper-header.cs-stepper-header .line"
+    );
+    // console.log(actionID, index);
+    const el: any = allSubSteps[index];
+    const subSteppers = document.querySelectorAll(
+      "#steppersFrame #subSteppers #stepWrapper"
+    )[0];
+    var x =
+      el.offsetLeft -
+      subSteppers.getBoundingClientRect().width +
+      el.getBoundingClientRect().width;
+
+    var y =
+      el.offsetTop -
+      subSteppers.getBoundingClientRect().height +
+      el.getBoundingClientRect().height;
+    subSteppers.scroll({
+      top: y,
+      left: x,
+      behavior: "smooth"
+    });
+    el.classList.add("glow");
+    for (let i = 0; i < index; i++) {
+      allSubSteps[i].classList.remove("glow");
+      allSubSteps[i].classList.add("success");
+      allSubLines[i].classList.add("bg-success");
+    }
+    for (let j = index + 1; j < allSubSteps.length; j++) {
+      allSubSteps[j].classList.remove("glow");
+      allSubSteps[j].classList.remove("success");
+      allSubLines[j].classList.remove("bg-success");
+    }
+  }
+
+  async closeSteppers() {
+    document
+      .querySelectorAll("#steppersFrame")[0]
+      .classList.remove("steppersShow");
+    await new Promise(resolveTime => setTimeout(resolveTime, 1200));
+  }
+
+  toggleSteppers() {
+    document
+      .querySelectorAll("#steppersFrame")[0]
+      .classList.toggle("steppersShow");
+  }
+
+  // main proof actions
   async playProofDemo(step: number = this.currentStep) {
     this.isReplay = false;
     this.isPlayCompleted = false;
@@ -425,7 +534,7 @@ export class VerificationScreenComponent implements OnInit {
 
       switch (ActionType) {
         case "BrowserScreen":
-          await this.closeSteppers();
+          // await this.closeSteppers();
           var scRef: ComponentRef<SiteScreenComponent>;
           if (this.demoScreenChildRefs[frameID])
             scRef = this.demoScreenChildRefs[frameID].ref;
@@ -448,22 +557,22 @@ export class VerificationScreenComponent implements OnInit {
           }
           break;
         case "UpdateElementAttribute":
-          await this.closeSteppers();
+          // await this.closeSteppers();
           await this.handleFormatElementAttribute(stepData);
           break;
         case "FormatDOMText":
-          await this.closeSteppers();
+          // await this.closeSteppers();
           await this.handleTextStyle(stepData);
           break;
         case "UpdateElementProperty":
-          await this.closeSteppers();
+          // await this.closeSteppers();
           await this.handleSetData(stepData);
           break;
         case "TriggerElementFunction":
-          await this.closeSteppers();
+          // await this.closeSteppers();
           await this.handleTriggerFn(stepData);
         case "GetElementAttributeData":
-          await this.closeSteppers();
+          // await this.closeSteppers();
           await this.handleGetDataFn(stepData);
           break;
         case "InformationStorage":
@@ -476,8 +585,8 @@ export class VerificationScreenComponent implements OnInit {
           break;
       }
 
-      this.isDisableGlobalInformationL = this.isDisableGlobalStorageScroll("L");
-      this.isDisableGlobalInformationR = this.isDisableGlobalStorageScroll("R");
+      // this.isDisableGlobalInformationL = this.isDisableGlobalStorageScroll("L");
+      // this.isDisableGlobalInformationR = this.isDisableGlobalStorageScroll("R");
 
       if (Customizations.ToastMessage) {
         this.toastMSG = Customizations.ToastMessage;
@@ -507,6 +616,29 @@ export class VerificationScreenComponent implements OnInit {
     }
   }
 
+  parseActionData(action: any, storedData: any = this.variableStorage): any {
+    var data = JSON.stringify(action).toString();
+    [...data.matchAll(/"\${[^}]+}"|\${[^}]+}/g)].forEach(a => {
+      try {
+        let key = a[0].match(/\${([^}]+)}/g)[0].slice(2, -1);
+        if (key && storedData[key]) {
+          var replaceValue = storedData[key];
+          var valueType = typeof replaceValue;
+          if (valueType == "string" && a[0].match(/"\${[^}]+}"/g)) {
+            try {
+              var result = JSON.stringify(replaceValue);
+              replaceValue = result;
+            } catch (error) {
+              replaceValue = `"${replaceValue}"`;
+            }
+          }
+          data = data.replace(a[0], replaceValue);
+        }
+      } catch (error) {}
+    });
+    return JSON.parse(data);
+  }
+
   setGlobalValuesOnFrames(
     Header: any,
     { StepHeader, Action, Customizations }: any
@@ -534,6 +666,47 @@ export class VerificationScreenComponent implements OnInit {
           }
       }
     }
+  }
+
+  async createFrameInProofDemo(stepData: any): Promise<ComponentRef<any>> {
+    const { StepHeader, Action, Customizations } = stepData;
+    const { FrameID } = StepHeader;
+    const {
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters
+    } = Action;
+
+    var component: Type<any>;
+    switch (ActionType) {
+      case "BrowserScreen":
+        component = SiteScreenComponent;
+        break;
+      default:
+        break;
+    }
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      component
+    );
+    const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(
+      ElementDividerComponent
+    );
+    const ref = this.proofDemoRef.createComponent(componentFactory);
+    this.proofDemoRef.createComponent(componentDividerFactory);
+    this.demoScreenChildRefs[FrameID] = {
+      Id: FrameID,
+      type: ActionType,
+      ref,
+      ActionTitle
+    };
+    // ref.location.nativeElement.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "start",
+    //   inline: "start"
+    // });
+    this.cdr.detectChanges();
+    return ref;
   }
 
   async handleFormatElementAttribute(stepData: any) {
@@ -922,10 +1095,11 @@ export class VerificationScreenComponent implements OnInit {
         this.variableStorage[ActionResultVariable] = JSON.stringify(val);
         break;
       case "jsonKeyPicker":
-        this.variableStorage[ActionResultVariable] = this.jsonKeyPicker(
-          val,
-          MetaData[1]
-        );
+        var result = this.jsonKeyPicker(val, MetaData[1], MetaData[2])[1];
+        if (MetaData[3])
+          this.variableStorage[ActionResultVariable] = result[MetaData[3]];
+        else this.variableStorage[ActionResultVariable] = result;
+        console.log(this.variableStorage[ActionResultVariable]);
         break;
       case "jsonValueObjectPicker":
         this.variableStorage[ActionResultVariable] = this.jsonValueObjectPicker(
@@ -933,113 +1107,11 @@ export class VerificationScreenComponent implements OnInit {
           MetaData[1],
           MetaData[2]
         )[MetaData[3]];
+        console.log(this.variableStorage[ActionResultVariable]);
         break;
       default:
         break;
     }
-  }
-
-  async toStepper(no: number, _ID: number) {
-    this.SegmentNumber = no;
-    document
-      .querySelectorAll("#steppersFrame")[0]
-      .classList.add("steppersShow");
-    const steppersFrame = document.querySelectorAll(
-      "#steppersFrame #segments #stepWrapper"
-    )[0];
-    const allSteps = document.querySelectorAll(
-      "#segments .bs-stepper-header.cs-stepper-header .step"
-    );
-    var allSegmentLines = document.querySelectorAll(
-      "#segments .bs-stepper-header.cs-stepper-header .line"
-    );
-    const el: any = allSteps[no - 1];
-    // allSteps[no - 1].scrollIntoView();
-    steppersFrame.scroll({
-      top:
-        el.offsetTop -
-        steppersFrame.getBoundingClientRect().height +
-        el.getBoundingClientRect().height,
-      left:
-        el.offsetLeft -
-        steppersFrame.getBoundingClientRect().width +
-        el.getBoundingClientRect().width,
-      behavior: "smooth"
-    });
-    el.classList.add("glow");
-    for (let i = 0; i < no - 1; i++) {
-      allSteps[i].classList.remove("glow");
-      allSteps[i].classList.add("success");
-      allSegmentLines[i].classList.add("bg-success");
-    }
-    for (let j = no; j < allSteps.length; j++) {
-      allSteps[j].classList.remove("glow");
-      allSteps[j].classList.remove("success");
-      allSegmentLines[j].classList.remove("bg-success");
-    }
-    await this.toSubStepper(no, _ID);
-    await new Promise(resolveTime =>
-      setTimeout(resolveTime, 4000 / this.playbackSpeed)
-    );
-  }
-
-  async toSubStepper(segmentNo: number, actionID: number) {
-    this.subSteppers = this.steppers.find(
-      (step: any) => step.NO == segmentNo
-    ).SubActions;
-    await new Promise(resolveTime => setTimeout(resolveTime, 1000));
-    var index = this.subSteppers.findIndex(
-      (step: any) => step.ActionID == actionID
-    );
-    this.ActionDescription =
-      this.ActionDescription +
-      ` (Segment NO: ${segmentNo}, Action ID: ${segmentNo}.${actionID + 1})`;
-    var allSubSteps = document.querySelectorAll(
-      "#subSteppers .bs-stepper-header.cs-stepper-header .step"
-    );
-    var allSubLines = document.querySelectorAll(
-      "#subSteppers .bs-stepper-header.cs-stepper-header .line"
-    );
-    // console.log(actionID, index);
-    const el: any = allSubSteps[index];
-    const subSteppers = document.querySelectorAll(
-      "#steppersFrame #subSteppers #stepWrapper"
-    )[0];
-    subSteppers.scroll({
-      top:
-        el.offsetTop -
-        subSteppers.getBoundingClientRect().height +
-        el.getBoundingClientRect().height,
-      left:
-        el.offsetLeft -
-        subSteppers.getBoundingClientRect().width +
-        el.getBoundingClientRect().width,
-      behavior: "smooth"
-    });
-    el.classList.add("glow");
-    for (let i = 0; i < index; i++) {
-      allSubSteps[i].classList.remove("glow");
-      allSubSteps[i].classList.add("success");
-      allSubLines[i].classList.add("bg-success");
-    }
-    for (let j = index + 1; j < allSubSteps.length; j++) {
-      allSubSteps[j].classList.remove("glow");
-      allSubSteps[j].classList.remove("success");
-      allSubLines[j].classList.remove("bg-success");
-    }
-  }
-
-  async closeSteppers() {
-    document
-      .querySelectorAll("#steppersFrame")[0]
-      .classList.remove("steppersShow");
-    await new Promise(resolveTime => setTimeout(resolveTime, 1200));
-  }
-
-  toggleSteppers() {
-    document
-      .querySelectorAll("#steppersFrame")[0]
-      .classList.toggle("steppersShow");
   }
 
   findAllValuesOfAKey(obj: any, key: string, caseSensitive: boolean = true) {
@@ -1056,7 +1128,7 @@ export class VerificationScreenComponent implements OnInit {
     return values;
   }
 
-  jsonKeyPicker(obj: any, k: string) {
+  jsonKeyPicker(obj: any, k: string, selfReturn: boolean = false) {
     for (var key in obj) {
       var value = obj[key];
 
@@ -1065,17 +1137,17 @@ export class VerificationScreenComponent implements OnInit {
       }
 
       if (typeof value === "object" && !Array.isArray(value)) {
-        var y = this.jsonKeyPicker(value, k);
+        var y = this.jsonKeyPicker(value, k, selfReturn);
         if (y && y[0] == k) return y;
       }
       if (Array.isArray(value)) {
         for (var i = 0; i < value.length; ++i) {
-          var x = this.jsonKeyPicker(value[i], k);
+          var x = this.jsonKeyPicker(value[i], k, selfReturn);
           if (x && x[0] == k) return x;
         }
       }
     }
-    return null;
+    return selfReturn ? obj : null;
   }
 
   jsonValueObjectPicker(obj: any, v: string, caseSensitive: boolean = false) {
@@ -1152,31 +1224,6 @@ export class VerificationScreenComponent implements OnInit {
     );
   }
 
-  async scrollIntoStorageView(id: number) {
-    const index = this.globalData.findIndex((curr: any) => curr.Id == id);
-    if (index == -1) return;
-    const el: any = document.querySelectorAll(
-      "#globalInformation #gsFrames proof-global-storage"
-    )[index];
-    await this.scrollToFrameById("proofContainer", 0);
-    // console.log(el);
-    var gsFrame = document.querySelectorAll("#globalInformation #gsFrames")[0];
-    var gsFrameRect: any = gsFrame.getBoundingClientRect();
-    var initialWidth = gsFrameRect.x;
-    gsFrame.scroll({
-      top: 0,
-      left: el.offsetLeft - initialWidth,
-      behavior: "smooth"
-    });
-    await new Promise(resolveTime => setTimeout(resolveTime, 1200));
-    el.scroll({
-      top: el.scrollHeight,
-      left: 0,
-      behavior: "smooth"
-    });
-    await new Promise(resolveTime => setTimeout(resolveTime, 400));
-  }
-
   async addDataToGlobalData(Id: number, Title: string, Data: object[]) {
     var index = this.globalData.findIndex((curr: any) => curr.Id == Id);
     if (index == -1) {
@@ -1209,50 +1256,29 @@ export class VerificationScreenComponent implements OnInit {
     indexTable.scrollTop = indexTable.scrollHeight;
   }
 
-  parseActionData(action: any, storedData: any = this.variableStorage): any {
-    var data = JSON.stringify(action).toString();
-    [...data.matchAll(/"\${[^}]+}"|\${[^}]+}/g)].forEach(a => {
-      try {
-        let key = a[0].match(/\${([^}]+)}/g)[0].slice(2, -1);
-        if (key && storedData[key]) {
-          var replaceValue = storedData[key];
-          var valueType = typeof replaceValue;
-          if (valueType == "string" && a[0].match(/"\${[^}]+}"/g)) {
-            try {
-              var result = JSON.stringify(replaceValue);
-              replaceValue = result;
-            } catch (error) {
-              replaceValue = `"${replaceValue}"`;
-            }
-          }
-          data = data.replace(a[0], replaceValue);
-        }
-      } catch (error) {}
+  async scrollIntoStorageView(id: number) {
+    const index = this.globalData.findIndex((curr: any) => curr.Id == id);
+    if (index == -1) return;
+    const el: any = document.querySelectorAll(
+      "#globalInformation #gsFrames proof-global-storage"
+    )[index];
+    // await this.scrollToFrameById("proofContainer", 0);
+    // console.log(el);
+    var gsFrame = document.querySelectorAll("#globalInformation #gsFrames")[0];
+    var gsFrameRect: any = gsFrame.getBoundingClientRect();
+    var initialWidth = gsFrameRect.x;
+    gsFrame.scroll({
+      top: 0,
+      left: el.offsetLeft - initialWidth,
+      behavior: "smooth"
     });
-    return JSON.parse(data);
-  }
-
-  parseSubActionData(action: any, storedData: any = this.variableStorage): any {
-    var data = JSON.stringify(action).toString();
-    [...data.matchAll(/"\#{[^}]+}"|\#{[^}]+}/g)].forEach(a => {
-      try {
-        let key = a[0].match(/\#{([^}]+)}/g)[0].slice(2, -1);
-        if (key && storedData) {
-          var replaceValue = storedData[key];
-          var valueType = typeof replaceValue;
-          if (valueType == "string" && a[0].match(/"\#{[^}]+}"/g)) {
-            try {
-              var result = JSON.stringify(replaceValue);
-              replaceValue = result;
-            } catch (error) {
-              replaceValue = `"${replaceValue}"`;
-            }
-          }
-          data = data.replace(a[0], replaceValue);
-        }
-      } catch (error) {}
+    await new Promise(resolveTime => setTimeout(resolveTime, 1200));
+    el.scroll({
+      top: el.scrollHeight,
+      left: 0,
+      behavior: "smooth"
     });
-    return JSON.parse(data);
+    await new Promise(resolveTime => setTimeout(resolveTime, 400));
   }
 
   scrollWithinGlobalStorage(side: string) {
@@ -1313,92 +1339,7 @@ export class VerificationScreenComponent implements OnInit {
     return false;
   }
 
-  getActionConfigurations() {
-    var actionConfigs: any = ActionConfigurations;
-    return actionConfigs.default;
-  }
-
-  //this.history.pushState({}, "", '/multiplecompare/[{"title":"sasasa","t1":"qwqwqw","t2":"212dsdsd"}]')
-  //location.reload()
-  //https://text-comparison-server.herokuapp.com/multiplecompare/[{"title":"sasasa","t1":"qwqwqw","t2":"212dsdsd"}]
-
-  getProtocolJSON() {
-    var protocolJson: any;
-    var proofType = this.routerParams.params.type;
-    switch (proofType) {
-      case "pobl":
-        protocolJson = POBLJSON;
-        break;
-      default:
-        break;
-    }
-    return protocolJson.default;
-  }
-
-  getSampleUINew() {
-    return {
-      Header: {
-        StorageTitle: "",
-        ProofContainerTitle: "",
-        GSHeightExpand: "",
-        VSHeightExpand: "",
-        GSOverflowX: "",
-        VSOverflowX: "",
-        PlaybackSpeed: "",
-        Segments: ""
-      },
-      Steps: [
-        {
-          StepHeader: {
-            StepNo: "",
-            SegmentNo: "",
-            FrameID: ""
-          },
-          Action: {
-            ActionDescription: "",
-            ActionType: "",
-            ActionParameters: {
-              ExternalURL: "",
-              InnerHTML: "",
-              Query: "",
-              QueryIndex: "",
-              YOffset: "",
-              XOffset: "",
-              ElAttributeName: "",
-              ElAttributeValue: "",
-              ElAttributeValueReplace: "",
-              ElProperty: "",
-              ElPropertyValue: "",
-              ElFunction: "",
-              ElFunctionArguments: "",
-              SelectiveText: "",
-              CaseSensitivity: "",
-              SelectiveTextIndex: "",
-              CSS: "",
-              StorageData: ""
-            },
-            ActionResultVariable: "",
-            MetaData: ""
-          },
-          Customizations: {
-            PointerData: "",
-            ScrollToPointer: "",
-            FrameAutoScroll: "",
-            FrameScrollBars: "",
-            ToastMSG: "",
-            ToastPosition: "",
-            ActionDuration: ""
-          }
-        }
-      ]
-    };
-  }
-
-  getSampleUI() {
-    var protocolJson: any = POBLJSON_old;
-    return protocolJson.default;
-  }
-
+  // to understand the process
   verifyBackLinkVerify() {
     return {
       // 1 BrowserScreen TXNHash2 - F1

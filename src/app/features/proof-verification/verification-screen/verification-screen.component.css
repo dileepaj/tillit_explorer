@@ -93,7 +93,6 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
   overflow-y: hidden;
   overflow-x: hidden;
   display: flex;
@@ -176,17 +175,27 @@
 }
 
 #steppersFrame {
-  height: inherit;
-  position: absolute;
-  background: #fdfcfc;
+  height: auto;
+  /* background: #fdfcfc; */
   transition: 1200ms ease-in-out;
   z-index: 1;
   /* left: 0; */
-  left: -120%;
   display: flex;
+  flex-direction: column;
   max-width: 100%;
   align-items: flex-start;
   justify-items: flex-start;
+}
+
+#segments .step {
+  background-color: #7AABE0;
+  color: rgb(255, 255, 255);
+  border-radius: 8px;
+}
+
+#subSteppers .step {
+  background-color: #FFD754;
+  border-radius: 8px;
 }
 
 .steppersShow {
@@ -195,19 +204,30 @@
 
 .cs-stepper-label {
   font-size: 11px !important;
+  color: white;
+  font-weight: 100;
 }
 
 .cs-stepper-circle {
   font-size: 10px !important;
+  border-color: white !important;
+  border: 1px solid !important;
+  width: 22px !important;
+  height: 22px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  background: #BDBDBD;
 }
 
 .cs-stepper-header {
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: row;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-start; */
   padding: 0px !important;
   margin: 0px !important;
+  width: fit-content !important;
 }
 
 .cs-stepper-header .step {
@@ -227,7 +247,8 @@
 }
 
 .cs-stepper-header .line {
-  margin-left: 24px;
+  margin-left: 14px;
+  margin-right: 14px;
   min-width: 2.4px;
 }
 
@@ -236,14 +257,14 @@
 }
 
 .success .bs-stepper-circle {
-  background-color: rgb(8, 170, 21);
+  background-color: #00B54B;
 }
 
 .stepBtn {
   margin: 0 !important;
   width: 100% !important;
   justify-content: flex-start;
-  padding: 10px !important;
+  padding: 4px !important;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -255,7 +276,7 @@
 }
 
 .glow .bs-stepper-circle {
-  background: #4709d6;
+  background: #333BEC;
   box-shadow: 0 0 0 rgba(204, 169, 44, 0.4);
   -webkit-animation: glow 2s infinite;
   -moz-animation: glow 2s infinite;
