@@ -1,0 +1,2762 @@
+{
+    "Header": {
+        "StorageTitle": "Information storage",
+        "ProofContainerTitle": "",
+        "GSHeightExpand": false,
+        "VSHeightExpand": false,
+        "GSOverflowX": "hidden",
+        "VSOverflowX": "hidden",
+        "PlaybackSpeed": 1,
+        "ScrollToPointer": true,
+        "Segments": [
+          {
+            "NO": 1,
+            "Name": "GET Transaction"
+          },
+          {
+            "NO": 2,
+            "Name": "Decode Current TXNHash"
+          },
+          {
+            "NO": 3,
+            "Name": "GET Current Transaction"
+          },
+          {
+            "NO": 4,
+            "Name": "Decode identifier"
+          },
+          {
+            "NO": 5,
+            "Name": "Extract Source Account"
+          },
+          {
+            "NO": 6,
+            "Name": "Extract Destination Account"
+          },
+          {
+            "NO": 7,
+            "Name": "Extract Asset Code"  
+          },
+          {
+            "NO": 8,
+            "Name": "Extract Asset Amount"
+          },
+          {
+            "NO": 9,
+            "Name": "Decode ProofHash"
+          },
+          {
+            "NO": 10,
+            "Name": "Get ProofHash Operations"
+          },
+          {
+            "NO": 11,
+            "Name": "Decode proofHash identifier"
+          },
+          {
+            "NO": 12,
+            "Name": "Extract proofHash Source Account"
+          },
+          {
+            "NO": 13,
+            "Name": "Decode proofHash Destination Account"
+          },
+          {
+            "NO": 14,
+            "Name": "Decode proofHash Asset Code"  
+          },
+          {
+            "NO": 15,
+            "Name": "Decode proofHash Asset Amount"
+          },
+          {
+            "NO": 16,
+            "Name": "Identifiers Comparison"
+          },
+          {
+            "NO": 17,
+            "Name": "Source Accounts Comparison"
+          },
+          {
+            "NO": 18,
+            "Name": "Destination Accounts Comparison"
+          },
+          {
+            "NO": 19,
+            "Name": "Asset Code Comparison"
+          },
+          {
+            "NO": 20,
+            "Name": "Asset Amount Comparison"
+          },
+          {
+            "NO": 21,
+            "Name": "Summary"
+          }
+        ]  
+    },
+    "Steps": [
+        {
+            "StepHeader": {
+                "StepNo": 1,
+                "SegmentNo": 1,
+                "FrameID": 1,
+                "FrameTitle": ""
+              },
+              "Action": {
+                "ActionTitle": "Retrieve Transaction",
+                "ActionDescription": "",
+                "ActionType": "MultiStepAction",
+                "ActionParameters": {
+                  "ExternalURL": "",
+                  "InnerHTML": "",
+                  "Query": "",
+                  "QueryIndex": "",
+                  "YOffset": "",
+                  "XOffset": "",
+                  "ElAttributeName": "",
+                  "ElAttributeValue": "",
+                  "ElAttributeValueReplace": "",
+                  "ElProperty": "",
+                  "ElPropertyValue": "",
+                  "ElFunction": "",
+                  "ElFunctionArguments": "",
+                  "SelectiveText": "",
+                  "CaseSensitivity": "",
+                  "SelectiveTextIndex": "",
+                  "CSS": "",
+                  "FormatType": "",
+                  "StorageData": [],
+                  "ActionConfigurationID": "StellarOperationViewer",
+                  "SubActionArguments": {
+                    "StepNo": 1,
+                    "SegmentNo": 1,
+                    "FrameID": 1,
+                    "FrameTitle": "Step 1 - Retrieve Transaction",
+                    "TXNHash": "${TXNhash}",
+                    "OperationName": "transaction",
+                    "ResponseVariable": "MainTXNDataString",
+                    "JSONResultVariable": "MainTXNData"
+                  }
+                },
+                "ActionResultVariable": "",
+                "MetaData": []
+              },
+              "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 10
+              }
+            },
+            {
+                "StepHeader": {
+                  "StepNo": 2,
+                  "SegmentNo": 2,
+                  "FrameID": 1,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Extract CurrentTXN Hash",
+                  "ActionDescription": "Select the CurrentTXN Hash (base64 encoded) from the transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNCurentTXNHash",
+                  "MetaData": ["MainTXNData", "CurrentTXN", false, "value"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 2
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 3,
+                  "SegmentNo": 2,
+                  "FrameID": 1,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 3,
+                      "SegmentNo": 2,
+                      "FrameID": 1,
+                      "FrameTitle": "",
+                      "OperationKey": "CurrentTXN",
+                      "OperationValue": "MainTXNCurentTXNHash",
+                      "OperationKeyName": "encoded CurrentTXN Hash from the transaction details",
+                      "OperationValueName": "encoded CurrentTXN Hash from the transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 4,
+                  "SegmentNo": 2,
+                  "FrameID": 1,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save Base64Encoded CurrentTXN",
+                  "ActionDescription": "Save the base64 encoded CurrentTXN Hash value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "CurrentTXN (base64)",
+                        "Value": "${MainTXNCurentTXNHash}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 5,
+                  "SegmentNo": 2,
+                  "FrameID": 2,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "OnlineToolsDecoder",
+                    "SubActionArguments": {
+                      "StepNo": 5,
+                      "SegmentNo": 2,
+                      "FrameID": 2,
+                      "FrameTitle": "Step 2 - Decode CurrentTXN",
+                      "DecodeKeyName": "CurrentTXN Hash",
+                      "EncodedInputValue": "${MainTXNCurentTXNHash}",
+                      "DecodedResultVariable": "var_currenttxn",
+                      "InformationStorageKey": "CurrentTXN"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 6,
+                  "SegmentNo": 3,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "StellarOperationViewer",
+                    "SubActionArguments": {
+                      "StepNo": 6,
+                      "SegmentNo": 3,
+                      "FrameID": 3,
+                      "FrameTitle": "Step 3 - Retrieve Current Transaction",
+                      "TXNHash": "${var_currenttxn}",
+                      "OperationName": "current transaction of the gateway transaction",
+                      "ResponseVariable": "MainTXNCurentTXNDataString",
+                      "JSONResultVariable": "MainTXNCurentTXNData"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 7,
+                  "SegmentNo": 4,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select Base64Encoded CurrentTXN Identifier",
+                  "ActionDescription": "Select the encoded Identifier from the transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNCurentTXNDataIdentifier",
+                  "MetaData": ["MainTXNCurentTXNData", "Identifier", false, "value"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 8,
+                  "SegmentNo": 4,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 8,
+                      "SegmentNo": 4,
+                      "FrameID": 3,
+                      "FrameTitle": "",
+                      "OperationKey": "Identifier",
+                      "OperationValue": "MainTXNCurentTXNDataIdentifier",
+                      "OperationKeyName": "encoded Identifier from the transaction details",
+                      "OperationValueName": "encoded Identifier value from the transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 9,
+                  "SegmentNo": 4,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save Base64Encoded CurrntTXN Identifier",
+                  "ActionDescription": "Save the base64 encoded Identifier value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "CurrentTXN Identifier (base64)",
+                        "Value": "${MainTXNCurentTXNDataIdentifier}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 10,
+                  "SegmentNo": 4,
+                  "FrameID": 4,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "OnlineToolsDecoder",
+                    "SubActionArguments": {
+                      "StepNo": 10,
+                      "SegmentNo": 4,
+                      "FrameID": 4,
+                      "FrameTitle": "Step 4 - Decode MainTXN Identifier",
+                      "DecodeKeyName": "MainTXN Identifier",
+                      "EncodedInputValue": "${MainTXNCurentTXNDataIdentifier}",
+                      "DecodedResultVariable": "MainTXNCurentTXNDataIdentifierDecoded",
+                      "InformationStorageKey": "CurrentTXN Identifier"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 11,
+                  "SegmentNo": 5,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select CurrentTXN Source Account",
+                  "ActionDescription": "Select Source Account from the transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonKeyPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNCurentTXNDataSourceAccount",
+                  "MetaData": ["MainTXNCurentTXNData", "source_account"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 12,
+                  "SegmentNo": 5,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 12,
+                      "SegmentNo": 5,
+                      "FrameID": 3,
+                      "FrameTitle": "",
+                      "OperationKey": "source_account",
+                      "OperationValue": "MainTXNCurentTXNDataSourceAccount",
+                      "OperationKeyName": "Source Account from the transaction details",
+                      "OperationValueName": "Source Account value from the transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 13,
+                  "SegmentNo": 5,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save CurrentTXN Source Account",
+                  "ActionDescription": "Save Source Account value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "CurrentTXN Source Account",
+                        "Value": "${MainTXNCurentTXNDataSourceAccount}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 14,
+                  "SegmentNo": 6,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select CurrentTXN Destination Account",
+                  "ActionDescription": "Select Destination Account from the transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonKeyPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNCurentTXNDataDestinationAccount",
+                  "MetaData": ["MainTXNCurentTXNData", "to"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 13,
+                  "SegmentNo": 6,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 13,
+                      "SegmentNo": 6,
+                      "FrameID": 3,
+                      "FrameTitle": "",
+                      "OperationKey": "\"to\" " ,
+                      "OperationValue": "MainTXNCurentTXNDataDestinationAccount",
+                      "OperationKeyName": "Destination Account from the transaction details",
+                      "OperationValueName": "Destination Account value from the transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 14,
+                  "SegmentNo": 6,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save CurrentTXN Destination Account",
+                  "ActionDescription": "Save Destination Account value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "CurrentTXN Destination Account",
+                        "Value": "${MainTXNCurentTXNDataDestinationAccount}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 15,
+                  "SegmentNo": 7,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select CurrentTXN Asset Code",
+                  "ActionDescription": "Select Asset Code from the transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonKeyPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNCurentTXNDataAssetCode",
+                  "MetaData": ["MainTXNCurentTXNData", "asset_code"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 16,
+                  "SegmentNo": 7,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 16,
+                      "SegmentNo": 7,
+                      "FrameID": 3,
+                      "FrameTitle": "",
+                      "OperationKey": "asset_code",
+                      "OperationValue": "MainTXNCurentTXNDataAssetCode",
+                      "OperationKeyName": "Asset Code from the transaction details",
+                      "OperationValueName": "Asset Code value from the transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 17,
+                  "SegmentNo": 8,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save CurrentTXN Asset Code",
+                  "ActionDescription": "Save Asset Code value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "CurrentTXN Asset Code",
+                        "Value": "${MainTXNCurentTXNDataAssetCode}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 18,
+                  "SegmentNo": 8,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select CurrentTXN Asset Amount",
+                  "ActionDescription": "Select Asset Amount from the transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonKeyPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNCurentTXNDataAssetAmount",
+                  "MetaData": ["MainTXNCurentTXNData", "amount"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 19,
+                  "SegmentNo": 8,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 19,
+                      "SegmentNo": 8,
+                      "FrameID": 3,
+                      "FrameTitle": "",
+                      "OperationKey": "amount",
+                      "OperationValue": "MainTXNCurentTXNDataAssetAmount",
+                      "OperationKeyName": "Asset Amount from the transaction details",
+                      "OperationValueName": "Asset Amount value from the transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 20,
+                  "SegmentNo": 8,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save CurrentTXN Asset Amount",
+                  "ActionDescription": "Save the base64 encoded Asset Amount value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "CurrentTXN Asset Amount",
+                        "Value": "${MainTXNCurentTXNDataAssetAmount}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },    
+              {
+                "StepHeader": {
+                  "StepNo": 21,
+                  "SegmentNo": 9,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select CurrentTXN ProofHash",
+                  "ActionDescription": "Select the encoded Proofhash from the transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNCurentTXNDataProofHash",
+                  "MetaData": ["MainTXNCurentTXNData", "proofHash", false, "value"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 22,
+                  "SegmentNo": 9,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 22,
+                      "SegmentNo": 9,
+                      "FrameID": 3,
+                      "FrameTitle": "",
+                      "OperationKey": "proofHash",
+                      "OperationValue": "MainTXNCurentTXNDataProofHash",
+                      "OperationKeyName": "encoded proofHash from the transaction details",
+                      "OperationValueName": "encoded proofHash value from the transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 23,
+                  "SegmentNo": 9,
+                  "FrameID": 3,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save Base64Encoded CurrentTXN proofHash",
+                  "ActionDescription": "Save the base64 encoded proofHash value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "proofHash (base64)",
+                        "Value": "${MainTXNCurentTXNDataProofHash}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 24,
+                  "SegmentNo": 9,
+                  "FrameID": 5,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "OnlineToolsDecoder",
+                    "SubActionArguments": {
+                      "StepNo": 24,
+                      "SegmentNo": 9,
+                      "FrameID": 5,
+                      "FrameTitle": "Step 9 - Decode CurrrentTXN proofHash",
+                      "DecodeKeyName": "proofHash",
+                      "EncodedInputValue": "${MainTXNCurentTXNDataProofHash}",
+                      "DecodedResultVariable": "var_proofHash",
+                      "InformationStorageKey": "TXN proofHash"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 25,
+                  "SegmentNo":10,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "StellarOperationViewer",
+                    "SubActionArguments": {
+                      "StepNo": 25,
+                      "SegmentNo": 10,
+                      "FrameID": 6,
+                      "FrameTitle": "Step 10 - Retrieve proofHash Transaction",
+                      "TXNHash": "${var_proofHash}",
+                      "OperationName": "proofHash transaction of the gateway transaction",
+                      "ResponseVariable": "MainTXNProofHashDataString",
+                      "JSONResultVariable": "MainTXNPoofHashData"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 26,
+                  "SegmentNo": 11,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select Base64Encoded proofHash Identifier",
+                  "ActionDescription": "Select the encoded Identifier from the proofHash transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNProofHashDataIdentifier",
+                  "MetaData": ["MainTXNPoofHashData", "Identifier", false, "value"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 27,
+                  "SegmentNo": 11,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 27,
+                      "SegmentNo": 11,
+                      "FrameID": 6,
+                      "FrameTitle": "",
+                      "OperationKey": "Identifier",
+                      "OperationValue": "MainTXNProofHashDataIdentifier",
+                      "OperationKeyName": "encoded Identifier from the proofhash transaction details",
+                      "OperationValueName": "encoded Identifier value from the proofhash transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 28,
+                  "SegmentNo": 11,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save Base64Encoded proofHash Identifier",
+                  "ActionDescription": "Save the base64 encoded proofHash Identifier value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "proofHash Identifier (base64)",
+                        "Value": "${MainTXNProofHashDataIdentifier}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 29,
+                  "SegmentNo": 11,
+                  "FrameID": 7,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "OnlineToolsDecoder",
+                    "SubActionArguments": {
+                      "StepNo": 29,
+                      "SegmentNo": 11,
+                      "FrameID": 7,
+                      "FrameTitle": "Step 11 - Decode ProofHash Identifier",
+                      "DecodeKeyName": "ProofHash Identifier",
+                      "EncodedInputValue": "${MainTXNProofHashDataIdentifier}",
+                      "DecodedResultVariable": "MainTXNProofHashDataIdentifierDecoded",
+                      "InformationStorageKey": "Identifier"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 30 ,
+                  "SegmentNo": 12,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select proofHash Source Account",
+                  "ActionDescription": "Select the encoded Source Account from the proofHash transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonKeyPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNProofHashDataSourceAccount",
+                  "MetaData": ["MainTXNPoofHashData", "source_account"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 31,
+                  "SegmentNo": 12,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 31,
+                      "SegmentNo": 12,
+                      "FrameID": 6,
+                      "FrameTitle": "",
+                      "OperationKey": "source_account",
+                      "OperationValue": "MainTXNProofHashDataSourceAccount",
+                      "OperationKeyName": "Source Account from the proofhash transaction details",
+                      "OperationValueName": "Source Account value from the proofhash transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 32,
+                  "SegmentNo": 12,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save proofHash Source Account",
+                  "ActionDescription": "Save proofHash Source Account value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "proofHash Source Account",
+                        "Value": "${MainTXNProofHashDataSourceAccount}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 33 ,
+                  "SegmentNo": 13,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select Base64Encoded proofHash Destination Account",
+                  "ActionDescription": "Select the encoded Destination Account from the proofHash transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNProofHashDataDestinationAccount",
+                  "MetaData": ["MainTXNPoofHashData", "Receiver", false, "value"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 34,
+                  "SegmentNo": 13,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo":34,
+                      "SegmentNo": 13,
+                      "FrameID": 6,
+                      "FrameTitle": "",
+                      "OperationKey": "Receiver",
+                      "OperationValue": "MainTXNProofHashDataDestinationAccount",
+                      "OperationKeyName": "encoded Destination Account from the proofhash transaction details",
+                      "OperationValueName": "encoded Destination Account value from the proofhash transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 35,
+                  "SegmentNo": 13,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save Base64Encoded Destination Account",
+                  "ActionDescription": "Save the base64 encoded Destination Account value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "proofhash Destination Account (base64)",
+                        "Value": "${MainTXNProofHashDataDestinationAccount}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 36,
+                  "SegmentNo": 13,
+                  "FrameID": 8,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "OnlineToolsDecoder",
+                    "SubActionArguments": {
+                      "StepNo": 36,
+                      "SegmentNo": 13,
+                      "FrameID": 8,
+                      "FrameTitle": "Step 13 - Decode ProofHash Destination Account",
+                      "DecodeKeyName": "ProofHash Destination Account",
+                      "EncodedInputValue": "${MainTXNProofHashDataDestinationAccount}",
+                      "DecodedResultVariable": "MainTXNProofHashDataDestinationAccountDecoded",
+                      "InformationStorageKey": "Destination Account"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 37,
+                  "SegmentNo": 14,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select Base64Encoded proofHash Asset Code",
+                  "ActionDescription": "Select the encoded Asset Code from the proofHash transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNProofHashDataAssetCode",
+                  "MetaData": ["MainTXNPoofHashData", "Asset", false, "value"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 38,
+                  "SegmentNo": 14,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 38,
+                      "SegmentNo": 14,
+                      "FrameID": 6,
+                      "FrameTitle": "",
+                      "OperationKey": "Asset",
+                      "OperationValue": "MainTXNProofHashDataAssetCode",
+                      "OperationKeyName": "encoded Asset Code from the proofhash transaction details",
+                      "OperationValueName": "encoded Asset Code value from the proofhash transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 39,
+                  "SegmentNo": 14,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save Base64Encoded proofHash Asset Code",
+                  "ActionDescription": "Save the base64 encoded ProofHash Asset Code value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "proofHash Asset Code (base64)",
+                        "Value": "${MainTXNProofHashDataAssetCode}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 40,
+                  "SegmentNo": 14,
+                  "FrameID": 9,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "OnlineToolsDecoder",
+                    "SubActionArguments": {
+                      "StepNo": 40,
+                      "SegmentNo": 14,
+                      "FrameID": 9,
+                      "FrameTitle": "Step 14 - Decode ProofHash Asset Code",
+                      "DecodeKeyName": "ProofHash Asset code",
+                      "EncodedInputValue": "${MainTXNProofHashDataAssetCode}",
+                      "DecodedResultVariable": "MainTXNProofHashDataAssetCodeDecoded",
+                      "InformationStorageKey": "proofhash Asset Code"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 41,
+                  "SegmentNo": 15,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Select Base64Encoded proofHash Asset Amount",
+                  "ActionDescription": "Select the encoded Asset Amount from the proofHash transaction details.",
+                  "ActionType": "FormatMetaData",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "MainTXNProofHashDataAssetAmount",
+                  "MetaData": ["MainTXNPoofHashData", "Amount", false, "value"]
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 42,
+                  "SegmentNo": 15,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "KeyValueHighlighter",
+                    "SubActionArguments": {
+                      "StepNo": 42,
+                      "SegmentNo": 15,
+                      "FrameID": 6,
+                      "FrameTitle": "",
+                      "OperationKey": "Amount",
+                      "OperationValue": "MainTXNProofHashDataAssetAmount",
+                      "OperationKeyName": "encoded Asset Amount from the proofhash transaction details",
+                      "OperationValueName": "encoded Asset Amount value from the proofhash transaction details"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 43,
+                  "SegmentNo": 15,
+                  "FrameID": 6,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionTitle": "Save Base64Encoded proofHash Asset Amount",
+                  "ActionDescription": "Save the base64 encoded ProofHash Asset Amount value for future usage.",
+                  "ActionType": "InformationStorage",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                      {
+                        "Key": "proofHash Asset Amount (base64)",
+                        "Value": "${MainTXNProofHashDataAssetAmount}"
+                      }
+                    ]
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 30
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 44,
+                  "SegmentNo": 15,
+                  "FrameID": 10,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "OnlineToolsDecoder",
+                    "SubActionArguments": {
+                      "StepNo": 44,
+                      "SegmentNo": 15,
+                      "FrameID": 10,
+                      "FrameTitle": "Step 15 - Decode ProofHash Asset Amount",
+                      "DecodeKeyName": "ProofHash Asset code",
+                      "EncodedInputValue": "${MainTXNProofHashDataAssetAmount}",
+                      "DecodedResultVariable": "MainTXNProofHashDataAssetAmountDecoded",
+                      "InformationStorageKey": "proofhash Asset Amount"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 45,
+                  "SegmentNo": 16,
+                  "FrameID": 11,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "TextComparison",
+                    "SubActionArguments": {
+                      "StepNo": 46,
+                      "SegmentNo": 16,
+                      "FrameID": 11,
+                      "FrameTitle": "Step 16 - Compare the base64 decoded Identifiers",
+                      "InputKeyName": "the base64 decoded Identifier values from the transactions.",
+                      "InputValue": "[{\"title\": \"Identifiers from the Main transaction and prrofHash transaction\", \"t1\": \"${MainTXNCurentTXNDataIdentifierDecoded}\", \"t2\": \"${MainTXNProofHashDataIdentifierDecoded}\"}]"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 46,
+                  "SegmentNo": 17,
+                  "FrameID": 12,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "TextComparison",
+                    "SubActionArguments": {
+                      "StepNo": 46,
+                      "SegmentNo": 17,
+                      "FrameID": 12,
+                      "FrameTitle": "Step 17 - Compare the base64 decoded Source Accounts",
+                      "InputKeyName": "the base64 decoded Source Accounts from the transactions.",
+                      "InputValue": "[{\"title\": \"Source Account from the Main transaction and proofHash transaction\", \"t1\": \"${MainTXNCurentTXNDataSourceAccount}\", \"t2\": \"${MainTXNProofHashDataSourceAccount}\"}]"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 47,
+                  "SegmentNo": 18,
+                  "FrameID": 13,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "TextComparison",
+                    "SubActionArguments": {
+                      "StepNo": 47,
+                      "SegmentNo": 18,
+                      "FrameID": 13,
+                      "FrameTitle": "Step 18 - Compare the base64 decoded Destination Accounts",
+                      "InputKeyName": "the base64 decoded Destination values from the transactions.",
+                      "InputValue": "[{\"title\": \"Destination Accounts from the Main transaction and proofHash transaction\", \"t1\": \"${MainTXNCurentTXNDataDestinationAccount}\", \"t2\": \"${MainTXNProofHashDataDestinationAccountDecoded}\"}]"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 48,
+                  "SegmentNo": 19,
+                  "FrameID": 14,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "TextComparison",
+                    "SubActionArguments": {
+                      "StepNo": 48,
+                      "SegmentNo": 19,
+                      "FrameID": 14,
+                      "FrameTitle": "Step 19 - Compare the base64 decoded Assets",
+                      "InputKeyName": "the base64 decoded Asset values from the transactions.",
+                      "InputValue": "[{\"title\": \"Assets from the Main transaction and proofHash transaction\", \"t1\": \"${MainTXNCurentTXNDataAssetCode}\", \"t2\": \"${MainTXNProofHashDataAssetCodeDecoded}\"}]"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 49,
+                  "SegmentNo": 20,
+                  "FrameID": 15,
+                  "FrameTitle": ""
+                },
+                "Action": {
+                  "ActionDescription": "",
+                  "ActionType": "MultiStepAction",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [],
+                    "ActionConfigurationID": "TextComparison",
+                    "SubActionArguments": {
+                      "StepNo": 49,
+                      "SegmentNo": 20,
+                      "FrameID": 15,
+                      "FrameTitle": "Step 20 - Compare the base64 decoded Asset Amount",
+                      "InputKeyName": "the base64 decoded Asset Amount values from the transactions.",
+                      "InputValue": "[{\"title\": \"Asset Amount from the Main transaction and proofHash transaction\", \"t1\": \"${MainTXNCurentTXNDataAssetAmount}\", \"t2\": \"${MainTXNProofHashDataAssetAmountDecoded}\"}]"
+                    }
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": null,
+                  "ActionDuration": 10
+                }
+              },
+              {
+                "StepHeader": {
+                  "StepNo": 50,
+                  "SegmentNo": 21,
+                  "FrameID": 16,
+                  "FrameTitle": "Step 11 - Verification Summary"
+                },
+                "Action": {
+                  "ActionTitle": "Verification Summary",
+                  "ActionDescription": "Verification Summary",
+                  "ActionType": "BrowserScreen",
+                  "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "<?xml version=\"1.0\"?>\r\n<!DOCTYPE html>\r\n<html><head><link href=\"https://www.online-html-editor.org/assets/minimalist-blocks/content.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body style=\"height: 100vh; display: flex; justify-content: center; align-items: center;\"><div class=\"container\"><div class=\"row clearfix\"><div class=\"column full\"><h2 class=\"size-18\" style=\"font-weight: 800; text-align: center; letter-spacing: 8px; text-transform: uppercase;\">\r\n Verification summary\r\n </h2></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><div class=\"column full\"><p class=\"size-12\" style=\"text-align: center; letter-spacing: 3px; color: rgb(94, 94, 94); text-transform: uppercase;\"><b style=\"color: rgb(71, 88, 204); background-color: rgb(240, 249, 254);\">PROOF OF THE Change of Custody</b></p></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><div class=\"column half\"><p style=\"text-align: justify;\"><strong><span class=\"size-14\">Asset Code</span></strong></p><p class=\"size-14\" style=\"text-align: justify; overflow-wrap: break-word;\">\r\n ${MainTXNProofHashDataAssetCodeDecoded}\r\n </p></div><div class=\"column half\"><p class=\"size-14\" style=\"text-align: justify; \"><strong>Asset Amount</strong></p><p class=\"size-14\" style=\"text-align: justify; overflow-wrap: break-word;\">\r\n ${MainTXNProofHashDataAssetAmountDecoded}\r\n </p></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><pre class=\"size-14\" style=\"background-color: rgb(46, 125, 50); color: rgb(245, 243, 252); font-weight: bold; text-align: center; border-radius: 8px; margin: 0; padding: 8px;\">\r\nVerification Completed</pre><div class=\"is-rowadd-tool\" style=\"height:0\"><br/></div></div></div></body></html>",
+                    "PageURL": "about: Verification Summary - PROOF OF THE EXISTANCE",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                  },
+                  "ActionResultVariable": "",
+                  "MetaData": []
+                },
+                "Customizations": {
+                  "PointerData": "",
+                  "ScrollToPointer": false,
+                  "FrameAutoScroll": true,
+                  "FrameScrollBars": "",
+                  "ToastMessage": "",
+                  "ToastPosition": [],
+                  "ActionDuration": 10
+                }
+              }
+    ] 
+}
