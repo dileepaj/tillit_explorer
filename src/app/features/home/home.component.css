@@ -1,3 +1,75 @@
 .mat-spinner::ng-deep circle {
  stroke: #0062cc;
 }
+
+@media screen and (min-width: 1900px) {
+    .titleMargin{
+        margin-left: 11.3%;
+    }
+    .cardSkeltonMargins{
+        margin-left: 140px; 
+        margin-right: 140px;
+    }
+}
+@media screen and (max-width: 1900px) {
+    .titleMargin{
+        margin-left: 11%;
+    }
+    .cardSkeltonMargins{
+        margin-left: 140px; 
+        margin-right: 140px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .titleMargin{
+        margin-left: 11%;
+    }
+    .cardSkeltonMargins{
+        margin-left: 116px; 
+        margin-right: 116px;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .titleMargin{
+        margin-left: 10.7%;
+    }
+    .cardSkeltonMargins{
+        margin-left: 84px; 
+        margin-right: 84px;
+    }
+}
+@media screen and (max-width: 824px) {
+    .titleMargin{
+        margin-left: 10.5%;
+    }
+    .cardSkeltonMargins{
+        margin-left: 85px; 
+        margin-right: 85px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cardSkeltonMargins{
+        margin-left: 65px; 
+        margin-right: 65px;
+    }
+}
+
+@media screen and (max-width: 597px) {
+    .titleMargin{
+        margin-left: 9.4%;
+    }
+    .cardSkeltonMargins{
+        margin-left: 60px; 
+        margin-right: 60px;
+    }
+}
+@media screen and (max-width: 375px) {
+    .titleMargin{
+        margin-left: 9.4%;
+    }
+    .cardSkeltonMargins{
+        margin-left: 44px; 
+        margin-right: 44px;
+    }
+}
