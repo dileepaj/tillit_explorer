@@ -1,0 +1,10 @@
+.btn .fa-youtube-play {
+  font-size: 4rem;
+  transition: 1000ms;
+  color: rgb(35, 37, 160);
+  transition-timing-function: ease-in-out;
+}
+.btn .fa-youtube-play:hover {
+  font-size: 4.4rem;
+  color: rgb(20, 18, 141);
+}

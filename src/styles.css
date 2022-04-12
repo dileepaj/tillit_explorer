@@ -81,6 +81,7 @@
 
 /* main content area */
 .main-content-area {
+ height: max-content;
  width: 100%;
  background-color: #f4f7fc;
 }

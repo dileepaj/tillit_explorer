@@ -73,11 +73,9 @@ export class SiteScreenComponent implements OnInit {
 
   ngAfterViewInit() {
     // let scripts = this.iframe.nativeElement.getElementsByTagName("script");
-
     // for (let script of scripts) {
     //   eval(script.text);
     // }
-
     // // eval(scripts[0].text);
   }
 
@@ -85,6 +83,7 @@ export class SiteScreenComponent implements OnInit {
     this.cdref.detectChanges();
   }
 
+  // scroll into the current running iframe element
   async scrollIntoView() {
     await this.scrollToFrameById("verificationScreen", 10);
     const sFrame = document.querySelectorAll("#verificationScreen #frames")[0];
@@ -103,9 +102,11 @@ export class SiteScreenComponent implements OnInit {
       left: left,
       behavior: "smooth"
     });
-    await new Promise(resolveTime => setTimeout(resolveTime, 400));
+    await this.sleepFor(400);
   }
 
+  // scroll to a specific element provided by the query
+  //and if the show pointer is available then scroll to it
   async scrollToSelector(
     query: string,
     index: number = 0,
@@ -119,16 +120,19 @@ export class SiteScreenComponent implements OnInit {
         .querySelectorAll(query)
         [index].getBoundingClientRect();
 
+      // scroll to the element in the query
       if (this.isScrollToElement) {
         await this.scrollIntoView();
-        await new Promise(resolveTime => setTimeout(resolveTime, 400));
+        await this.sleepFor(400);
         iframe.contentWindow.scroll({
           top: currentFrame.scrollY + selectorFrame.y - yOffset,
           left: currentFrame.scrollX + selectorFrame.x - xOffset,
           behavior: "smooth"
         });
-        await new Promise(resolveTime => setTimeout(resolveTime, 400));
+        await this.sleepFor(400);
       }
+
+      // scroll to the pointer
       if (this.isPointToElement) {
         selectorFrame = iframe.contentWindow.document
           .querySelectorAll(query)
@@ -164,6 +168,7 @@ export class SiteScreenComponent implements OnInit {
     } catch (error) {}
   }
 
+  // scroll to a specific frameby id in global scope
   async scrollToFrameById(frameID: string, lower = 0) {
     const bodyRect: any = document.body.getBoundingClientRect();
     const pcRect: any = document
@@ -182,7 +187,7 @@ export class SiteScreenComponent implements OnInit {
         left: pcWidth,
         behavior: "smooth"
       });
-      await new Promise(resolveTime => setTimeout(resolveTime, 400));
+      await this.sleepFor(400);
     }
   }
 
@@ -190,19 +195,31 @@ export class SiteScreenComponent implements OnInit {
     this.frameIndex = frameIndex;
   }
 
-  async setPage(pageUrl: string) {
+  async setPage(
+    pageUrl: string,
+    isTranslate: boolean = false,
+    lang: string = "en"
+  ) {
     this.resetFramePage();
     await this.scrollIntoView();
     this.loadingComplete = false;
     this.HTMLData = null;
-    await new Promise(resolveTime => setTimeout(resolveTime, 1400));
+    await this.sleepFor(1400);
     return new Promise(async (resolve, reject) => {
+      var translateUrl = isTranslate
+        ? `https://qa.gateway.tracified.com/enable-cors?web=http://translate.google.com/translate?hl=bg%26ie=UTF-8%26u=${pageUrl}%26sl=auto%26tl=${lang}`
+        : pageUrl;
+
+      // console.log(isTranslate, lang, translateUrl);
       this.displayPageUrl = pageUrl;
-      this.verificationHttpService.loadPage(pageUrl).subscribe(
+      this.verificationHttpService.loadPage(translateUrl).subscribe(
         async data => {
           try {
             // this.iframe.nativeElement.contentWindow.location.pathname = '/multiplecompare/[{"title":"sasasa","t1":"qwqwqw","t2":"212dsdsd"}]';
-            await new Promise(resolveTime => setTimeout(resolveTime, 2200));
+
+            await this.sleepFor(2200);
+
+            // extract the domain url (for exterrnaol js files and css)
             var domainUrl = pageUrl
               .split("/")
               .filter(n => n)
@@ -230,32 +247,62 @@ export class SiteScreenComponent implements OnInit {
                 .join("/");
             else domainUrl = parsedUrl.origin;
 
-            if (this.isJSON(data)) data = `<pre>${data}</pre>`;
+            // format json data
+            if (this.isJSON(data)) {
+              // data = JSON.stringify(data, undefined, 2)
+              data = `<pre><code>${data}</code></pre>`;
+            }
 
+            // console.log(data);
+
+            // replace sripts
             this.HTMLData = data.replace(
               /src="(?!http)[\/]?/g,
               `src="${domainUrl}/`
             );
+
+            // replace css
             this.HTMLData = this.HTMLData.replace(
               /href="(?!http)[\/]?/g,
               `href="${domainUrl}/`
             );
-            var el = document.createElement("html");
-            el.innerHTML = this.HTMLData;
+            var htmlEl = document.createElement("html");
+            htmlEl.innerHTML = this.HTMLData;
 
-            var existingValue = el
-              .getElementsByTagName("body")[0]
-              .getAttribute("style");
-            var css =
+            var bodyEL = htmlEl.getElementsByTagName("body")[0];
+
+            let bodyELStyle = bodyEL.getAttribute("style");
+            var newBodyStyle =
               "pointer-events: none; cursor: pointer; position: relative !important";
-            el.getElementsByTagName("body")[0].setAttribute(
+            bodyEL.setAttribute(
               "style",
-              existingValue ? existingValue + ";" + css : css
+              bodyELStyle ? bodyELStyle + ";" + newBodyStyle : newBodyStyle
             );
+
+            // translator
+            // var translatorScript = document.createElement("script");
+            // translatorScript.text = `(() => {
+            //   var isHidden = false;
+            //   while(!isHidden) {
+            //    var gtNvframe = document.querySelectorAll("#gt-nvframe");
+            //    if (gtNvframe && gtNvframe.length > 0) {
+            //       gtNvframe[0].style.display = 'none';
+            //       isHidden = true;
+            //    }
+            //   }
+            // })()`;
+            // bodyEL.appendChild(translatorScript);
+
+            const translatorStyle = document.createElement("style");
+            translatorStyle.textContent =
+              "#gt-nvframe { display: none !important; } body {margin-top: 0px !important}";
+            var header = htmlEl.getElementsByTagName("head")[0];
+            header.appendChild(translatorStyle);
+
             // this.iframe.nativeElement.srcdoc = el.innerHTML;
             var doc = this.iframe.nativeElement.contentDocument;
             doc.open();
-            doc.write(el.innerHTML);
+            doc.write(htmlEl.innerHTML);
             doc.close();
 
             this.loadingComplete = true;
@@ -269,7 +316,7 @@ export class SiteScreenComponent implements OnInit {
                 duration: 900
               }
             );
-            await new Promise(resolveTime => setTimeout(resolveTime, 1200));
+            await this.sleepFor(1200);
             this.addPointerToPage();
             resolve({ ref: this.iframe });
           } catch (error) {}
@@ -310,7 +357,7 @@ export class SiteScreenComponent implements OnInit {
         duration: 900
       }
     );
-    await new Promise(resolveTime => setTimeout(resolveTime, 1200));
+    await this.sleepFor(1200);
     this.addPointerToPage();
     return { ref: this.iframe };
   }
@@ -420,6 +467,7 @@ export class SiteScreenComponent implements OnInit {
     var textStyleIndex = this.textStyles.findIndex(
       (curr: any) => curr.text == text && curr.index == index
     );
+    // if highlighted then remove it and highlight again
     if (textStyleIndex == -1) {
       var indexes = this.getIndicesOf(text, html, caseSensitive);
       if (indexes && indexes.length > 0) {
@@ -456,21 +504,23 @@ export class SiteScreenComponent implements OnInit {
         "",
         false
       );
-      await new Promise(resolveTime => setTimeout(resolveTime, 600));
+      await this.sleepFor(600);
       await this.addAttributeToElement(`#${textStyle.id}`, 0, 1, "style", css);
     }
-
-    await new Promise(resolveTime => setTimeout(resolveTime, 600));
+    await this.sleepFor(600);
   }
 
+  // iframe height
   getHeight(): number {
     return this.iframe.nativeElement.getBoundingClientRect().height;
   }
 
+  // iframe width
   getWidth(): number {
     return this.iframe.nativeElement.getBoundingClientRect().width;
   }
 
+  // interact wih the js element and get output
   async getData(query: string, index: number, selector: string) {
     await this.scrollToSelector(
       query,
@@ -489,6 +539,7 @@ export class SiteScreenComponent implements OnInit {
     )[index][selector];
   }
 
+  // set values for js dom elements
   async setData(query: string, index: number, selector: string, data: string) {
     try {
       if (
@@ -498,11 +549,11 @@ export class SiteScreenComponent implements OnInit {
       )
         return;
       await this.scrollToSelector(query, index, this.getHeight() / 2);
-      await new Promise(resolveTime => setTimeout(resolveTime, 400));
+      await this.sleepFor(400);
       this.iframe.nativeElement.contentDocument.body.querySelectorAll(query)[
         index
       ][selector] = data;
-      await new Promise(resolveTime => setTimeout(resolveTime, 600));
+      await this.sleepFor(600);
     } catch (error) {
       console.log(error);
     }
@@ -525,10 +576,11 @@ export class SiteScreenComponent implements OnInit {
       this.getWidth() / 4
     );
     var result = el[event](...data);
-    await new Promise(resolveTime => setTimeout(resolveTime, 600));
+    await this.sleepFor(600);
     return result;
   }
 
+  // search for all occurance of a text in a text
   getIndicesOf(searchStr: string, str: string, caseSensitive: boolean) {
     var searchStrLen = searchStr.length;
     if (searchStrLen == 0) {
@@ -601,5 +653,9 @@ export class SiteScreenComponent implements OnInit {
     } catch (e) {
       return false;
     }
+  }
+
+  async sleepFor(time: number) {
+    await new Promise(resolveTime => setTimeout(resolveTime, time));
   }
 }

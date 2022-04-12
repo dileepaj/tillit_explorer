@@ -15,6 +15,21 @@
         <p>Proof of initialization of a traceability item</p>
       </div>
     </div>
+    <div>
+      <proof-bot
+      *ngIf="loadingComplete && !errorOccurred"
+      [isEmbedded]="true"
+      [proofBotParams]="proofBotParams"
+      [initialHeight]="'200px'"
+      [initialWidth]="'400px'"
+      [minHeight]="'82vh'"
+      [minWidth]="'82vw'"
+      [maxHeight]="'98vh'"
+      [maxWidth]="'100vw'"
+      [justifyContent]="'start'"
+      [alignItems]="'start'"
+      ></proof-bot>
+    </div>
   </div>
 </div>
     <div class="row ml-0 mr-0 pt-3 pb-3 mb-3" style="background-color: #E4F7E7;">

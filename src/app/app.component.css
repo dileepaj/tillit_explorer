@@ -1,5 +1,8 @@
-.content-area{
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+:host {
+  height: 100%;
+}
+.content-area {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }

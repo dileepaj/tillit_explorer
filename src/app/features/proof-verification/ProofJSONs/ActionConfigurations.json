@@ -53,8 +53,18 @@
           "FrameTitle": "#{FrameTitle}"
         },
         "Action": {
-          "ActionTitle": "Request Stellar HorizonAPI",
-          "ActionDescription": "Retrieve the #{OperationName} from Stellar Blockchain.",
+          "ActionTitle": {
+            "en": "Request Stellar HorizonAPI",
+            "si": "Sinhala - Request Stellar HorizonAPI",
+            "ta": "Tamil - Request Stellar HorizonAPI",
+            "ja": "Japanese - Request Stellar HorizonAPI"
+          },
+          "ActionDescription": {
+            "en": "Retrieve the #{OperationName} from Stellar Blockchain.",
+            "si": "Sinhala - Retrieve the #{OperationName} from Stellar Blockchain.",
+            "ta": "Tamil - Retrieve the #{OperationName} from Stellar Blockchain.",
+            "ja": "Japanese - Retrieve the #{OperationName} from Stellar Blockchain."
+          },
           "ActionType": "BrowserScreen",
           "ActionParameters": {
             "ExternalURL": "https://horizon-testnet.stellar.org/transactions/#{TXNHash}/operations",
@@ -95,11 +105,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Save API Response",
-          "ActionDescription": "Save the response data of the transaction",
+          "ActionTitle": {
+            "en": "Save API Response",
+            "si": "Sinhala - Save API Response",
+            "ta": "Tamil - Save API Response",
+            "ja": "Japanese - Save API Response"
+          },
+          "ActionDescription": {
+            "en": "Save the response data of the transaction",
+            "si": "Sinhala - Save the response data of the transaction",
+            "ta": "Tamil - Save the response data of the transaction",
+            "ja": "Japanese - Save the response data of the transaction"
+          },
           "ActionType": "GetElementAttributeData",
           "ActionParameters": {
             "ExternalURL": "",
@@ -140,11 +165,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Format Response (JSON)",
-          "ActionDescription": "Format transaction data to JSON (Javascript Object Notation)",
+          "ActionTitle": {
+            "en": "Format Response (JSON)",
+            "si": "Sinhala - Format Response (JSON)",
+            "ta": "Tamil - Format Response (JSON)",
+            "ja": "Japanese - Format Response (JSON)"
+          },
+          "ActionDescription": {
+            "en": "Format transaction data to JSON (Javascript Object Notation)",
+            "si": "Sinhala - Format transaction data to JSON (Javascript Object Notation)",
+            "ta": "Tamil - Format transaction data to JSON (Javascript Object Notation)",
+            "ja": "Japanese - Format transaction data to JSON (Javascript Object Notation)"
+          },
           "ActionType": "FormatMetaData",
           "ActionParameters": {
             "ExternalURL": "",
@@ -233,14 +273,30 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Load Base64Decoder Webpage",
-          "ActionDescription": "Decode the base64 encoded #{DecodeKeyName}",
+          "ActionTitle": {
+            "en": "Load Base64Decoder Webpage",
+            "si": "Sinhala - Load Base64Decoder Webpage",
+            "ta": "Tamil - Load Base64Decoder Webpage",
+            "ja": "Japanese - Load Base64Decoder Webpage"
+          },
+          "ActionDescription": {
+            "en": "Decode the base64 encoded #{DecodeKeyName}",
+            "si": "Sinhala - Decode the base64 encoded #{DecodeKeyName}",
+            "ta": "Tamil - Decode the base64 encoded #{DecodeKeyName}",
+            "ja": "Japanese - Decode the base64 encoded #{DecodeKeyName}"
+          },
           "ActionType": "BrowserScreen",
           "ActionParameters": {
             "ExternalURL": "https://emn178.github.io/online-tools/base64_decode.html",
+            "Translatable": true,
             "InnerHTML": "",
             "Query": "",
             "QueryIndex": "",
@@ -278,11 +334,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Input Base64Encoded Data",
-          "ActionDescription": "Input the base64 encoded #{DecodeKeyName}",
+          "ActionTitle": {
+            "en": "Input Base64Encoded Data",
+            "si": "Sinhala - Input Base64Encoded Data",
+            "ta": "Tamil - Input Base64Encoded Data",
+            "ja": "Japanese - Input Base64Encoded Data"
+          },
+          "ActionDescription": {
+            "en": "Input the base64 encoded #{DecodeKeyName}",
+            "si": "Sinhala - Input the base64 encoded #{DecodeKeyName}",
+            "ta": "Tamil - Input the base64 encoded #{DecodeKeyName}",
+            "ja": "Japanese - Input the base64 encoded #{DecodeKeyName}"
+          },
           "ActionType": "UpdateElementProperty",
           "ActionParameters": {
             "ExternalURL": "",
@@ -323,11 +394,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Click Decode Button",
-          "ActionDescription": "Click the decode button",
+          "ActionTitle": {
+            "en": "Click Decode Button",
+            "si": "Sinhala - Click Decode Button",
+            "ta": "Tamil - Click Decode Button",
+            "ja": "Japanese - Click Decode Button"
+          },
+          "ActionDescription": {
+            "en": "Click the decode button",
+            "si": "Sinhala - Click the decode button",
+            "ta": "Tamil - Click the decode button",
+            "ja": "Japanese - Click the decode button"
+          },
           "ActionType": "TriggerElementFunction",
           "ActionParameters": {
             "ExternalURL": "",
@@ -368,11 +454,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "View Base64Decoded Data",
-          "ActionDescription": "Get the output of the decoded #{DecodeKeyName}",
+          "ActionTitle": {
+            "en": "View Base64Decoded Data",
+            "si": "Sinhala - View Base64Decoded Data",
+            "ta": "Tamil - View Base64Decoded Data",
+            "ja": "Japanese - View Base64Decoded Data"
+          },
+          "ActionDescription": {
+            "en": "Get the output of the decoded #{DecodeKeyName}",
+            "si": "Sinhala - Get the output of the decoded #{DecodeKeyName}",
+            "ta": "Tamil - Get the output of the decoded #{DecodeKeyName}",
+            "ja": "Japanese - Get the output of the decoded #{DecodeKeyName}"
+          },
           "ActionType": "GetElementAttributeData",
           "ActionParameters": {
             "ExternalURL": "",
@@ -403,7 +504,12 @@
           "ScrollToPointer": true,
           "FrameAutoScroll": true,
           "FrameScrollBars": "",
-          "ToastMessage": "Decoded #{DecodeKeyName}",
+          "ToastMessage": {
+            "en": "Decoded #{DecodeKeyName}",
+            "si": "Sinhala - Decoded #{DecodeKeyName}",
+            "ta": "Tamil - Decoded #{DecodeKeyName}",
+            "ja": "Japanese - Decoded #{DecodeKeyName}"
+          },
           "ToastPosition": ["60%", "10%"],
           "ActionDuration": 10
         }
@@ -413,11 +519,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Save Base64Decoded Data",
-          "ActionDescription": "Save the decoded #{DecodeKeyName} for future usage.",
+          "ActionTitle": {
+            "en": "Save Base64Decoded Data",
+            "si": "Sinhala - Save Base64Decoded Data",
+            "ta": "Tamil - Save Base64Decoded Data",
+            "ja": "Japanese - Save Base64Decoded Data"
+          },
+          "ActionDescription": {
+            "en": "Save the decoded #{DecodeKeyName} for future usage.",
+            "si": "Sinhala - Save the decoded #{DecodeKeyName} for future usage.",
+            "ta": "Tamil - Save the decoded #{DecodeKeyName} for future usage.",
+            "ja": "Japanese - Save the decoded #{DecodeKeyName} for future usage."
+          },
           "ActionType": "InformationStorage",
           "ActionParameters": {
             "ExternalURL": "",
@@ -511,11 +632,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Highlight the #{OperationKey}",
-          "ActionDescription": "Select the #{OperationKeyName}",
+          "ActionTitle": {
+            "en": "Highlight the #{OperationKey}",
+            "si": "Sinhala - Highlight the #{OperationKey}",
+            "ta": "Tamil - Highlight the #{OperationKey}",
+            "ja": "Japanese - Highlight the #{OperationKey}"
+          },
+          "ActionDescription": {
+            "en": "Select the #{OperationKeyName}",
+            "si": "Sinhala - Select the #{OperationKeyName}",
+            "ta": "Tamil - Select the #{OperationKeyName}",
+            "ja": "Japanese - Select the #{OperationKeyName}"
+          },
           "ActionType": "FormatDOMText",
           "ActionParameters": {
             "ExternalURL": "",
@@ -556,11 +692,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Highlight the #{OperationValue}",
-          "ActionDescription": "Select the #{OperationValueName}",
+          "ActionTitle": {
+            "en": "Highlight the #{OperationValue}",
+            "si": "Sinhala - Highlight the #{OperationValue}",
+            "ta": "Tamil - Highlight the #{OperationValue}",
+            "ja": "Japanese - Highlight the #{OperationValue}"
+          },
+          "ActionDescription": {
+            "en": "Select the #{OperationValueName}",
+            "si": "Sinhala - Select the #{OperationValueName}",
+            "ta": "Tamil - Select the #{OperationValueName}",
+            "ja": "Japanese - Select the #{OperationValueName}"
+          },
           "ActionType": "FormatDOMText",
           "ActionParameters": {
             "ExternalURL": "",
@@ -639,11 +790,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Online TextComparison Webpage",
-          "ActionDescription": "Load the online text comparison webpage",
+          "ActionTitle": {
+            "en": "Online TextComparison Webpage",
+            "si": "Sinhala - Online TextComparison Webpage",
+            "ta": "Tamil - Online TextComparison Webpage",
+            "ja": "Japanese - Online TextComparison Webpage"
+          },
+          "ActionDescription": {
+            "en": "Load the online text comparison webpage",
+            "si": "Sinhala - Load the online text comparison webpage",
+            "ta": "Tamil - Load the online text comparison webpage",
+            "ja": "Japanese - Load the online text comparison webpage"
+          },
           "ActionType": "BrowserScreen",
           "ActionParameters": {
             "ExternalURL": "https://text-comparison-server.herokuapp.com",
@@ -684,11 +850,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Input comparison values",
-          "ActionDescription": "Input #{InputKeyName}",
+          "ActionTitle": {
+            "en": "Input comparison values",
+            "si": "Sinhala - Input comparison values",
+            "ta": "Tamil - Input comparison values",
+            "ja": "Japanese - Input comparison values"
+          },
+          "ActionDescription": {
+            "en": "Input #{InputKeyName}",
+            "si": "Sinhala - Input #{InputKeyName}",
+            "ta": "Tamil - Input #{InputKeyName}",
+            "ja": "Japanese - Input #{InputKeyName}"
+          },
           "ActionType": "UpdateElementProperty",
           "ActionParameters": {
             "ExternalURL": "",
@@ -729,11 +910,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Click compare button",
-          "ActionDescription": "Click the compare button",
+          "ActionTitle": {
+            "en": "Click compare button",
+            "si": "Sinhala - Click compare button",
+            "ta": "Tamil - Click compare button",
+            "ja": "Japanese - Click compare button"
+          },
+          "ActionDescription": {
+            "en": "Click compare button",
+            "si": "Sinhala - Click compare button",
+            "ta": "Tamil - Click compare button",
+            "ja": "Japanese - Click compare button"
+          },
           "ActionType": "TriggerElementFunction",
           "ActionParameters": {
             "ExternalURL": "",
@@ -774,11 +970,26 @@
           "StepNo": "#{StepNo}",
           "SegmentNo": "#{SegmentNo}",
           "FrameID": "#{FrameID}",
-          "FrameTitle": "#{FrameTitle}"
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
         },
         "Action": {
-          "ActionTitle": "Scroll to result",
-          "ActionDescription": "Scroll to the result",
+          "ActionTitle": {
+            "en": "Scroll to result",
+            "si": "Sinhala - Scroll to result",
+            "ta": "Tamil - Scroll to result",
+            "ja": "Japanese - Scroll to result"
+          },
+          "ActionDescription": {
+            "en": "Scroll to the result",
+            "si": "Sinhala - Scroll to the result",
+            "ta": "Tamil - Scroll to the result",
+            "ja": "Japanese - Scroll to the result"
+          },
           "ActionType": "UpdateElementAttribute",
           "ActionParameters": {
             "ExternalURL": "",
@@ -809,9 +1020,242 @@
           "ScrollToPointer": true,
           "FrameAutoScroll": true,
           "FrameScrollBars": "",
-          "ToastMessage": "Comparison result",
+          "ToastMessage": {
+            "en": "Comparison result",
+            "si": "Sinhala - Comparison result",
+            "ta": "Tamil - Comparison result",
+            "ja": "Japanese - Comparison result"
+          },
           "ToastPosition": ["60%", "20%"],
           "ActionDuration": 10
+        }
+      }
+    ]
+  },
+  "TDPResponseViewer": {
+    "Title": "TDPResponseViewer",
+    "Description": "",
+    "Parameters": {
+      "StepNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "SegmentNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameID": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameTitle": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "TXNHash": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "OperationName": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "ResponseVariable": {
+        "Type": "any",
+        "Required": true,
+        "Description": ""
+      },
+      "JSONResultVariable": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      }
+    },
+    "Actions": [
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
+        },
+        "Action": {
+          "ActionTitle": {
+            "en": "Request TDP Data",
+            "si": "Sinhala - Request TDP Data",
+            "ta": "Tamil - Request TDP Data",
+            "ja": "Japanese - Request TDP Data"
+          },
+          "ActionDescription": {
+            "en": "Retrieve TDP data from Tracified Gateway.",
+            "si": "Sinhala - Retrieve TDP data from Tracified Gateway.",
+            "ta": "Tamil - Retrieve TDP data from Tracified Gateway.",
+            "ja": "Japanese - Retrieve TDP data from Tracified Gateway."
+          },
+          "ActionType": "BrowserScreen",
+          "ActionParameters": {
+            "ExternalURL": "https://qa.gateway.tracified.com/GetTransactions?txn=#{TXNHash}&page=1&perPage=10",
+            "InnerHTML": "",
+            "Query": "",
+            "QueryIndex": "",
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": ["20%", "40%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
+        },
+        "Action": {
+          "ActionTitle": {
+            "en": "Save API Response",
+            "si": "Sinhala - Save API Response",
+            "ta": "Tamil - Save API Response",
+            "ja": "Japanese - Save API Response"
+          },
+          "ActionDescription": {
+            "en": "Save the response data of the transaction",
+            "si": "Sinhala - Save the response data of the transaction",
+            "ta": "Tamil - Save the response data of the transaction",
+            "ja": "Japanese - Save the response data of the transaction"
+          },
+          "ActionType": "GetElementAttributeData",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "innerText",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "#{ResponseVariable}",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 2
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": {
+            "en": "#{FrameTitle_en}",
+            "si": "#{FrameTitle_si}",
+            "ta": "#{FrameTitle_ta}",
+            "ja": "#{FrameTitle_ja}"
+          }
+        },
+        "Action": {
+          "ActionTitle": {
+            "en": "Format Response (JSON)",
+            "si": "Sinhala - Format Response (JSON)",
+            "ta": "Tamil - Format Response (JSON)",
+            "ja": "Japanese - Format Response (JSON)"
+          },
+          "ActionDescription": {
+            "en": "Format transaction data to JSON (Javascript Object Notation)",
+            "si": "Sinhala - Format transaction data to JSON (Javascript Object Notation)",
+            "ta": "Tamil - Format transaction data to JSON (Javascript Object Notation)",
+            "ja": "Japanese - Format transaction data to JSON (Javascript Object Notation)"
+          },
+          "ActionType": "FormatMetaData",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "parseJson",
+            "StorageData": []
+          },
+          "ActionResultVariable": "#{JSONResultVariable}",
+          "MetaData": ["#{ResponseVariable}"]
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 2
         }
       }
     ]

@@ -1,5 +1,7 @@
 <div id="siteScreen" [@screenAnimation]>
+  <!-- Browser window start -->
   <div id="browser">
+    <!-- browser controlls start -->
     <div class="header">
       <div class="input-group">
         <div class="input-group-text" id="basic-addon1">
@@ -51,6 +53,9 @@
         </div>
       </div>
     </div>
+    <!-- browser controlls end -->
+
+    <!-- browser iframe start -->
     <div class="content">
       <div
         class="mt-5 d-flex justify-content-center align-items-center"
@@ -83,7 +88,11 @@
         sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation"
       ></iframe>
     </div>
+    <!-- browser iframe end -->
   </div>
+  <!-- Browser window end -->
+
+  <!-- Frame title start -->
   <div id="title">
     <input
       type="text"
@@ -93,4 +102,5 @@
       aria-describedby="basic-addon1"
     />
   </div>
+  <!-- Frame title end -->
 </div>

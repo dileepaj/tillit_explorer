@@ -1,0 +1,212 @@
+<div style="height: 100%; width: 100%; ">
+  <div
+    id="proofContainer"
+    style="height: 100%; width: 100%; display: flex;
+    flex-direction: column;"
+    [ngStyle]="{
+      justifyContent: justifyContent,
+      alignItems: alignItems
+    }"
+    [class]="isTheater ? 'p-3' : 'p-0'"
+  >
+    <app-bot-loader
+      [initialHeight]="initialHeight"
+      [initialWidth]="initialWidth"
+      [isLoading]="isLoading"
+      [color]="color"
+      [mode]="mode"
+      [value]="value"
+      (startDemoFn)="startDemoFn()"
+      id="proofDemoLoaderFrame"
+      *ngIf="!isStartDemo"
+      style="width: 100%;"
+      [ngStyle]="{
+        height: initialHeight,
+        maxWidth: initialWidth
+      }"
+    ></app-bot-loader>
+
+    <!-- Global Information -->
+    <!-- <div
+      id="globalInformation"
+      *ngIf="globalData.length > 0"
+      [@screenAnimation]
+      [ngStyle]="{
+        height: gsHeightExpand ? '98vh' : '22vh'
+      }"
+    >
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h6 style="font-size: 0.848rem; margin-bottom: 0 !important;">
+            {{ StorageTitle }}
+          </h6>
+        </div>
+        <div (click)="resizeGlobalScreen()" style="cursor: pointer;">
+          <svg
+            *ngIf="gsHeightExpand"
+            width="20px"
+            height="20px"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4.1 14.1L1 17l2 2 2.9-3.1L8 18v-6H2l2.1 2.1zM19 3l-2-2-2.9 3.1L12 2v6h6l-2.1-2.1L19 3z"
+            />
+          </svg>
+          <svg
+            *ngIf="!gsHeightExpand"
+            width="16px"
+            height="16px"
+            viewBox="0 0 16 16"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <rect width="16" height="16" id="icon-bound" fill="none" />
+            <path
+              d="M1.986,12.6L6.586,8L8,9.414L3.414,14L5.986,14L5.986,16L1.986,16L-0.014,16L-0.014,10L1.986,10L1.986,12.6ZM12.586,2L10.014,2L10.014,0L16.014,0L16.014,6L14.014,6L14.014,3.4L9.414,8L8,6.586L12.586,2Z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="position-relative"
+        style=" overflow-y: hidden; height: 100%; margin-top: 4px;"
+      >
+        <button
+          type="button"
+          (click)="scrollWithinGlobalStorage('L')"
+          [ngStyle]="{ opacity: isDisableGlobalInformationL ? 0 : 1 }"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-caret-left"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M10 12.796V3.204L4.519 8 10 12.796zm-.659.753-5.48-4.796a1 1 0 0 1 0-1.506l5.48-4.796A1 1 0 0 1 11 3.204v9.592a1 1 0 0 1-1.659.753z"
+            />
+          </svg>
+        </button>
+        <button
+          type="button"
+          (click)="scrollWithinGlobalStorage('R')"
+          [ngStyle]="{ opacity: isDisableGlobalInformationR ? 0 : 1 }"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-caret-right"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"
+            />
+          </svg>
+        </button>
+        <div id="frames" [style.overflow-x]="gsOverflowX">
+          <proof-global-storage
+            *ngFor="let data of globalData"
+            [frameData]="data"
+          ></proof-global-storage>
+        </div>
+      </div>
+    </div> -->
+    <!-- Verification screen -->
+    <div
+      id="verificationScreen"
+      *ngIf="isStartDemo"
+      [@screenAnimationDemo]
+      [ngStyle]="{
+        height: vsHeightExpand ? maxHeight : minHeight,
+        maxWidth: vsHeightExpand ? maxWidth : minWidth
+      }"
+    >
+      <app-bot-header
+        [lang]="lang"
+        [isPause]="isPause"
+        [ProofContainerTitle]="ProofContainerTitle"
+        [isPlayCompleted]="isPlayCompleted"
+        [currentStep]="currentStep"
+        [totalSteps]="totalSteps"
+        [playbackSpeed]="playbackSpeed"
+        [isTheater]="isTheater"
+        [vsHeightExpand]="vsHeightExpand"
+        (setLangFn)="setLangFn($event)"
+        (togglePlayPauseFn)="togglePlayPauseFn()"
+        (stopFn)="stopFn()"
+        (replayFn)="replayFn()"
+        (setSpeedFn)="setSpeed($event)"
+        (theaterModeFn)="theaterMode()"
+        (resizeVerifyScreenFn)="resizeVerifyScreen()"
+      ></app-bot-header>
+
+      <app-bot-globaldata
+        id="globalInformation"
+        *ngIf="globalData.length > 0"
+        [@screenAnimation]
+        [ngStyle]="{
+          height: gsHeightExpand ? '98vh' : '22vh'
+        }"
+        [globalData]="globalData"
+        [gsOverflowX]="gsOverflowX"
+      ></app-bot-globaldata>
+
+      <app-bot-segments
+        id="steppersFrame"
+        [SegmentNumber]="SegmentNumber"
+        [steppers]="steppers"
+        [subSteppers]="subSteppers"
+        (backToStepFn)="backToStep($event)"
+        (backToActionFn)="backToAction($event)"
+      ></app-bot-segments>
+
+      <!-- description -->
+      <div>
+        <ul style="list-style-position: inside" class="ml-0 pl-0 my-2">
+          <li class="m-0 p-0">
+            <span style="font-size: 13px; font-weight: 500;">{{
+              ActionDescription
+            }}</span>
+          </li>
+        </ul>
+      </div>
+      <!-- end description -->
+
+      <!-- bot screen -->
+      <div
+        style="overflow: visible;position: relative;height: 100%;width: 100%; margin-top: 4px;  
+        "
+      >
+        <div
+          *ngIf="isToast"
+          class="toast-notification float-right px-2"
+          [ngStyle]="{ top: toastTop, left: toastLeft }"
+          [@inOutAnimation]
+        >
+          <p class="m-0">{{ toastMSG }}</p>
+        </div>
+        <div class="spanner" [class.show]="isBackToStep">
+          <div class="loader"></div>
+        </div>
+        <div style="height: 100%;">
+          <div id="frames" [style.overflow-x]="vsOverflowX">
+            <ng-template #ProofDemoDirective></ng-template>
+          </div>
+        </div>
+      </div>
+      <!-- end bot screen -->
+      
+    </div>
+  </div>
+  <!-- <div class="container" *ngIf="loadingComplete && errorOccurred">
+    <app-error-id [errorType]="error.errorType" [errorTitle]="error.errorTitle" [errorMessage]="error.errorMessage"
+      [errorMessageSecondary]="error.errorMessageSecondary">
+    </app-error-id>
+  </div> -->
+</div>

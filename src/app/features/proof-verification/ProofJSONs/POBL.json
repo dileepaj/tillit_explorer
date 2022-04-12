@@ -1,9 +1,7 @@
 {
   "Header": {
-    "StorageTitle": "Information storage",
+    "StorageTitle": "",
     "ProofContainerTitle": "",
-    "GSHeightExpand": false,
-    "VSHeightExpand": false,
     "GSOverflowX": "hidden",
     "VSOverflowX": "hidden",
     "PlaybackSpeed": 1,
