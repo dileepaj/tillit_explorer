@@ -1,0 +1,995 @@
+{
+  "StellarOperationViewer": {
+    "Title": "StellarOperationViewer",
+    "Description": "",
+    "Parameters": {
+      "StepNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "SegmentNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameID": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameTitle": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "TXNHash": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "OperationName": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "ResponseVariable": {
+        "Type": "any",
+        "Required": true,
+        "Description": ""
+      },
+      "JSONResultVariable": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      }
+    },
+    "Actions": [
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle}",
+          "ActionDescription": "#{ActionDescription}",
+          "ActionType": "BrowserScreen",
+          "ActionParameters": {
+            "ExternalURL": "https://horizon-testnet.stellar.org/transactions/#{TXNHash}/operations",
+            "InnerHTML": "",
+            "Query": "",
+            "QueryIndex": "",
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": ["20%", "40%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_1}",
+          "ActionDescription": "#{ActionDescription_1}",
+          "ActionType": "GetElementAttributeData",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "innerText",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "#{ResponseVariable}",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 2
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_2}",
+          "ActionDescription": "#{ActionDescription_2}",
+          "ActionType": "FormatMetaData",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "parseJson",
+            "StorageData": []
+          },
+          "ActionResultVariable": "#{JSONResultVariable}",
+          "MetaData": ["#{ResponseVariable}"]
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 2
+        }
+      }
+    ]
+  },
+  "OnlineToolsDecoder": {
+    "Title": "OnlineToolsDecoder",
+    "Description": "",
+    "Parameters": {
+      "StepNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "SegmentNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameID": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameTitle": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "DecodeKeyName": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "EncodedInputValue": {
+        "Type": "any",
+        "Required": true,
+        "Description": ""
+      },
+      "DecodedResultVariable": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "InformationStorageKey": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      }
+    },
+    "Actions": [
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle}",
+          "ActionDescription": "#{ActionDescription}",
+          "ActionType": "BrowserScreen",
+          "ActionParameters": {
+            "ExternalURL": "https://emn178.github.io/online-tools/base64_decode.html",
+            "Translatable": true,
+            "InnerHTML": "",
+            "Query": "",
+            "QueryIndex": "",
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": ["20%", "40%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_1}",
+          "ActionDescription": "#{ActionDescription_1}",
+          "ActionType": "UpdateElementProperty",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": ".input textarea",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "value",
+            "ElPropertyValue": "#{EncodedInputValue}",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": true,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": ["20%", "40%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_2}",
+          "ActionDescription": "#{ActionDescription_2}",
+          "ActionType": "TriggerElementFunction",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": ".btn.btn-default",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "click",
+            "ElFunctionArguments": [],
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": true,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": ["20%", "40%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_3}",
+          "ActionDescription": "#{ActionDescription_3}",
+          "ActionType": "GetElementAttributeData",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": ".output textarea",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "value",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "#{DecodedResultVariable}",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": true,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "#{ToastMessage}",
+          "ToastPosition": ["60%", "10%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_4}",
+          "ActionDescription": "#{ActionDescription_4}",
+          "ActionType": "InformationStorage",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": true,
+            "SelectiveTextIndex": 0,
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": [
+              {
+                "Key": "#{InformationStorageKey}",
+                "Value": "${#{DecodedResultVariable}}"
+              }
+            ]
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 30
+        }
+      }
+    ]
+  },
+  "KeyValueHighlighter": {
+    "Title": "KeyValueHighlighter",
+    "Description": "",
+    "Parameters": {
+      "StepNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "SegmentNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameID": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameTitle": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "OperationKey": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "OperationValue": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "OperationKeyName": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "OperationValueName": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      }
+    },
+    "Actions": [
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle}",
+          "ActionDescription": "#{ActionDescription}",
+          "ActionType": "FormatDOMText",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "#{OperationKey}",
+            "CaseSensitivity": true,
+            "SelectiveTextIndex": 0,
+            "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": true,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 40
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_1}",
+          "ActionDescription": "#{ActionDescription_1}",
+          "ActionType": "FormatDOMText",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "${#{OperationValue}}",
+            "CaseSensitivity": true,
+            "SelectiveTextIndex": 0,
+            "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": true,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 20
+        }
+      }
+    ]
+  },
+  "TextComparison": {
+    "Title": "TextComparison",
+    "Description": "",
+    "Parameters": {
+      "StepNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "SegmentNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameID": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameTitle": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "InputKeyName": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "InputValue": {
+        "Type": "any",
+        "Required": true,
+        "Description": ""
+      }
+    },
+    "Actions": [
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle}",
+          "ActionDescription": "#{ActionDescription}",
+          "ActionType": "BrowserScreen",
+          "ActionParameters": {
+            "ExternalURL": "https://text-comparison-server.herokuapp.com",
+            "InnerHTML": "",
+            "Query": "",
+            "QueryIndex": "",
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": [],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle_1}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_1}",
+          "ActionDescription": "#{ActionDescription_1}",
+          "ActionType": "UpdateElementProperty",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "textarea",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "value",
+            "ElPropertyValue": "#{InputValue}",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": true,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": ["20%", "40%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle_2}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_2}",
+          "ActionDescription": "#{ActionDescription_2}",
+          "ActionType": "TriggerElementFunction",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "button",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "click",
+            "ElFunctionArguments": [],
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": true,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": ["20%", "40%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle_3}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_3}",
+          "ActionDescription": "#{ActionDescription_3}",
+          "ActionType": "UpdateElementAttribute",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": ".comparissonBannerMargin",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "style",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": true,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "Comparison result",
+          "ToastPosition": ["60%", "20%"],
+          "ActionDuration": 10
+        }
+      }
+    ]
+  },
+  "TDPResponseViewer": {
+    "Title": "TDPResponseViewer",
+    "Description": "",
+    "Parameters": {
+      "StepNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "SegmentNo": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameID": {
+        "Type": "uint",
+        "Required": true,
+        "Description": ""
+      },
+      "FrameTitle": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "TXNHash": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "OperationName": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      },
+      "ResponseVariable": {
+        "Type": "any",
+        "Required": true,
+        "Description": ""
+      },
+      "JSONResultVariable": {
+        "Type": "string",
+        "Required": true,
+        "Description": ""
+      }
+    },
+    "Actions": [
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle}",
+          "ActionDescription": "#{ActionDescription}",
+          "ActionType": "BrowserScreen",
+          "ActionParameters": {
+            "ExternalURL": "https://qa.gateway.tracified.com/GetTransactions?txn=#{TXNHash}&page=1&perPage=10",
+            "InnerHTML": "",
+            "Query": "",
+            "QueryIndex": "",
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": ["20%", "40%"],
+          "ActionDuration": 10
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle_1}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_1}",
+          "ActionDescription": "#{ActionDescription_1}",
+          "ActionType": "GetElementAttributeData",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "innerText",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "",
+            "StorageData": []
+          },
+          "ActionResultVariable": "#{ResponseVariable}",
+          "MetaData": []
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 2
+        }
+      },
+      {
+        "StepHeader": {
+          "StepNo": "#{StepNo}",
+          "SegmentNo": "#{SegmentNo}",
+          "FrameID": "#{FrameID}",
+          "FrameTitle": "#{FrameTitle_2}"
+        },
+        "Action": {
+          "ActionTitle": "#{ActionTitle_2}",
+          "ActionDescription": "#{ActionDescription_2}",
+          "ActionType": "FormatMetaData",
+          "ActionParameters": {
+            "ExternalURL": "",
+            "InnerHTML": "",
+            "Query": "body",
+            "QueryIndex": 0,
+            "YOffset": "",
+            "XOffset": "",
+            "ElAttributeName": "",
+            "ElAttributeValue": "",
+            "ElAttributeValueReplace": "",
+            "ElProperty": "",
+            "ElPropertyValue": "",
+            "ElFunction": "",
+            "ElFunctionArguments": "",
+            "SelectiveText": "",
+            "CaseSensitivity": "",
+            "SelectiveTextIndex": "",
+            "CSS": "",
+            "FormatType": "parseJson",
+            "StorageData": []
+          },
+          "ActionResultVariable": "#{JSONResultVariable}",
+          "MetaData": ["#{ResponseVariable}"]
+        },
+        "Customizations": {
+          "PointerData": "",
+          "ScrollToPointer": false,
+          "FrameAutoScroll": true,
+          "FrameScrollBars": "",
+          "ToastMessage": "",
+          "ToastPosition": null,
+          "ActionDuration": 2
+        }
+      }
+    ]
+  }
+}

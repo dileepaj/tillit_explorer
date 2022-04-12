@@ -1,0 +1,83 @@
+<div id="steppersFrame">
+  <!-- Steppers Frame Start  -->
+  <div
+    id="segments"
+    class="bs-stepper my-2"
+    style="height: auto; width: 100%; display: flex; flex-direction: column; overflow: hidden;"
+  >
+    <div>
+      <!-- <h6 style="font-size: 13px; padding-left: 18px; margin-top: 14px;">
+          Proof Segments
+        </h6> -->
+      <div
+        style="height: auto; overflow-y: visible; overflow-x: hidden; width: 100%;"
+        id="stepWrapper"
+      >
+        <div class="bs-stepper-header cs-stepper-header" role="tablist">
+          <!-- your steps here -->
+          <ng-container *ngFor="let stepper of steppers">
+            <div class="step">
+              <div
+                type="button"
+                class="step-trigger stepBtn"
+                role="tab"
+                (click)="emitBackToStepFn(stepper.NO)"
+              >
+                <span class="bs-stepper-circle cs-stepper-circle">{{
+                  stepper.NO
+                }}</span>
+                <span class="bs-stepper-label cs-stepper-label">{{
+                  stepper.Name
+                }}</span>
+              </div>
+            </div>
+            <div class="line"></div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Steppers Frame End  -->
+
+  <!-- Sub Steppers Frame Start  -->
+  <div
+    id="subSteppers"
+    class="bs-stepper"
+    style="height: auto; width: 100%; display: flex; flex-direction: column; overflow: hidden;"
+  >
+    <div>
+      <!-- <h6 style="font-size: 13px; padding-left: 18px; margin-top: 14px;">
+          Segment Actions
+        </h6> -->
+      <div
+        style="height: auto; overflow-y: visible; overflow-x: hidden; width: 100%;"
+        id="stepWrapper"
+      >
+        <div class="bs-stepper-header cs-stepper-header" role="tablist">
+          <!-- your steps here -->
+          <ng-container
+            *ngFor="let subStepper of subSteppers; let index = index"
+          >
+            <div class="step">
+              <div
+                type="button"
+                class="step-trigger stepBtn"
+                role="tab"
+                (click)="emitBackToActionFn(subStepper.ActionID)"
+              >
+                <span class="bs-stepper-circle cs-stepper-circle"
+                  >{{ SegmentNumber }}.{{ index + 1 }}</span
+                >
+                <span class="bs-stepper-label cs-stepper-label">{{
+                  subStepper.ActionName
+                }}</span>
+              </div>
+            </div>
+            <div class="line"></div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Sub Steppers Frame End  -->
+</div>

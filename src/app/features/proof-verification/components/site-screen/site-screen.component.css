@@ -1,0 +1,157 @@
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+:host {
+  width: 100%;
+  /* flex-grow: 1; */
+  flex: none;
+  min-width: auto;
+  overflow: hidden;
+  /* resize: horizontal; */
+  position: relative;
+}
+/* 
+:host:not(:first-child) {
+  margin-left: 3%;
+} */
+
+.copy-notification {
+  background-color: #007bff;
+  color: white;
+  border-radius: 3px;
+  position: absolute;
+  top: 20;
+  right: 0;
+}
+
+#siteScreen {
+  height: 100%;
+  width: 100%;
+  border: solid rgba(204, 202, 202, 0.473) 2px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  /* resize: horizontal; */
+}
+
+#browser {
+  width: 100%;
+  cursor: pointer;
+  overflow: hidden;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+#browser .header .input-group-text {
+  padding: 2px 10px !important;
+  box-sizing: border-box;
+  border-radius: 0px !important;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  -webkit-box-shadow: 0px 4px 8px -7px #000000,
+    -50px -49px 0px -28px rgba(0, 0, 0, 0);
+  box-shadow: 0px 4px 8px -7px #000000, -50px -49px 0px -28px rgba(0, 0, 0, 0);
+}
+
+#browser .header .input-group-text span:nth-child(2) {
+  width: 100%;
+  flex-grow: 1;
+}
+
+#browser .header .input-group-text span:nth-child(3) {
+  padding-left: 20px;
+}
+
+#browser .header .input-group-text span:nth-child(4) {
+  padding-left: 10px;
+}
+#browser .header .input-group-text span:nth-child(5) {
+  padding-left: 16px;
+}
+
+#browser .header .input-group-text span:hover {
+  font-size: 18px;
+}
+
+#browser .header input {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+#siteScreen #browser .content {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-size: 12px;
+  padding: 0px 0px;
+  margin: 0px 0px 0px 0px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+#siteScreen #title input {
+  background: #bdc3c7; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #2c3e50,
+    #bdc3c7
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #2c3e50,
+    #bdc3c7
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: white;
+  font-size: 12px;
+  min-height: 32px;
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  border: 0px;
+  margin: 0;
+  padding: 4px 20px 4px 10px;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  :host {
+    /* width: 96%; */
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  :host {
+    /* width: 46%; */
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  :host {
+    /* width: 32%; */
+  }
+}

@@ -1,0 +1,51 @@
+:host {
+  /* min-width: 50%; */
+  width: 100%;
+  /* flex-grow: 1; */
+  flex: none;
+  /* min-width: auto; */
+  /* overflow: auto; */
+  /* resize: horizontal; */
+  position: relative;
+
+  height: 100%;
+  border: solid rgba(0, 0, 0, 0.2) 1px;
+  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2); */
+  padding: 10px 22px 8px 6px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+:host:not(:first-child) {
+  margin-left: 16px;
+}
+
+#globalStorageFrame {
+  height: 100%;
+  overflow: hidden;
+}
+
+#globalStorageFrame .header h6 {
+  color: rgb(136, 133, 133);
+  font-size: 13px;
+  padding-left: 6px;
+  margin-bottom: 4px;
+}
+
+#globalStorageFrame .data-table {
+  overflow-x: auto;
+  overflow-y: auto;
+  height: 100%;
+}
+
+#globalStorageFrame .table {
+  margin-bottom: 0 !important;
+}
+
+#globalStorageFrame .table th,
+td {
+  font-size: 12px;
+  padding: 6px 6px 0px 6px;
+}

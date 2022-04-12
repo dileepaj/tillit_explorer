@@ -1,0 +1,345 @@
+{
+  "Segments": {
+    "SegName1": {
+      "en": "Retrieve TDP Data"
+    },
+    "SegName2": {
+      "en": "Retrieve blockchain transaction"
+    },
+    "SegName3": {
+      "en": "Decode CurrentTX Hash"
+    },
+    "SegName4": {
+      "en": "Retrieve blockchain CurrentTX"
+    },
+    "SegName5": {
+      "en": "Comparison"
+    },
+    "SegName6": {
+      "en": "Summary"
+    }
+  },
+  "Actions": [
+    {
+      "SegmentNo": 1,
+      "StepNo": 1,
+      "Languages": {
+        "Text0": {
+          "en": "gjkjkjkjk"
+        },
+        "Text1": {
+          "en": "gjkjkjkjk"
+        },
+        "Text2": {
+          "en": "gjkjkjkjk"
+        },
+        "Text3": {
+          "en": "gjkjkjkjk"
+        },
+        "Text4": {
+          "en": "gjkjkjkjk"
+        },
+        "Text5": {
+          "en": "gjkjkjkjk"
+        },
+        "Text6": {
+          "en": "gjkjkjkjk"
+        },
+        "Text7": {
+          "en": "gjkjkjkjk"
+        },
+        "Text8": {
+          "en": "gjkjkjkjk"
+        }
+      }
+    },
+    {
+      "SegmentNo": 1,
+      "StepNo": 2,
+      "Languages": {
+        "Text9": {
+          "en": "gjkjkjkjk"
+        },
+        "Text10": {
+          "en": "gjkjkjkjk"
+        }
+      }
+    },
+    {
+      "SegmentNo": 1,
+      "StepNo": 3,
+      "Languages": {
+        "Text11": {
+          "en": "gjkjkjkjk"
+        },
+        "Text12": {
+          "en": "gjkjkjkjk"
+        },
+        "Text13": {
+          "en": "gjkjkjkjk"
+        },
+        "Text14": {
+          "en": "gjkjkjkjk"
+        },
+        "Text15": {
+          "en": "gjkjkjkjk"
+        },
+        "Text16": {
+          "en": "gjkjkjkjk"
+        }
+      }
+    },
+    {
+      "SegmentNo": 1,
+      "StepNo": 4,
+      "Languages": {
+        "Text17": {
+          "en": "gjkjkjkjk"
+        },
+        "Text18": {
+          "en": "gjkjkjkjk"
+        },
+        "Text19": {
+          "en": "gjkjkjkjk"
+        }
+      }
+    },
+    {
+      "SegmentNo": 1,
+      "StepNo": 5,
+      "Languages": {
+        "Text20": {
+          "en": "gjkjkjkjk"
+        },
+        "Text21": {
+          "en": "gjkjkjkjk"
+        }
+      }
+    },
+    {
+      "SegmentNo": 1,
+      "StepNo": 6,
+      "Languages": {
+        "Text22": {
+          "en": "gjkjkjkjk"
+        },
+        "Text23": {
+          "en": "gjkjkjkjk"
+        },
+        "Text24": {
+          "en": "gjkjkjkjk"
+        },
+        "Text25": {
+          "en": "gjkjkjkjk"
+        },
+        "Text26": {
+          "en": "gjkjkjkjk"
+        },
+        "Text27": {
+          "en": "gjkjkjkjk"
+        }
+      }
+    },
+    {
+      "SegmentNo": 1,
+      "StepNo": 7,
+      "Languages": {
+        "Text28": {
+          "en": "gjkjkjkjk"
+        },
+        "Text29": {
+          "en": "gjkjkjkjk"
+        },
+        "Text30": {
+          "en": "gjkjkjkjk"
+        }
+      }
+    },
+    {
+      "SegmentNo": 2,
+      "StepNo": 8,
+      "Languages": {
+        "Text31": {
+          "en": "Select TDP Txnhash"
+        },
+        "Text32": {
+          "en": "Select the Txnhash from TDP details."
+        }
+      }
+    },
+    {
+      "SegmentNo": 2,
+      "StepNo": 9,
+      "Languages": {
+        "Text34": {
+          "en": "Select TxnHash from TDP details"
+        },
+        "Text35": {
+          "en": "Select TxnHash from TDP details"
+        },
+        "Text37": {
+          "en": "Select TxnHash value from TDP details"
+        },
+        "Text38": {
+          "en": "Select TxnHash value from TDP details"
+        }
+      }
+    },
+    {
+      "SegmentNo": 2,
+      "StepNo": 10,
+      "Languages": {
+        "Text39": {
+          "en": "Save TDP Txnhash"
+        },
+        "Text40": {
+          "en": "Save Txnhash value for future usage."
+        },
+        "Text41": {
+          "en": "TDP Txnhash"
+        }
+      }
+    },
+    {
+      "SegmentNo": 2,
+      "StepNo": 11,
+      "Languages": {
+        "Text42": {
+          "en": "Step 5 - Retrieve TDP Transaction"
+        },
+        "Text43": {
+          "en": "Load the transaction from stellar blockchain"
+        },
+        "Text44": {
+          "en": "Load the transaction from stellar blockchain"
+        },
+        "Text45": {
+          "en": "Extract the transaction response from the stellar blockchain"
+        },
+        "Text46": {
+          "en": "Extract the transaction response from the stellar blockchain"
+        },
+        "Text47": {
+          "en": "Unmarshal response to JSON"
+        },
+        "Text48": {
+          "en": "Unmarshal response to JSON"
+        }
+      }
+    },
+    {
+      "SegmentNo": 2,
+      "StepNo": 12,
+      "Languages": {
+        "Text49": {
+          "en": "Select CurrentTXN Hash"
+        },
+        "Text50": {
+          "en": "Select the CurrentTXN Hash (base64 encoded) from the transaction details."
+        }
+      }
+    },
+    {
+      "SegmentNo": 2,
+      "StepNo": 13,
+      "Languages": {
+        "Text51": {
+          "en": "Select the encoded CurrentTXN Hash from the transaction details"
+        },
+        "Text52": {
+          "en": "Select the encoded CurrentTXN Hash from the transaction details"
+        },
+        "Text53": {
+          "en": "Select the encoded CurrentTXN Hash value from the transaction details"
+        },
+        "Text54": {
+          "en": "Select the encoded CurrentTXN Hash value from the transaction details"
+        }
+      }
+    },
+    {
+      "SegmentNo": 3,
+      "StepNo": 14,
+      "Languages": {
+        "Text55": {
+          "en": "Save Base64Encoded CurrentTXN"
+        },
+        "Text56": {
+          "en": "Save the base64 encoded CurrentTXN Hash value for future usage."
+        },
+        "Text57": {
+          "en": "CurrentTXN (base64)"
+        }
+      }
+    },
+    {
+      "SegmentNo": 3,
+      "StepNo": 15,
+      "Languages": {
+        "Text58": {
+          "en": "Step 15 - Decode CurrentTXN"
+        },
+        "Text59": {
+          "en": "Load the base64 decode website"
+        },
+        "Text60": {
+          "en": "Load the base64 decode website"
+        },
+        "Text61": {
+          "en": "Input base64 encoded current txn hash"
+        },
+        "Text62": {
+          "en": "Input base64 encoded current txn hash"
+        },
+        "Text63": {
+          "en": "Click decode button"
+        },
+        "Text64": {
+          "en": "Click decode button"
+        },
+        "Text65": {
+          "en": "Get the output of the decoded current txn hash"
+        },
+        "Text66": {
+          "en": "Get the output of the decoded current txn hash"
+        },
+        "Text67": {
+          "en": "Save the decoded value in information storage"
+        },
+        "Text68": {
+          "en": "Save the decoded value in information storage"
+        },
+        "Text69": {
+          "en": "Current txn Hash (decoded)"
+        },
+        "Text70": {
+          "en": "Decoded current txn hash"
+        }
+      }
+    },
+    {
+      "SegmentNo": 4,
+      "StepNo": 6,
+      "Languages": {
+        "Text51": {
+          "en": "gjkjkjkjk"
+        },
+        "Text52": {
+          "en": "gjkjkjkjk"
+        },
+        "Text53": {
+          "en": "gjkjkjkjk"
+        },
+        "Text54": {
+          "en": "gjkjkjkjk"
+        },
+        "Text56": {
+          "en": "gjkjkjkjk"
+        },
+        "Text57": {
+          "en": "gjkjkjkjk"
+        }
+      }
+    }
+  ]
+}

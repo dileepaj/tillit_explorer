@@ -1,0 +1,16 @@
+<button class="btn" (click)="emitStartDemoFn()" *ngIf="!isLoading">
+  <i class="fa fa-youtube-play" aria-hidden="true"></i>
+</button>
+<div
+  class="d-flex justify-content-center align-items-center"
+  *ngIf="isLoading"
+  style="height: 4rem;"
+>
+  <mat-spinner
+    class="progress-loader"
+    [color]="color"
+    [mode]="mode"
+    [value]="value"
+  >
+  </mat-spinner>
+</div>

@@ -1,0 +1,1838 @@
+{
+  "Header": {
+    "StorageTitle": "",
+    "ProofContainerTitle": "",
+    "GSOverflowX": "hidden",
+    "VSOverflowX": "hidden",
+    "PlaybackSpeed": 1,
+    "ScrollToPointer": true,
+    "Segments": [
+      {
+        "NO": 1,
+        "Name": "GET Stellar Transaction"
+      },
+      {
+        "NO": 2,
+        "Name": "Decode Current TXNHash"
+      },
+      {
+        "NO": 3,
+        "Name": "GET Current Transaction"
+      },
+      {
+        "NO": 4,
+        "Name": "Decode Identifier"
+      },
+      {
+        "NO": 5,
+        "Name": "Decode Product ID"
+      },
+      {
+        "NO": 6,
+        "Name": "Decode Backlink TXNHash"
+      },
+      {
+        "NO": 7,
+        "Name": "GET Backlink Transaction"
+      },
+      {
+        "NO": 8,
+        "Name": "Decode Current Transaction"
+      },
+      {
+        "NO": 9,
+        "Name": "GET Current Transaction"
+      },
+      {
+        "NO": 10,
+        "Name": "Decode Identifier"
+      },
+      {
+        "NO": 11,
+        "Name": "Decode Product ID"
+      },
+      {
+        "NO": 12,
+        "Name": "Comparison"
+      },
+      {
+        "NO": 13,
+        "Name": "Summary"
+      }
+    ]
+  },
+  "Steps": [
+    {
+      "StepHeader": {
+        "StepNo": 1,
+        "SegmentNo": 1,
+        "FrameID": 1,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Retrieve Current Transaction",
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "StellarOperationViewer",
+          "SubActionArguments": {
+            "StepNo": 1,
+            "SegmentNo": 1,
+            "FrameID": 1,
+            "FrameTitle": "Step 1 - Retrieve Current Transaction",
+            "TXNHash": "${TXNhash}",
+            "OperationName": "current transaction",
+            "ResponseVariable": "MainTXNDataString",
+            "JSONResultVariable": "MainTXNData"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 2,
+        "SegmentNo": 2,
+        "FrameID": 1,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Extract CurrentTXN Hash",
+        "ActionDescription": "Select the CurrentTXN Hash (base64 encoded) from the transaction details.",
+        "ActionType": "FormatMetaData",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "body",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "jsonValueObjectPicker",
+          "StorageData": []
+        },
+        "ActionResultVariable": "MainTXNCurentTXNHash",
+        "MetaData": ["MainTXNData", "CurrentTXN", false, "value"]
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 2
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 3,
+        "SegmentNo": 2,
+        "FrameID": 1,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "KeyValueHighlighter",
+          "SubActionArguments": {
+            "StepNo": 5,
+            "SegmentNo": 2,
+            "FrameID": 1,
+            "FrameTitle": "",
+            "OperationKey": "CurrentTXN",
+            "OperationValue": "MainTXNCurentTXNHash",
+            "OperationKeyName": "encoded CurrentTXN Hash from the transaction details",
+            "OperationValueName": "encoded CurrentTXN Hash from the transaction details"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 4,
+        "SegmentNo": 2,
+        "FrameID": 1,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Save Base64Encoded CurrentTXN",
+        "ActionDescription": "Save the base64 encoded CurrentTXN Hash value for future usage.",
+        "ActionType": "InformationStorage",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "body",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": true,
+          "SelectiveTextIndex": 0,
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [
+            {
+              "Key": "TXN2 CurrentTXN (base64)",
+              "Value": "${MainTXNCurentTXNHash}"
+            }
+          ]
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 5,
+        "SegmentNo": 2,
+        "FrameID": 2,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "OnlineToolsDecoder",
+          "SubActionArguments": {
+            "StepNo": 5,
+            "SegmentNo": 2,
+            "FrameID": 2,
+            "FrameTitle": "Step 2 - Decode CurrentTXN",
+            "DecodeKeyName": "CurrentTXN Hash",
+            "EncodedInputValue": "${MainTXNCurentTXNHash}",
+            "DecodedResultVariable": "var_currenttxn",
+            "InformationStorageKey": "TXN2 CurrentTXN"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 6,
+        "SegmentNo": 3,
+        "FrameID": 3,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "StellarOperationViewer",
+          "SubActionArguments": {
+            "StepNo": 6,
+            "SegmentNo": 3,
+            "FrameID": 3,
+            "FrameTitle": "Step 3 - Retrieve Current Transaction",
+            "TXNHash": "${var_currenttxn}",
+            "OperationName": "current transaction of the gateway transaction",
+            "ResponseVariable": "MainTXNCurentTXNDataString",
+            "JSONResultVariable": "MainTXNCurentTXNData"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 7,
+        "SegmentNo": 4,
+        "FrameID": 3,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Select Base64Encoded Identifier",
+        "ActionDescription": "Select the encoded Identifier from the transaction details.",
+        "ActionType": "FormatMetaData",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "jsonValueObjectPicker",
+          "StorageData": []
+        },
+        "ActionResultVariable": "MainTXNCurentTXNDataIdentifier",
+        "MetaData": ["MainTXNCurentTXNData", "identifier", false, "value"]
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 8,
+        "SegmentNo": 4,
+        "FrameID": 3,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "KeyValueHighlighter",
+          "SubActionArguments": {
+            "StepNo": 8,
+            "SegmentNo": 4,
+            "FrameID": 3,
+            "FrameTitle": "",
+            "OperationKey": "identifier",
+            "OperationValue": "MainTXNCurentTXNDataIdentifier",
+            "OperationKeyName": "encoded Identifier from the transaction details",
+            "OperationValueName": "encoded Identifier value from the transaction details"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 9,
+        "SegmentNo": 4,
+        "FrameID": 3,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Save Base64Encoded Identifier",
+        "ActionDescription": "Save the base64 encoded Identifier value for future usage.",
+        "ActionType": "InformationStorage",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": true,
+          "SelectiveTextIndex": 0,
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [
+            {
+              "Key": "Identifier (base64)",
+              "Value": "${MainTXNCurentTXNDataIdentifier}"
+            }
+          ]
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 10,
+        "SegmentNo": 4,
+        "FrameID": 4,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "OnlineToolsDecoder",
+          "SubActionArguments": {
+            "StepNo": 10,
+            "SegmentNo": 4,
+            "FrameID": 4,
+            "FrameTitle": "Step 4 - Decode MainTXN Identifier",
+            "DecodeKeyName": "MainTXN Identifier",
+            "EncodedInputValue": "${MainTXNCurentTXNDataIdentifier}",
+            "DecodedResultVariable": "MainTXNCurentTXNDataIdentifierDecoded",
+            "InformationStorageKey": "Identifier"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+
+    {
+      "StepHeader": {
+        "StepNo": 11,
+        "SegmentNo": 5,
+        "FrameID": 3,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Select Base64Encoded ProductID",
+        "ActionDescription": "Select the encoded Product ID from the transaction details.",
+        "ActionType": "FormatMetaData",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "jsonValueObjectPicker",
+          "StorageData": []
+        },
+        "ActionResultVariable": "MainTXNCurentTXNDataProductId",
+        "MetaData": ["MainTXNCurentTXNData", "productId", false, "value"]
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 12,
+        "SegmentNo": 5,
+        "FrameID": 3,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "KeyValueHighlighter",
+          "SubActionArguments": {
+            "StepNo": 12,
+            "SegmentNo": 5,
+            "FrameID": 3,
+            "FrameTitle": "",
+            "OperationKey": "productId",
+            "OperationValue": "MainTXNCurentTXNDataProductId",
+            "OperationKeyName": "encoded ProductID from the transaction details",
+            "OperationValueName": "encoded ProductID value from the transaction details"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 13,
+        "SegmentNo": 5,
+        "FrameID": 3,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Save Base64Encoded ProductID",
+        "ActionDescription": "Save the base64 encoded ProductID value for future usage.",
+        "ActionType": "InformationStorage",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": true,
+          "SelectiveTextIndex": 0,
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [
+            {
+              "Key": "Product ID (base64)",
+              "Value": "${MainTXNCurentTXNDataProductId}"
+            }
+          ]
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 14,
+        "SegmentNo": 5,
+        "FrameID": 3,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "OnlineToolsDecoder",
+          "SubActionArguments": {
+            "StepNo": 14,
+            "SegmentNo": 5,
+            "FrameID": 3,
+            "FrameTitle": "Step 5 - Decode MainTXN ProductID",
+            "DecodeKeyName": "MainTXN ProductID",
+            "EncodedInputValue": "${MainTXNCurentTXNDataProductId}",
+            "DecodedResultVariable": "MainTXNCurentTXNDataProductIdDecoded",
+            "InformationStorageKey": "ProductID"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+
+    {
+      "StepHeader": {
+        "StepNo": 15,
+        "SegmentNo": 6,
+        "FrameID": 1,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Select Base64Encoded PreviousTXN",
+        "ActionDescription": "Select the encoded PreviousTXN Hash value from the transaction details.",
+        "ActionType": "FormatMetaData",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "jsonValueObjectPicker",
+          "StorageData": []
+        },
+        "ActionResultVariable": "MainTXNPreviousTXN",
+        "MetaData": ["MainTXNData", "PreviousTXN", false, "value"]
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 16,
+        "SegmentNo": 6,
+        "FrameID": 1,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "KeyValueHighlighter",
+          "SubActionArguments": {
+            "StepNo": 16,
+            "SegmentNo": 6,
+            "FrameID": 1,
+            "FrameTitle": "",
+            "OperationKey": "PreviousTXN",
+            "OperationValue": "MainTXNPreviousTXN",
+            "OperationKeyName": "encoded PreviousTXN Hash from the transaction details.",
+            "OperationValueName": "encoded PreviousTXN Hash value from the transaction details."
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 17,
+        "SegmentNo": 6,
+        "FrameID": 1,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Save Base64Encoded PreviousTXN",
+        "ActionDescription": "Save the base64 encoded Previous TXN Hash value for future usage.",
+        "ActionType": "InformationStorage",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": true,
+          "SelectiveTextIndex": 0,
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [
+            {
+              "Key": "PreviousTXN Hash (base64)",
+              "Value": "${MainTXNPreviousTXN}"
+            }
+          ]
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 18,
+        "SegmentNo": 6,
+        "FrameID": 1,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "OnlineToolsDecoder",
+          "SubActionArguments": {
+            "StepNo": 18,
+            "SegmentNo": 6,
+            "FrameID": 1,
+            "FrameTitle": "Step 6 - Decode MainTXN Previous hash",
+            "DecodeKeyName": "MainTXN Previous hash",
+            "EncodedInputValue": "${MainTXNPreviousTXN}",
+            "DecodedResultVariable": "MainTXNPreviousTXNDecoded",
+            "InformationStorageKey": "PreviousTXN Hash"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+
+    {
+      "StepHeader": {
+        "StepNo": 19,
+        "SegmentNo": 7,
+        "FrameID": 8,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "StellarOperationViewer",
+          "SubActionArguments": {
+            "StepNo": 19,
+            "SegmentNo": 7,
+            "FrameID": 8,
+            "FrameTitle": "Step 7 - Retrieve Backlink Transaction",
+            "TXNHash": "${MainTXNPreviousTXNDecoded}",
+            "OperationName": "Backlink transaction from Stellar Blockchain.",
+            "ResponseVariable": "MainTXNPreviousTXNDataString",
+            "JSONResultVariable": "MainTXNPreviousTXNData"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 20,
+        "SegmentNo": 8,
+        "FrameID": 8,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Select Base64Encoded CurrentTXN",
+        "ActionDescription": "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
+        "ActionType": "FormatMetaData",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "jsonValueObjectPicker",
+          "StorageData": []
+        },
+        "ActionResultVariable": "MainTXNPreviousTXNCurrentTXNHash",
+        "MetaData": ["MainTXNPreviousTXNData", "CurrentTXN", false, "value"]
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 21,
+        "SegmentNo": 8,
+        "FrameID": 8,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "KeyValueHighlighter",
+          "SubActionArguments": {
+            "StepNo": 21,
+            "SegmentNo": 8,
+            "FrameID": 8,
+            "FrameTitle": "",
+            "OperationKey": "CurrentTXN",
+            "OperationValue": "MainTXNPreviousTXNCurrentTXNHash",
+            "OperationKeyName": "encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
+            "OperationValueName": "encoded CurrentTXN Hash of the Backlink transaction from the transaction details."
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 22,
+        "SegmentNo": 8,
+        "FrameID": 8,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Save Base64Encoded CurrentTXN",
+        "ActionDescription": "Save the base64 encoded CurrentTXN Hash value of the Previuos TXN for future usage.",
+        "ActionType": "InformationStorage",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": true,
+          "SelectiveTextIndex": 0,
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [
+            {
+              "Key": "CurentTXNHash (base64)",
+              "Value": "${MainTXNPreviousTXNCurrentTXNHash}"
+            }
+          ]
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 23,
+        "SegmentNo": 8,
+        "FrameID": 9,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "OnlineToolsDecoder",
+          "SubActionArguments": {
+            "StepNo": 23,
+            "SegmentNo": 8,
+            "FrameID": 9,
+            "FrameTitle": "Step 9 - Decode PreviousTXN CurentTXN Hash",
+            "DecodeKeyName": "MainTXN Identifier",
+            "EncodedInputValue": "${MainTXNPreviousTXNCurrentTXNHash}",
+            "DecodedResultVariable": "MainTXNPreviousTXNCurrentTXNHashDecoded",
+            "InformationStorageKey": "CurentTXNHash"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+
+    {
+      "StepHeader": {
+        "StepNo": 24,
+        "SegmentNo": 9,
+        "FrameID": 10,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "StellarOperationViewer",
+          "SubActionArguments": {
+            "StepNo": 24,
+            "SegmentNo": 9,
+            "FrameID": 10,
+            "FrameTitle": "Step 10 - Retrieve Backlink Current Transaction",
+            "TXNHash": "${MainTXNPreviousTXNCurrentTXNHashDecoded}",
+            "OperationName": "current transaction of the backlink transaction",
+            "ResponseVariable": "MainTXNPreviousTXNCurrentTXNDataString",
+            "JSONResultVariable": "MainTXNPreviousTXNCurrentTXNData"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 25,
+        "SegmentNo": 10,
+        "FrameID": 10,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Select Base64Encoded Identifier",
+        "ActionDescription": "Select the encoded Identifier from the transaction details.",
+        "ActionType": "FormatMetaData",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "jsonValueObjectPicker",
+          "StorageData": []
+        },
+        "ActionResultVariable": "MainTXNPreviousTXNCurrentTXNDataIdentifier",
+        "MetaData": [
+          "MainTXNPreviousTXNCurrentTXNData",
+          "identifier",
+          false,
+          "value"
+        ]
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 26,
+        "SegmentNo": 10,
+        "FrameID": 10,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "KeyValueHighlighter",
+          "SubActionArguments": {
+            "StepNo": 26,
+            "SegmentNo": 10,
+            "FrameID": 10,
+            "FrameTitle": "",
+            "OperationKey": "identifier",
+            "OperationValue": "MainTXNPreviousTXNCurrentTXNDataIdentifier",
+            "OperationKeyName": "encoded Identifier from the transaction details",
+            "OperationValueName": "encoded Identifier value from the transaction details"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 27,
+        "SegmentNo": 10,
+        "FrameID": 10,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Save Base64Encoded Identifier",
+        "ActionDescription": "Save the base64 encoded Identifier value of the PreviousTX for future usage.",
+        "ActionType": "InformationStorage",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": true,
+          "SelectiveTextIndex": 0,
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [
+            {
+              "Key": "Identifier (base64)",
+              "Value": "${MainTXNPreviousTXNCurrentTXNDataIdentifier}"
+            }
+          ]
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 28,
+        "SegmentNo": 10,
+        "FrameID": 11,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "OnlineToolsDecoder",
+          "SubActionArguments": {
+            "StepNo": 28,
+            "SegmentNo": 10,
+            "FrameID": 11,
+            "FrameTitle": "Step 11 - Decode PreviousTXN's CurrentTXN's Identifier",
+            "DecodeKeyName": "PreviousTXN's CurrentTXN' Identifier",
+            "EncodedInputValue": "${MainTXNPreviousTXNCurrentTXNDataIdentifier}",
+            "DecodedResultVariable": "MainTXNPreviousTXNCurrentTXNDataIdentifierDecoded",
+            "InformationStorageKey": "Identifier"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+
+    {
+      "StepHeader": {
+        "StepNo": 29,
+        "SegmentNo": 11,
+        "FrameID": 10,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Select Base64Encoded ProductID",
+        "ActionDescription": "Select the encoded Product ID from the transaction details.",
+        "ActionType": "FormatMetaData",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "jsonValueObjectPicker",
+          "StorageData": []
+        },
+        "ActionResultVariable": "MainTXNPreviousTXNCurrentTXNDataProductID",
+        "MetaData": [
+          "MainTXNPreviousTXNCurrentTXNData",
+          "productId",
+          false,
+          "value"
+        ]
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 30,
+        "SegmentNo": 11,
+        "FrameID": 10,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "KeyValueHighlighter",
+          "SubActionArguments": {
+            "StepNo": 30,
+            "SegmentNo": 11,
+            "FrameID": 10,
+            "FrameTitle": "",
+            "OperationKey": "productId",
+            "OperationValue": "MainTXNPreviousTXNCurrentTXNDataProductID",
+            "OperationKeyName": "encoded ProductID from the transaction details",
+            "OperationValueName": "encoded ProductID value from the transaction details"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 31,
+        "SegmentNo": 11,
+        "FrameID": 10,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionTitle": "Save Base64Encoded ProductID",
+        "ActionDescription": "Save the base64 encoded ProductID value for future usage.",
+        "ActionType": "InformationStorage",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": 0,
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": true,
+          "SelectiveTextIndex": 0,
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [
+            {
+              "Key": "Product ID (base64)",
+              "Value": "${MainTXNPreviousTXNCurrentTXNDataProductID}"
+            }
+          ]
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 30
+      }
+    },
+    {
+      "StepHeader": {
+        "StepNo": 32,
+        "SegmentNo": 11,
+        "FrameID": 11,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "OnlineToolsDecoder",
+          "SubActionArguments": {
+            "StepNo": 32,
+            "SegmentNo": 11,
+            "FrameID": 11,
+            "FrameTitle": "Step 12 - Decode PreviousTXN's CurrentTXN's ProductID",
+            "DecodeKeyName": "PreviousTXN's CurrentTXN's ProductID",
+            "EncodedInputValue": "${MainTXNPreviousTXNCurrentTXNDataProductID}",
+            "DecodedResultVariable": "MainTXNPreviousTXNCurrentTXNDataProductIDDecoded",
+            "InformationStorageKey": "ProductID"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+
+    {
+      "StepHeader": {
+        "StepNo": 34,
+        "SegmentNo": 12,
+        "FrameID": 12,
+        "FrameTitle": ""
+      },
+      "Action": {
+        "ActionDescription": "",
+        "ActionType": "MultiStepAction",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": [],
+          "ActionConfigurationID": "TextComparison",
+          "SubActionArguments": {
+            "StepNo": 34,
+            "SegmentNo": 12,
+            "FrameID": 12,
+            "FrameTitle": "Step 13 - Compare the base64 decoded Identifier",
+            "InputKeyName": "the base64 decoded Identifier values from the transactions.",
+            "InputValue": "[{\"title\": \"Identifiers from the Main transaction and Backlink transaction\", \"t1\": \"${MainTXNCurentTXNDataIdentifierDecoded}\", \"t2\": \"${MainTXNPreviousTXNCurrentTXNDataIdentifierDecoded}\"}]"
+          }
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": null,
+        "ActionDuration": 10
+      }
+    },
+
+    {
+      "StepHeader": {
+        "StepNo": 35,
+        "SegmentNo": 13,
+        "FrameID": 13,
+        "FrameTitle": "Step 14 - Verification Summary"
+      },
+      "Action": {
+        "ActionTitle": "Verification Summary",
+        "ActionDescription": "Verification Summary",
+        "ActionType": "BrowserScreen",
+        "ActionParameters": {
+          "ExternalURL": "",
+          "InnerHTML": "<?xml version=\"1.0\"?>\r\n<!DOCTYPE html>\r\n<html><head><link href=\"https://www.online-html-editor.org/assets/minimalist-blocks/content.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body style=\"height: 100vh; display: flex; justify-content: center; align-items: center;\"><div class=\"container\"><div class=\"row clearfix\"><div class=\"column full\"><h2 class=\"size-18\" style=\"font-weight: 800; text-align: center; letter-spacing: 8px; text-transform: uppercase;\">\r\n Verification summary\r\n </h2></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><div class=\"column full\"><p class=\"size-12\" style=\"text-align: center; letter-spacing: 3px; color: rgb(94, 94, 94); text-transform: uppercase;\"><b style=\"color: rgb(71, 88, 204); background-color: rgb(240, 249, 254);\">PROOF OF THE BACKLINK</b></p></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><div class=\"column half\"><p style=\"text-align: justify;\"><strong><span class=\"size-14\">Current Transaction Hash</span></strong></p><p class=\"size-14\" style=\"text-align: justify; overflow-wrap: break-word;\">\r\n ${var_currenttxn}\r\n </p></div><div class=\"column half\"><p class=\"size-14\" style=\"text-align: justify; \"><strong>Previous Transaction Hash</strong></p><p class=\"size-14\" style=\"text-align: justify; overflow-wrap: break-word;\">\r\n ${MainTXNPreviousTXNCurrentTXNHashDecoded}\r\n </p></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><pre class=\"size-14\" style=\"background-color: rgb(46, 125, 50); color: rgb(245, 243, 252); font-weight: bold; text-align: center; border-radius: 8px; margin: 0; padding: 8px;\">\r\nVerification Completed</pre><div class=\"is-rowadd-tool\" style=\"height:0\"><br/></div></div></div></body></html>",
+          "PageURL": "about: Verification Summary - PROOF OF THE BACKLINK",
+          "Query": "",
+          "QueryIndex": "",
+          "YOffset": "",
+          "XOffset": "",
+          "ElAttributeName": "",
+          "ElAttributeValue": "",
+          "ElAttributeValueReplace": "",
+          "ElProperty": "",
+          "ElPropertyValue": "",
+          "ElFunction": "",
+          "ElFunctionArguments": "",
+          "SelectiveText": "",
+          "CaseSensitivity": "",
+          "SelectiveTextIndex": "",
+          "CSS": "",
+          "FormatType": "",
+          "StorageData": []
+        },
+        "ActionResultVariable": "",
+        "MetaData": []
+      },
+      "Customizations": {
+        "PointerData": "",
+        "ScrollToPointer": false,
+        "FrameAutoScroll": true,
+        "FrameScrollBars": "",
+        "ToastMessage": "",
+        "ToastPosition": [],
+        "ActionDuration": 10
+      }
+    }
+  ]
+}

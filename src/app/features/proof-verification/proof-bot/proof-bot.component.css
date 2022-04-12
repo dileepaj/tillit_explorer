@@ -1,0 +1,78 @@
+#proofDemoLoaderFrame {
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 20px; */
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(250, 249, 249);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 8px;
+}
+
+#proofDemoLoaderFrame .card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+#globalInformation {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: flex-start;
+  background-color: white;
+  /* padding: 10px; */
+  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2); */
+  transition: 0.3s;
+  border-radius: 8px;
+}
+
+#verificationScreen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: flex-start;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 8px;
+}
+
+#verificationScreen .card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+#verificationScreen #frames {
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+/* #verificationScreen #frames > * {
+   margin-left: 4%;
+} */
+
+.toast-notification {
+  background-color: #3fc933;
+  color: white;
+  border-radius: 10px;
+  position: absolute;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 400;
+  z-index: 4000;
+}
