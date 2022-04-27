@@ -8,18 +8,17 @@
                 </div>
                 <div *ngIf="loadingComplete" >
                         <div class="row content-area" *ngIf="loadingComplete && !errorOccurred">
-                                <div class="container mt-3">
-                                        <div class="row mb-3">
-                                                <div class="col-12 ml-3">
-                                                        <p class="lead search-text overflow-ellipsis">{{NoItems}}
-                                                                result{{NoItems == 1 ? '' : 's'}} for
-                                                                {{searchId}}</p>
+                                <div class="container mt-1 mb-0">
+                                        <div class="row titleMargin mb-3">
+                                                <div class="col-sm-12 col-md-12 col-lg-12 " style="overflow-y: auto;  overflow-wrap: break-word;">
+                                                        <p class="search-text overflow-ellipsis" style="white-space: pre-line;"><span class="searchResulitTitle">{{NoItems}}
+                                                                Result{{NoItems == 1 ? '' : 's'}} for
+                                                                {{searchId}}</span></p>
                                                 </div>
                                         </div>
                                 </div>
-                                <div class="col-12 mt-0" >
-                               
-                                <app-card class="col-12"  *ngFor="let item of results | paginate: {itemsPerPage:perPage, currentPage:page, totalItems:NoItems }" [transactionData]="item"></app-card>
+                                <div class="col-sm-12 col-md-12 col-lg-12 mt-0" >
+                                <app-card class="col-sm-12 col-md-12 col-lg-12"  *ngFor="let item of results | paginate: {itemsPerPage:perPage, currentPage:page, totalItems:NoItems }" [transactionData]="item"></app-card>
                                 <pagination-controls class="text-center" (pageChange) = "onChangePage($event)" (pageBoundsCorrection) = "onChangePage($event)" autoHide = "true" responsive = "true" ></pagination-controls>
                                 </div>
                         </div>

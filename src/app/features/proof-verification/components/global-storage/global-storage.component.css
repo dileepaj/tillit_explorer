@@ -1,9 +1,9 @@
 :host {
-  min-width: 50%;
-  max-width: 100%;
+  /* min-width: 50%; */
+  width: 100%;
   /* flex-grow: 1; */
   flex: none;
-  min-width: auto;
+  /* min-width: auto; */
   /* overflow: auto; */
   /* resize: horizontal; */
   position: relative;

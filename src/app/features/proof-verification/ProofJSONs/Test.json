@@ -1,0 +1,2612 @@
+{
+    "Header": {
+        "StorageTitle": "Information storage",
+        "ProofContainerTitle": "",
+        "GSHeightExpand": false,
+        "VSHeightExpand": false,
+        "GSOverflowX": "hidden",
+        "VSOverflowX": "hidden",
+        "PlaybackSpeed": 1,
+        "ScrollToPointer": true,
+        "Segments": [
+            {
+                "NO": 1,
+                "Name": "GET Stellar Transaction"
+            },
+            {
+                "NO": 2,
+                "Name": "Decode Current TXNHash"
+            },
+            {
+                "NO": 3,
+                "Name": "GET Current Transaction"
+            },
+            {
+                "NO": 4,
+                "Name": "Decode Identifier"
+            },
+            {
+                "NO": 5,
+                "Name": "Decode Product ID"
+            },
+            {
+                "NO": 6,
+                "Name": "Decode Backlink TXNHash"
+            },
+            {
+                "NO": 7,
+                "Name": "GET Backlink Transaction"
+            },
+            {
+                "NO": 8,
+                "Name": "Decode Current Transaction"
+            },
+            {
+                "NO": 9,
+                "Name": "GET Current Transaction"
+            },
+            {
+                "NO": 10,
+                "Name": "Decode Identifier"
+            },
+            {
+                "NO": 11,
+                "Name": "Decode Product ID"
+            },
+            {
+                "NO": 12,
+                "Name": "Comparison"
+            },
+            {
+                "NO": 13,
+                "Name": "Summary"
+            }
+        ]
+    },
+    "Steps": [
+        {
+            "StepHeader": {
+                "StepNo": 1,
+                "SegmentNo": 1,
+                "FrameID": 1,
+                "FrameTitle": "Step 1 - Retrieve Current Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Retrieve the current transaction from Stellar Blockchain.",
+                "ActionType": "BrowserScreen",
+                "ActionParameters": {
+                    "ExternalURL": "https://horizon-testnet.stellar.org/transactions/${TXNhash}/operations",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 0
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 1,
+                "SegmentNo": 1,
+                "FrameID": 1,
+                "FrameTitle": "Step 1 - Retrieve Current Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Save the response data of the transaction",
+                "ActionType": "GetElementAttributeData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "innerText",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNDataString",
+                "MetaData": [],
+                "_ID": 1
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 2
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 1,
+                "SegmentNo": 1,
+                "FrameID": 1,
+                "FrameTitle": "Step 1 - Retrieve Current Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Format transaction data to JSON (Javascript Object Notation)",
+                "ActionType": "FormatMetaData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "parseJson",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNData",
+                "MetaData": [
+                    "MainTXNDataString"
+                ],
+                "_ID": 2
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 2
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 2,
+                "SegmentNo": 2,
+                "FrameID": 1,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Select the CurrentTXN Hash (base64 encoded) from the transaction details.",
+                "ActionType": "FormatMetaData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNCurentTXNHash",
+                "MetaData": [
+                    "MainTXNData",
+                    "CurrentTXN",
+                    false,
+                    "value"
+                ],
+                "_ID": 3
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 2
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 5,
+                "SegmentNo": 2,
+                "FrameID": 1,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded CurrentTXN Hash from the transaction details",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "CurrentTXN",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 4
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 40
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 5,
+                "SegmentNo": 2,
+                "FrameID": 1,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded CurrentTXN Hash from the transaction details",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "${MainTXNCurentTXNHash}",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 5
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 20
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 4,
+                "SegmentNo": 2,
+                "FrameID": 1,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Save the base64 encoded CurrentTXN Hash value for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "TXN2 CurrentTXN (base64)",
+                            "Value": "${MainTXNCurentTXNHash}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 6
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 5,
+                "SegmentNo": 2,
+                "FrameID": 2,
+                "FrameTitle": "Step 2 - Decode CurrentTXN"
+            },
+            "Action": {
+                "ActionDescription": "Decode the base64 encoded CurrentTXN Hash",
+                "ActionType": "BrowserScreen",
+                "ActionParameters": {
+                    "ExternalURL": "https://emn178.github.io/online-tools/base64_decode.html",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 7
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 5,
+                "SegmentNo": 2,
+                "FrameID": 2,
+                "FrameTitle": "Step 2 - Decode CurrentTXN"
+            },
+            "Action": {
+                "ActionDescription": "Input the base64 encoded CurrentTXN Hash",
+                "ActionType": "UpdateElementProperty",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".input textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "value",
+                    "ElPropertyValue": "${MainTXNCurentTXNHash}",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 8
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 5,
+                "SegmentNo": 2,
+                "FrameID": 2,
+                "FrameTitle": "Step 2 - Decode CurrentTXN"
+            },
+            "Action": {
+                "ActionDescription": "Click the decode button",
+                "ActionType": "TriggerElementFunction",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".btn.btn-default",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "click",
+                    "ElFunctionArguments": [],
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 9
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 5,
+                "SegmentNo": 2,
+                "FrameID": 2,
+                "FrameTitle": "Step 2 - Decode CurrentTXN"
+            },
+            "Action": {
+                "ActionDescription": "Get the output of the decoded CurrentTXN Hash",
+                "ActionType": "GetElementAttributeData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".output textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "value",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "var_currenttxn",
+                "MetaData": [],
+                "_ID": 10
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "Decoded CurrentTXN Hash",
+                "ToastPosition": [
+                    "60%",
+                    "10%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 5,
+                "SegmentNo": 2,
+                "FrameID": 2,
+                "FrameTitle": "Step 2 - Decode CurrentTXN"
+            },
+            "Action": {
+                "ActionDescription": "Save the decoded CurrentTXN Hash for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "TXN2 CurrentTXN",
+                            "Value": "${var_currenttxn}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 11
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 6,
+                "SegmentNo": 3,
+                "FrameID": 3,
+                "FrameTitle": "Step 3 - Retrieve Current Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Retrieve the current transaction of the gateway transaction from Stellar Blockchain.",
+                "ActionType": "BrowserScreen",
+                "ActionParameters": {
+                    "ExternalURL": "https://horizon-testnet.stellar.org/transactions/${var_currenttxn}/operations",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 12
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 6,
+                "SegmentNo": 3,
+                "FrameID": 3,
+                "FrameTitle": "Step 3 - Retrieve Current Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Save the response data of the transaction",
+                "ActionType": "GetElementAttributeData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "innerText",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNCurentTXNDataString",
+                "MetaData": [],
+                "_ID": 13
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 2
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 6,
+                "SegmentNo": 3,
+                "FrameID": 3,
+                "FrameTitle": "Step 3 - Retrieve Current Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Format transaction data to JSON (Javascript Object Notation)",
+                "ActionType": "FormatMetaData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "parseJson",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNCurentTXNData",
+                "MetaData": [
+                    "MainTXNCurentTXNDataString"
+                ],
+                "_ID": 14
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 2
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 7,
+                "SegmentNo": 4,
+                "FrameID": 3,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded Identifier from the transaction details.",
+                "ActionType": "FormatMetaData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNCurentTXNDataIdentifier",
+                "MetaData": [
+                    "MainTXNCurentTXNData",
+                    "identifier",
+                    false,
+                    "value"
+                ],
+                "_ID": 15
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 8,
+                "SegmentNo": 4,
+                "FrameID": 3,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded Identifier from the transaction details",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "identifier",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 16
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 40
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 8,
+                "SegmentNo": 4,
+                "FrameID": 3,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded Identifier value from the transaction details",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "${MainTXNCurentTXNDataIdentifier}",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 17
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 20
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 9,
+                "SegmentNo": 4,
+                "FrameID": 3,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Save the base64 encoded Identifier value for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "Identifier (base64)",
+                            "Value": "${MainTXNCurentTXNDataIdentifier}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 18
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 10,
+                "SegmentNo": 4,
+                "FrameID": 4,
+                "FrameTitle": "Step 4 - Decode MainTXN Identifier"
+            },
+            "Action": {
+                "ActionDescription": "Decode the base64 encoded MainTXN Identifier",
+                "ActionType": "BrowserScreen",
+                "ActionParameters": {
+                    "ExternalURL": "https://emn178.github.io/online-tools/base64_decode.html",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 19
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 10,
+                "SegmentNo": 4,
+                "FrameID": 4,
+                "FrameTitle": "Step 4 - Decode MainTXN Identifier"
+            },
+            "Action": {
+                "ActionDescription": "Input the base64 encoded MainTXN Identifier",
+                "ActionType": "UpdateElementProperty",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".input textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "value",
+                    "ElPropertyValue": "${MainTXNCurentTXNDataIdentifier}",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 20
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 10,
+                "SegmentNo": 4,
+                "FrameID": 4,
+                "FrameTitle": "Step 4 - Decode MainTXN Identifier"
+            },
+            "Action": {
+                "ActionDescription": "Click the decode button",
+                "ActionType": "TriggerElementFunction",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".btn.btn-default",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "click",
+                    "ElFunctionArguments": [],
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 21
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 10,
+                "SegmentNo": 4,
+                "FrameID": 4,
+                "FrameTitle": "Step 4 - Decode MainTXN Identifier"
+            },
+            "Action": {
+                "ActionDescription": "Get the output of the decoded MainTXN Identifier",
+                "ActionType": "GetElementAttributeData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".output textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "value",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNCurentTXNDataIdentifierDecoded",
+                "MetaData": [],
+                "_ID": 22
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "Decoded MainTXN Identifier",
+                "ToastPosition": [
+                    "60%",
+                    "10%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 10,
+                "SegmentNo": 4,
+                "FrameID": 4,
+                "FrameTitle": "Step 4 - Decode MainTXN Identifier"
+            },
+            "Action": {
+                "ActionDescription": "Save the decoded MainTXN Identifier for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "Identifier",
+                            "Value": "${MainTXNCurentTXNDataIdentifierDecoded}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 23
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 11,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded Product ID from the transaction details.",
+                "ActionType": "FormatMetaData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNCurentTXNData",
+                "MetaData": [
+                    "MainTXNCurentTXNDataProductId",
+                    "productId",
+                    false,
+                    "value"
+                ],
+                "_ID": 24
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 12,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded ProductID from the transaction details",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "productId",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 25
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 40
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 12,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded ProductID value from the transaction details",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "${MainTXNCurentTXNDataProductId}",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 26
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 20
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 13,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Save the base64 encoded ProductID value for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "Product ID (base64)",
+                            "Value": "${MainTXNCurentTXNDataProductId}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 27
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 14,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": "Step 5 - Decode MainTXN ProductID"
+            },
+            "Action": {
+                "ActionDescription": "Decode the base64 encoded MainTXN ProductID",
+                "ActionType": "BrowserScreen",
+                "ActionParameters": {
+                    "ExternalURL": "https://emn178.github.io/online-tools/base64_decode.html",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 28
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 14,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": "Step 5 - Decode MainTXN ProductID"
+            },
+            "Action": {
+                "ActionDescription": "Input the base64 encoded MainTXN ProductID",
+                "ActionType": "UpdateElementProperty",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".input textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "value",
+                    "ElPropertyValue": "${MainTXNCurentTXNDataProductId}",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 29
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 14,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": "Step 5 - Decode MainTXN ProductID"
+            },
+            "Action": {
+                "ActionDescription": "Click the decode button",
+                "ActionType": "TriggerElementFunction",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".btn.btn-default",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "click",
+                    "ElFunctionArguments": [],
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 30
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 14,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": "Step 5 - Decode MainTXN ProductID"
+            },
+            "Action": {
+                "ActionDescription": "Get the output of the decoded MainTXN ProductID",
+                "ActionType": "GetElementAttributeData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".output textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "value",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNCurentTXNDataProductIdDecoded",
+                "MetaData": [],
+                "_ID": 31
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "Decoded MainTXN ProductID",
+                "ToastPosition": [
+                    "60%",
+                    "10%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 14,
+                "SegmentNo": 5,
+                "FrameID": 3,
+                "FrameTitle": "Step 5 - Decode MainTXN ProductID"
+            },
+            "Action": {
+                "ActionDescription": "Save the decoded MainTXN ProductID for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "ProductID",
+                            "Value": "${MainTXNCurentTXNDataProductIdDecoded}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 32
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 15,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded PreviousTXN Hash value from the transaction details.",
+                "ActionType": "FormatMetaData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNCurentTXNData",
+                "MetaData": [
+                    "MainTXNData",
+                    "PreviousTXN",
+                    false,
+                    "value"
+                ],
+                "_ID": 33
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 16,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded PreviousTXN Hash from the transaction details.",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "PreviousTXN",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 34
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 40
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 16,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded PreviousTXN Hash value from the transaction details.",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "${MainTXNPreviousTXN}",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 35
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 20
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 17,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Save the base64 encoded Previous TXN Hash value for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "PreviousTXN Hash (base64)",
+                            "Value": "${MainTXNPreviousTXN}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 36
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 18,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": "Step 6 - Decode MainTXN Previous hash"
+            },
+            "Action": {
+                "ActionDescription": "Decode the base64 encoded MainTXN Previous hash",
+                "ActionType": "BrowserScreen",
+                "ActionParameters": {
+                    "ExternalURL": "https://emn178.github.io/online-tools/base64_decode.html",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 37
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 18,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": "Step 6 - Decode MainTXN Previous hash"
+            },
+            "Action": {
+                "ActionDescription": "Input the base64 encoded MainTXN Previous hash",
+                "ActionType": "UpdateElementProperty",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".input textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "value",
+                    "ElPropertyValue": "${MainTXNPreviousTXN}",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 38
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 18,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": "Step 6 - Decode MainTXN Previous hash"
+            },
+            "Action": {
+                "ActionDescription": "Click the decode button",
+                "ActionType": "TriggerElementFunction",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".btn.btn-default",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "click",
+                    "ElFunctionArguments": [],
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 39
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 18,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": "Step 6 - Decode MainTXN Previous hash"
+            },
+            "Action": {
+                "ActionDescription": "Get the output of the decoded MainTXN Previous hash",
+                "ActionType": "GetElementAttributeData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".output textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "value",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNPreviousTXNDecoded",
+                "MetaData": [],
+                "_ID": 40
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "Decoded MainTXN Previous hash",
+                "ToastPosition": [
+                    "60%",
+                    "10%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 18,
+                "SegmentNo": 6,
+                "FrameID": 1,
+                "FrameTitle": "Step 6 - Decode MainTXN Previous hash"
+            },
+            "Action": {
+                "ActionDescription": "Save the decoded MainTXN Previous hash for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "PreviousTXN Hash",
+                            "Value": "${MainTXNPreviousTXNDecoded}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 41
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 19,
+                "SegmentNo": 7,
+                "FrameID": 8,
+                "FrameTitle": "Step 7 - Retrieve Backlink Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Retrieve the Backlink transaction from Stellar Blockchain. from Stellar Blockchain.",
+                "ActionType": "BrowserScreen",
+                "ActionParameters": {
+                    "ExternalURL": "https://horizon-testnet.stellar.org/transactions/${MainTXNPreviousTXNDecoded}/operations",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 42
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 19,
+                "SegmentNo": 7,
+                "FrameID": 8,
+                "FrameTitle": "Step 7 - Retrieve Backlink Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Save the response data of the transaction",
+                "ActionType": "GetElementAttributeData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "innerText",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNPreviousTXNDataString",
+                "MetaData": [],
+                "_ID": 43
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 2
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 19,
+                "SegmentNo": 7,
+                "FrameID": 8,
+                "FrameTitle": "Step 7 - Retrieve Backlink Transaction"
+            },
+            "Action": {
+                "ActionDescription": "Format transaction data to JSON (Javascript Object Notation)",
+                "ActionType": "FormatMetaData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "parseJson",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNPreviousTXNData",
+                "MetaData": [
+                    "MainTXNPreviousTXNDataString"
+                ],
+                "_ID": 44
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 2
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 20,
+                "SegmentNo": 8,
+                "FrameID": 8,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
+                "ActionType": "FormatMetaData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "jsonValueObjectPicker",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNPreviousTXNCurrentTXNHash",
+                "MetaData": [
+                    "MainTXNPreviousTXNData",
+                    "CurrentTXN",
+                    false,
+                    "value"
+                ],
+                "_ID": 45
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 21,
+                "SegmentNo": 8,
+                "FrameID": 8,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "CurrentTXN",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 46
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 40
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 21,
+                "SegmentNo": 8,
+                "FrameID": 8,
+                "FrameTitle": "#{FrameTitle}"
+            },
+            "Action": {
+                "ActionDescription": "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
+                "ActionType": "FormatDOMText",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "${MainTXNPreviousTXNCurrentTXNHash}",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 47
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 20
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 22,
+                "SegmentNo": 8,
+                "FrameID": 8,
+                "FrameTitle": ""
+            },
+            "Action": {
+                "ActionDescription": "Save the base64 encoded CurrentTXN Hash value of the Previuos TXN for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "CurentTXNHash (base64)",
+                            "Value": "${MainTXNPreviousTXNCurrentTXNHash}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 48
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 23,
+                "SegmentNo": 8,
+                "FrameID": 9,
+                "FrameTitle": "Step 9 - Decode PreviousTXN CurentTXN Hash"
+            },
+            "Action": {
+                "ActionDescription": "Decode the base64 encoded MainTXN Identifier",
+                "ActionType": "BrowserScreen",
+                "ActionParameters": {
+                    "ExternalURL": "https://emn178.github.io/online-tools/base64_decode.html",
+                    "InnerHTML": "",
+                    "Query": "",
+                    "QueryIndex": "",
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 49
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 23,
+                "SegmentNo": 8,
+                "FrameID": 9,
+                "FrameTitle": "Step 9 - Decode PreviousTXN CurentTXN Hash"
+            },
+            "Action": {
+                "ActionDescription": "Input the base64 encoded MainTXN Identifier",
+                "ActionType": "UpdateElementProperty",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".input textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "value",
+                    "ElPropertyValue": "${MainTXNPreviousTXNCurrentTXNHash}",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 50
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 23,
+                "SegmentNo": 8,
+                "FrameID": 9,
+                "FrameTitle": "Step 9 - Decode PreviousTXN CurentTXN Hash"
+            },
+            "Action": {
+                "ActionDescription": "Click the decode button",
+                "ActionType": "TriggerElementFunction",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".btn.btn-default",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "click",
+                    "ElFunctionArguments": [],
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 51
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": [
+                    "20%",
+                    "40%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 23,
+                "SegmentNo": 8,
+                "FrameID": 9,
+                "FrameTitle": "Step 9 - Decode PreviousTXN CurentTXN Hash"
+            },
+            "Action": {
+                "ActionDescription": "Get the output of the decoded MainTXN Identifier",
+                "ActionType": "GetElementAttributeData",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": ".output textarea",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "value",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": "",
+                    "SelectiveTextIndex": "",
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": []
+                },
+                "ActionResultVariable": "MainTXNPreviousTXNCurrentTXNHashDecoded",
+                "MetaData": [],
+                "_ID": 52
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": true,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "Decoded MainTXN Identifier",
+                "ToastPosition": [
+                    "60%",
+                    "10%"
+                ],
+                "ActionDuration": 10
+            }
+        },
+        {
+            "StepHeader": {
+                "StepNo": 23,
+                "SegmentNo": 8,
+                "FrameID": 9,
+                "FrameTitle": "Step 9 - Decode PreviousTXN CurentTXN Hash"
+            },
+            "Action": {
+                "ActionDescription": "Save the decoded MainTXN Identifier for future usage.",
+                "ActionType": "InformationStorage",
+                "ActionParameters": {
+                    "ExternalURL": "",
+                    "InnerHTML": "",
+                    "Query": "body",
+                    "QueryIndex": 0,
+                    "YOffset": "",
+                    "XOffset": "",
+                    "ElAttributeName": "",
+                    "ElAttributeValue": "",
+                    "ElAttributeValueReplace": "",
+                    "ElProperty": "",
+                    "ElPropertyValue": "",
+                    "ElFunction": "",
+                    "ElFunctionArguments": "",
+                    "SelectiveText": "",
+                    "CaseSensitivity": true,
+                    "SelectiveTextIndex": 0,
+                    "CSS": "",
+                    "FormatType": "",
+                    "StorageData": [
+                        {
+                            "Key": "CurentTXNHash",
+                            "Value": "${MainTXNPreviousTXNCurrentTXNHashDecoded}"
+                        }
+                    ]
+                },
+                "ActionResultVariable": "",
+                "MetaData": [],
+                "_ID": 53
+            },
+            "Customizations": {
+                "PointerData": "",
+                "ScrollToPointer": false,
+                "FrameAutoScroll": true,
+                "FrameScrollBars": "",
+                "ToastMessage": "",
+                "ToastPosition": null,
+                "ActionDuration": 30
+            }
+        }
+    ]
+}
