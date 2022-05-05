@@ -56,9 +56,8 @@
     <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
     </mat-spinner>
   </div>
-
   <div class="container mt-5" *ngIf="loadingComplete && !errorOccurred">
-    <div class="row mb-3">  
+    <div class="row mb-3">
       <div class="col-12">
         <div class="row">
           <div class="mr-2 ml-3 "><span  (click)="goBack()">   <i class="fas fa-angle-left clickableAwesomeFont" style="font-size: 30px;"></i></span></div>
@@ -88,7 +87,7 @@
           </a>
         </div>
       </div>
-    </div>  
+    </div>
       <div class="row mb-3 mt-3 ">
         <div class="col-12 col-md-12 ">
           <div class="row pl-3">
@@ -122,7 +121,7 @@
         </div>
       </div>
 
- 
+
     </div>
     <div class="col-xs-12 col-md-12 text-left pt-2 pb-1"
       style="background-color: white; border-bottom: 0.5px solid #dee2e6;">
@@ -140,42 +139,30 @@
           <div class="float-none"></div>
         </div>
       </div>
-
-      <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4"
+      <div
         *ngFor="let item of tracifiedCoreData.data | keyvalue">
-        <div class="col-sm-12 col-md-3  col-lg-3  pl-md-4  pt-3 pt-md-0 trasactionDataMobileResponsive" style="font-size: 18px; font-weight:500;"
-          *ngIf="item.key != 'photos'">
-          {{item.key}}
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="!isContainImage(item.value)">
+        <div class="col-sm-12 col-md-3  col-lg-3  pl-md-4  pt-3 pt-md-0 trasactionDataMobileResponsive" style="font-size: 18px; font-weight:500;">
+        {{CapitalFirstLetterAndPutSpace(item.key)}}
         </div>
-        <div class="col-sm-12 col-md-3  col-lg-3  pl-md-4  pt-3 pt-md-0 trasactionDataMobileResponsive" style="font-size: 18px; font-weight:500;"
-        *ngIf="item.key == 'photos'">
-        {{"Images"}}
-      </div>
-      <div class="col-sm-12 col-md-9 col-lg-9 align-item-center" style=" overflow-y: auto; max-height:150px;"  *ngIf="item.key == 'photos'" >
-        <div class="row align-self-center " *ngIf="isObject(item.value)">
-          <div class="col-sm-12 col-md-8 col-lg-9 align-self-center" style=" font-size: 14px;  overflow-wrap:break-word;"  >
-            <p>  {{"True"}}</p>
-          </div>
-        </div>
-      </div>
-        <div class="col-sm-12 col-md-9 col-lg-9 align-item-center" style=" overflow-y: auto; max-height:150px;" >
-          <div class="row align-self-center " *ngIf="!isObject(item.value)">
-            <div class="col-sm-12 col-md-8 col-lg-9 align-self-center" style=" font-size: 14px;  overflow-wrap:break-word;"  >
-              <p>  {{item.value }}</p>
+        <div class="col-sm-12 col-md-9 col-lg-9 align-item-center" style=" overflow-y: auto; max-height:150px;">
+          <div class="row align-self-center " *ngIf="!isObject(item.value)&&!isContainImage(item.value)">
+            <div class="col-sm-12 col-md-8 col-lg-9 align-self-center" style="font-size: 14px;  overflow-wrap:break-word;"  >
+          <p> {{item.value }}</p>
             </div>
           </div>
           <div *ngIf="isObject(item.value)">
-          <div class="row align-self-center"  *ngFor="let subItem of item.value  | keyvalue" style="overflow-y: auto; "> 
-            <div class="col-sm-12 col-md-6 col-lg-6 align-item-center" style=" font-size: 14px; font-weight:420; overflow-wrap:break-word; "
-             *ngIf="item.key != 'photos'">
-              <p>{{subItem.key}} :</p> 
+          <div class="row align-self-center"  *ngFor="let subItem of item.value  | keyvalue" style="overflow-y: auto; ">
+            <div class="col-sm-12 col-md-6 col-lg-6 align-item-center" style=" font-size: 14px; font-weight:420; overflow-wrap:break-word; ">
+              <p>  {{CapitalFirstLetterAndPutSpace(subItem.key)}} :</p>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-6 align-item-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  *ngIf="item.key != 'photos'" >
+            <div class="col-sm-12 col-md-6 col-lg-6 align-item-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  >
               <p>  {{subItem.value }}</p>
             </div>
           </div>
         </div>
         </div>
+      </div>
       </div>
       <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf='transactionData.Txnhash'>
         <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
