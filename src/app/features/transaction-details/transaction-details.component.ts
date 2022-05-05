@@ -116,9 +116,13 @@ export class TransactionDetailsComponent implements OnInit {
           if (tdp.data) {
          //   check image exist in object
          for (let [key, value] of Object.entries(tdp.data)) {     
-            if(Array.isArray(value))
-              this.txnItem.images.push(value);
-              this.enableSlider = true;
+            if(Array.isArray(value)&&value.length>0)
+              value.map((imageData)=>{
+                if(!!imageData.image&&imageData.image!=''){
+                  this.txnItem.images.push(imageData);
+                  this.enableSlider = true;
+                }
+             })
             }   
           }
           if(!!this.txnItem){
