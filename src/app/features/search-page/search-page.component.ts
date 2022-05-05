@@ -61,15 +61,15 @@ export class SearchPageComponent implements OnInit {
    }
   search(id: string): void {
     this.transactionDataService.getTransactions(id,this.page,this.perPage).subscribe((transactions) => {
-   //   console.log("Transactions: ", transactions);
       this.errorOccurred = false;
       if(!!transactions){
       transactions.forEach(element => {
-      // console.log("Blockchain: ", element);
         this.NoItems = element.Itemcount 
        
         if (element.TxnType == "tdp") {
-
+          this.transactionDataService.getTracifiedDataPackets(transactions[0].TdpId).subscribe((base64Data: IBase64) => {
+              this.loadingComplete = true;
+              let tdp: any = JSON.parse(decode(base64Data.data));
           let index = element.AvailableProof.findIndex((proof) => {
             return proof == "poc";
           });
@@ -90,9 +90,8 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-
-            productId: element.ProductId,
-            productName: element.ProductName,
+            productId: tdp.header.item.itemID,
+            productName: tdp.header.item.itemName,
             blockchainName: "Stellar"
           }
 
@@ -100,7 +99,9 @@ export class SearchPageComponent implements OnInit {
           this.otherResultsAvailable = true;
 
 
-
+        }, (err) => {
+          console.log("Get TDP Error: ", err);
+          });
         } else if (element.TxnType == "genesis") {
 
           let index = element.AvailableProof.findIndex((proof) => {
