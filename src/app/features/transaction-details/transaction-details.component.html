@@ -14,13 +14,13 @@
       </div>
     </div>
     <div class="col-12 col-md-12 pb-3 ml-0 pt-md-4 pl-md-4 pr-md-4" style="background-color: white;">
-    <div class="col-xs-12 col-md-12 pb-3 mt-3" *ngIf="tdpImages.length > 0">
+    <div class="col-xs-12 col-md-12 pb-3 mt-3" *ngIf="txnItem.images">
       <div class="row mt-2">
         <div class="col-xs-12 col-md-12 col-lg-12 text-center">
             <owl-carousel-o [options]="customOptions">
-              <ng-template carouselSlide *ngFor="let image of tdpImages">
+              <ng-template carouselSlide *ngFor="let imageData of txnItem.images">
                 <div>
-                  <img class="img-thumbnail" style="background: none; border: none; width:100%;height: 300px; object-fit: contain;" [src]="image.image" />
+                  <img class="img-thumbnail" style="background: none; border: none; width:100%;height: 300px; object-fit: contain;" [src]="imageData[0].image" />
                 </div>
               </ng-template>
             </owl-carousel-o>

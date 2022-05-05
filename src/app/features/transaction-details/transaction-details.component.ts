@@ -113,10 +113,13 @@ export class TransactionDetailsComponent implements OnInit {
             images: []
           }
 
-          if (tdp.data.photos) {
-         //   console.log("Photos Exist.");
-            this.tdpImages = tdp.data.photos;
-            this.enableSlider = true;
+          if (tdp.data) {
+         //   check image exist in object
+         for (let [key, value] of Object.entries(tdp.data)) {     
+            if(Array.isArray(value))
+              this.txnItem.images.push(value);
+              this.enableSlider = true;
+            }   
           }
           if(!!this.txnItem){
             sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
