@@ -158,6 +158,24 @@ export class ProofPoeComponent implements OnInit {
     });
   }
 
+  isContainImage(array){
+   let imagesArray=[]
+    if(Array.isArray(array)&&array.length>0){
+      array.map((imageData)=>{
+        if(!!imageData.image&&imageData.image!=''){
+          imagesArray.push(imageData.image)
+        }
+      })
+      if(imagesArray.length>0)
+        return true
+      else
+       return false   
+    }else{
+      return false
+    }
+
+  }
+
   copyB64Clipboard() {
     this.textCopied = true;
     let interval = setInterval(() => {
