@@ -867,11 +867,11 @@
             "StepNo": 16,
             "SegmentNo": 4,
             "FrameID": 4,
-            "FrameTitle": "Step 16 - Retrieve Current Transaction",
+            "FrameTitle": "&{Text71}",
             "TXNHash": "${var_currenttxn}",
-            "OperationName": "current transaction of the gateway transaction",
-            "ResponseVariable": "MainTXNCurentTXNDataString",
-            "JSONResultVariable": "MainTXNCurentTXNData"
+            "OperationName": "&{Text72}",
+            "ResponseVariable": "&{Text73}",
+            "JSONResultVariable": "&{Text74}"
           }
         },
         "ActionResultVariable": "",
@@ -895,9 +895,9 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Select Base64Encoded CurrentTxn Identifier",
-        "ActionDescription": "Select the encoded currentTxn Identifier from the transaction details.",
-        "ActionType": "FormatMetaData",
+        "ActionTitle": "&{Text78}",
+        "ActionDescription": "&{Text79}",
+        "ActionType": "&{Text80}",
         "ActionParameters": {
           "ExternalURL": "",
           "InnerHTML": "",

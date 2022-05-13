@@ -25,7 +25,7 @@
       "StepNo": 1,
       "Languages": {
         "Text0": {
-          "en": "gjkjkjkjk"
+          "en": "Step 1 - Retrieve TDP Data"
         },
         "Text1": {
           "en": "gjkjkjkjk"
@@ -58,10 +58,10 @@
       "StepNo": 2,
       "Languages": {
         "Text9": {
-          "en": "gjkjkjkjk"
+          "en": "Select TDP identifier"
         },
         "Text10": {
-          "en": "gjkjkjkjk"
+          "en": "Select the identifier from TDP details."
         }
       }
     },
@@ -70,7 +70,7 @@
       "StepNo": 3,
       "Languages": {
         "Text11": {
-          "en": "gjkjkjkjk"
+          "en": ""
         },
         "Text12": {
           "en": "gjkjkjkjk"
@@ -94,14 +94,14 @@
       "StepNo": 4,
       "Languages": {
         "Text17": {
-          "en": "gjkjkjkjk"
+          "en": "Save TDP Identifier"
         },
         "Text18": {
-          "en": "gjkjkjkjk"
+          "en": "Save the Identifier value for future usage."
         },
         "Text19": {
-          "en": "gjkjkjkjk"
-        }
+          "en": "TDP Identifier"
+        } 
       }
     },
     {
@@ -109,10 +109,10 @@
       "StepNo": 5,
       "Languages": {
         "Text20": {
-          "en": "gjkjkjkjk"
+          "en": "Select TDP DataHash"
         },
         "Text21": {
-          "en": "gjkjkjkjk"
+          "en": "Select the Data Hash from TDP details."
         }
       }
     },
@@ -121,7 +121,7 @@
       "StepNo": 6,
       "Languages": {
         "Text22": {
-          "en": "gjkjkjkjk"
+          "en": ""
         },
         "Text23": {
           "en": "gjkjkjkjk"
@@ -145,13 +145,13 @@
       "StepNo": 7,
       "Languages": {
         "Text28": {
-          "en": "gjkjkjkjk"
+          "en": "Save TDP DataHash"
         },
         "Text29": {
-          "en": "gjkjkjkjk"
+          "en": "Save Data Hash value for future usage."
         },
         "Text30": {
-          "en": "gjkjkjkjk"
+          "en": "TDP Data Hash"
         }
       }
     },
@@ -319,27 +319,60 @@
     },
     {
       "SegmentNo": 4,
-      "StepNo": 6,
+      "StepNo": 16,
       "Languages": {
-        "Text51": {
+        "Text71": {
+          "en": "Step 16 - Retrieve Current Transaction"
+        },
+        "Text72": {
+          "en": "current transaction of the gateway transaction"
+        },
+        "Text73": {
+          "en": "MainTXNCurrentTXNDataString"
+        },
+        "Text74": {
+          "en": "MainTXNCurrentTXNData"
+        },
+        "Text76": {
           "en": "gjkjkjkjk"
         },
-        "Text52": {
-          "en": "gjkjkjkjk"
-        },
-        "Text53": {
-          "en": "gjkjkjkjk"
-        },
-        "Text54": {
-          "en": "gjkjkjkjk"
-        },
-        "Text56": {
-          "en": "gjkjkjkjk"
-        },
-        "Text57": {
+        "Text77": {
           "en": "gjkjkjkjk"
         }
       }
+    },
+
+    {
+      "SegmentNo": 5,
+      "StepNo": 17,
+      "Languages": {
+        "Text78": {
+          "en": "Select Base64Encoded CurrentTxn Identifier"
+        },
+        "Text79": {
+          "en": "Select the encoded currentTxn Identifier from the transaction details."
+        },
+        "Text80": {
+          "en": "FormatMetaData"
+        }
+      }
+    },
+    
+    {
+      "SegmentNo": 5,
+      "StepNo": 18,
+      "Languages": {
+        "Text81": {
+          "en": "Select Base64Encoded CurrentTxn Identifier"
+        },
+        "Text82": {
+          "en": "Select the encoded currentTxn Identifier from the transaction details."
+        },
+        "Text83": {
+          "en": "FormatMetaData"
+        }
+      }
     }
+    
   ]
 }
