@@ -12,6 +12,9 @@ import {
 import { ActivatedRoute } from "@angular/router";
 import { ElementDividerComponent } from "../components/element-divider/element-divider.component";
 import { SiteScreenComponent } from "../components/site-screen/site-screen.component";
+import * as POBLJSON from "../ProofJSONs/POBL.json";
+import * as POGJSON from "../ProofJSONs/POG.json";
+import * as ActionConfigurations from "../ProofJSONs/ActionConfigurations.json";
 
 @Component({
   selector: "app-verification-screen",
@@ -59,6 +62,7 @@ export class VerificationScreenComponent implements OnInit {
   proofJSON: any = {};
   globalData: object[] = [];
   steppers: any[] = [];
+  subSteppers: any[] = [];
   demoScreenChildRefs: any = {};
   color = "primary";
   mode = "indeterminate";
@@ -76,6 +80,10 @@ export class VerificationScreenComponent implements OnInit {
   toastMSG: string;
   toastTop: string = "40%";
   toastLeft: string = "32%";
+  ActionConfigurations: any;
+  SegmentNumber: number;
+  availableProofs: any[] = ["pog", "pobl"];
+  proofType: string = "";
 
   @ViewChild("ProofDemoDirective", { read: ViewContainerRef, static: false })
   proofDemoRef: ViewContainerRef;
@@ -89,6 +97,7 @@ export class VerificationScreenComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       this.routerParams = { ...params.keys, ...params };
     });
+    this.proofType = this.routerParams.params.type;
   }
 
   async ngAfterViewInit() {
@@ -96,7 +105,147 @@ export class VerificationScreenComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  async scrollToFrameById(frameID: string, lower = 0) {
+  async startDemoFn() {
+    if (
+      this.routerParams &&
+      this.routerParams.params &&
+      this.availableProofs.includes(this.routerParams.params.type)
+    ) {
+      this.TXNhash = this.routerParams.params.txn;
+      this.variableStorage["TXNhash"] = this.TXNhash;
+      this.isLoading = true;
+
+      // backend call
+      await new Promise(resolveTime => setTimeout(resolveTime, 4200));
+
+      // start demo (not -verifing)
+      this.initiateProofDemo();
+    } else
+      alert("Proof verification is not yet available for the selected type.");
+  }
+
+  async initiateProofDemo() {
+    this.proofJSON = this.getProtocolJSON();
+    this.ActionConfigurations = this.getActionConfigurations();
+
+    // handleMultiStepAction
+    this.handleMultiStepActions();
+
+    // if verification success
+    console.log(this.proofJSON);
+
+    const { Header } = this.proofJSON;
+    this.StorageTitle = Header.StorageTitle;
+    this.ProofContainerTitle = Header.ProofContainerTitle;
+    this.steppers = this.filterSegmentsAndActions(Header.Segments);
+    this.playbackSpeed = Header.PlaybackSpeed;
+    this.gsHeightExpand = Header.GSHeightExpand;
+    this.gsOverflowX = Header.GSOverflowX;
+    this.vsHeightExpand = Header.VSHeightExpand;
+    this.vsOverflowX = Header.VSOverflowX;
+
+    console.log(this.steppers);
+
+    await this.scrollToFrameById("proofHeaderTitle", 20);
+    this.isStartDemo = true;
+    this.playProofDemo(0);
+  }
+
+  getProtocolJSON() {
+    var protocolJson: any;
+    switch (this.proofType) {
+      case "pobl":
+        protocolJson = POBLJSON;
+        break;
+      case "pog":
+        protocolJson = POGJSON;
+        break;
+      default:
+        break;
+    }
+    return protocolJson.default;
+  }
+
+  getActionConfigurations() {
+    var actionConfigs: any = ActionConfigurations;
+    return actionConfigs.default;
+  }
+
+  handleMultiStepActions() {
+    var proofJSONSteps: any = [];
+    var { Steps } = this.proofJSON;
+    for (let index = 0; index < Steps.length; index++) {
+      const step = Steps[index];
+      if (step.Action.ActionType == "MultiStepAction") {
+        var subActions = this.ActionConfigurations[
+          step.Action.ActionParameters.ActionConfigurationID
+        ].Actions;
+        for (let j = 0; j < subActions.length; j++) {
+          const subAction = subActions[j];
+          const formattedAction = this.parseSubActionData(
+            subAction,
+            step.Action.ActionParameters.SubActionArguments
+          );
+          formattedAction.Action._ID = proofJSONSteps.length;
+          proofJSONSteps.push(formattedAction);
+        }
+      } else {
+        step.Action._ID = proofJSONSteps.length;
+        proofJSONSteps.push(step);
+      }
+    }
+    this.proofJSON.Steps = proofJSONSteps;
+  }
+
+  parseSubActionData(action: any, storedData: any = this.variableStorage): any {
+    var data = JSON.stringify(action).toString();
+    [...data.matchAll(/"\#{[^}]+}"|\#{[^}]+}/g)].forEach(a => {
+      try {
+        let key = a[0].match(/\#{([^}]+)}/g)[0].slice(2, -1);
+        if (key && storedData) {
+          var replaceValue = storedData[key];
+          var valueType = typeof replaceValue;
+          if (valueType == "string" && a[0].match(/"\#{[^}]+}"/g)) {
+            try {
+              var result = JSON.stringify(replaceValue);
+              replaceValue = result;
+            } catch (error) {
+              replaceValue = `"${replaceValue}"`;
+            }
+          }
+          data = data.replace(a[0], replaceValue);
+        }
+      } catch (error) {}
+    });
+    return JSON.parse(data);
+  }
+
+  filterSegmentsAndActions(Segments: any) {
+    return Segments.map((Segment: any) => {
+      const SubActions = this.proofJSON.Steps.reduce(
+        (subActions: Array<any>, job: any) => {
+          const {
+            StepHeader: { SegmentNo },
+            Action: { _ID, ActionTitle }
+          } = job;
+          if (SegmentNo == Segment.NO) {
+            subActions.push({
+              ActionID: _ID,
+              ActionName: ActionTitle
+            });
+          }
+          return subActions;
+        },
+        []
+      );
+      return {
+        ...Segment,
+        SubActions
+      };
+    });
+  }
+
+  async scrollToFrameById(frameID: string, offset = 0) {
     const bodyRect: any = document.body.getBoundingClientRect();
     const pcRect: any = document
       .getElementById(frameID)
@@ -104,62 +253,22 @@ export class VerificationScreenComponent implements OnInit {
     const pcWidth = pcRect.x - bodyRect.x;
     const pcHeight = pcRect.y - bodyRect.y;
     window.scroll({
-      top: pcHeight - lower,
+      top: pcHeight - offset,
       left: pcWidth,
       behavior: "smooth"
     });
     await new Promise(resolveTime => setTimeout(resolveTime, 400));
   }
 
-  async createFrameInProofDemo(action: any): Promise<ComponentRef<any>> {
-    const { FrameId, Type, ShortFrameTitle } = action;
-    var component: Type<any>;
-    switch (Type) {
-      case "site-screen":
-        component = SiteScreenComponent;
-        break;
-      default:
-        break;
-    }
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-      component
-    );
-    const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(
-      ElementDividerComponent
-    );
-    const ref = this.proofDemoRef.createComponent(componentFactory);
-    this.proofDemoRef.createComponent(componentDividerFactory);
-    this.demoScreenChildRefs[FrameId] = {
-      Id: FrameId,
-      type: Type,
-      ref,
-      ShortFrameTitle
-    };
-    // ref.location.nativeElement.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "start",
-    //   inline: "start"
-    // });
-    this.cdr.detectChanges();
-    return ref;
-  }
-
-  async resizeGlobalScreen() {
-    this.gsHeightExpand = !this.gsHeightExpand;
-    await new Promise(resolveTime => setTimeout(resolveTime, 800));
-    this.scrollToFrameById("globalInformation", 10);
-  }
-
-  async resizeVerifyScreen() {
-    this.vsHeightExpand = !this.vsHeightExpand;
-    await new Promise(resolveTime => setTimeout(resolveTime, 800));
-    this.scrollToFrameById("verificationScreen", 10);
-  }
-
+  // player controlls
   togglePlayPauseFn() {
-    this.isPause = !this.isPause;
-    if (this.isPlayCompleted) this.currentStep = 0;
-    this.playProofDemo();
+    if (this.isPause) {
+      this.isPause = false;
+      if (this.isPlayCompleted) this.currentStep = 0;
+      this.playProofDemo();
+    } else {
+      this.isPause = true;
+    }
   }
 
   replayFn() {
@@ -198,26 +307,6 @@ export class VerificationScreenComponent implements OnInit {
     this.playProofDemo();
   }
 
-  async startDemoFn() {
-    if (
-      this.routerParams &&
-      this.routerParams.params &&
-      this.routerParams.params.type == "pobl"
-    ) {
-      this.TXNhash = this.routerParams.params.txn;
-      this.isLoading = true;
-      await new Promise(resolveTime => setTimeout(resolveTime, 4200));
-      this.isStartDemo = true;
-      this.isPause = true;
-      this.initiateProofDemo();
-      await new Promise(resolveTime => setTimeout(resolveTime, 600));
-      this.isPause = false;
-      await this.scrollToFrameById("proofHeaderTitle", 20);
-      this.playProofDemo(0);
-    } else
-      alert("Proof verification is not yet available for the selected type.");
-  }
-
   stopFn() {
     this.StorageTitle = "Storage";
     this.ProofContainerTitle = "Proof Container";
@@ -250,9 +339,27 @@ export class VerificationScreenComponent implements OnInit {
     this.isBackToStep = false;
   }
 
-  backToStep(stepNo: number) {
+  setSpeed(speed: number) {
+    if (!speed || isNaN(speed) || speed == 0)
+      alert("Please enter a valid playback speed.");
+    else this.playbackSpeed = speed;
+  }
+
+  async resizeGlobalScreen() {
+    this.gsHeightExpand = !this.gsHeightExpand;
+    await new Promise(resolveTime => setTimeout(resolveTime, 800));
+    this.scrollToFrameById("globalInformation", 10);
+  }
+
+  async resizeVerifyScreen() {
+    this.vsHeightExpand = !this.vsHeightExpand;
+    await new Promise(resolveTime => setTimeout(resolveTime, 800));
+    this.scrollToFrameById("verificationScreen", 10);
+  }
+
+  backToAction(actionID: number) {
     var i: number = this.proofJSON.Steps.findIndex(
-      (cur: any) => cur.StepTo == stepNo
+      (cur: any) => cur.Action._ID == actionID
     );
     if (this.lastCompletedStep >= i) {
       this.isBackToStep = true;
@@ -265,112 +372,236 @@ export class VerificationScreenComponent implements OnInit {
     if (this.isPlayCompleted) this.playProofDemo();
   }
 
-  selectSpeedFn() {
-    let speed: any = prompt(
-      "Playback speed (0.5, 0.25, 1, 1.5, 2)",
-      this.playbackSpeed.toString()
+  backToStep(stepNo: number) {
+    var i: number = this.proofJSON.Steps.findIndex(
+      (cur: any) => cur.StepHeader.SegmentNo == stepNo
     );
-    if (!speed || isNaN(speed) || speed == 0)
-      alert("Please enter a valid playback speed.");
-    else this.setSpeed(speed);
+    if (this.lastCompletedStep >= i) {
+      this.isBackToStep = true;
+      this.currentStep = i;
+      if (this.isPause) {
+        this.isPause = false;
+        this.playProofDemo();
+      }
+    }
+    if (this.isPlayCompleted) this.playProofDemo();
   }
 
-  setSpeed(speed: number) {
-    this.playbackSpeed = speed;
+  // controllers for steppers
+  async toStepper(no: number, _ID: number) {
+    this.SegmentNumber = no;
+    document
+      .querySelectorAll("#steppersFrame")[0]
+      .classList.add("steppersShow");
+    const steppersFrame = document.querySelectorAll(
+      "#steppersFrame #segments #stepWrapper"
+    )[0];
+    const allSteps = document.querySelectorAll(
+      "#segments .bs-stepper-header.cs-stepper-header .step"
+    );
+    var allSegmentLines = document.querySelectorAll(
+      "#segments .bs-stepper-header.cs-stepper-header .line"
+    );
+    const el: any = allSteps[no - 1];
+    // allSteps[no - 1].scrollIntoView();
+    steppersFrame.scroll({
+      top:
+        el.offsetTop -
+        steppersFrame.getBoundingClientRect().height +
+        el.getBoundingClientRect().height,
+      left:
+        el.offsetLeft -
+        steppersFrame.getBoundingClientRect().width +
+        el.getBoundingClientRect().width,
+      behavior: "smooth"
+    });
+    el.classList.add("glow");
+    for (let i = 0; i < no - 1; i++) {
+      allSteps[i].classList.remove("glow");
+      allSteps[i].classList.add("success");
+      allSegmentLines[i].classList.add("bg-success");
+    }
+    for (let j = no; j < allSteps.length; j++) {
+      allSteps[j].classList.remove("glow");
+      allSteps[j].classList.remove("success");
+      allSegmentLines[j].classList.remove("bg-success");
+    }
+    await this.toSubStepper(no, _ID);
+    await new Promise(resolveTime =>
+      setTimeout(resolveTime, 1000 / this.playbackSpeed)
+    );
   }
 
-  async initiateProofDemo() {
-    this.proofJSON = this.getSampleUI();
-    this.playProofDemo(0);
+  async toSubStepper(segmentNo: number, actionID: number) {
+    this.subSteppers = this.steppers.find(
+      (step: any) => step.NO == segmentNo
+    ).SubActions;
+    await new Promise(resolveTime => setTimeout(resolveTime, 1000));
+    var index = this.subSteppers.findIndex(
+      (step: any) => step.ActionID == actionID
+    );
+    this.ActionDescription =
+      this.ActionDescription +
+      ` (Segment NO: ${segmentNo}, Action ID: ${segmentNo}.${actionID + 1})`;
+    var allSubSteps = document.querySelectorAll(
+      "#subSteppers .bs-stepper-header.cs-stepper-header .step"
+    );
+    var allSubLines = document.querySelectorAll(
+      "#subSteppers .bs-stepper-header.cs-stepper-header .line"
+    );
+    // console.log(actionID, index);
+    const el: any = allSubSteps[index];
+    const subSteppers = document.querySelectorAll(
+      "#steppersFrame #subSteppers #stepWrapper"
+    )[0];
+    var x =
+      el.offsetLeft -
+      subSteppers.getBoundingClientRect().width +
+      el.getBoundingClientRect().width;
+
+    var y =
+      el.offsetTop -
+      subSteppers.getBoundingClientRect().height +
+      el.getBoundingClientRect().height;
+    subSteppers.scroll({
+      top: y,
+      left: x,
+      behavior: "smooth"
+    });
+    el.classList.add("glow");
+    for (let i = 0; i < index; i++) {
+      allSubSteps[i].classList.remove("glow");
+      allSubSteps[i].classList.add("success");
+      allSubLines[i].classList.add("bg-success");
+    }
+    for (let j = index + 1; j < allSubSteps.length; j++) {
+      allSubSteps[j].classList.remove("glow");
+      allSubSteps[j].classList.remove("success");
+      allSubLines[j].classList.remove("bg-success");
+    }
   }
 
+  async closeSteppers() {
+    document
+      .querySelectorAll("#steppersFrame")[0]
+      .classList.remove("steppersShow");
+    await new Promise(resolveTime => setTimeout(resolveTime, 1200));
+  }
+
+  toggleSteppers() {
+    document
+      .querySelectorAll("#steppersFrame")[0]
+      .classList.toggle("steppersShow");
+  }
+
+  // main proof actions
   async playProofDemo(step: number = this.currentStep) {
-    const data = this.proofJSON;
-    this.currentStep = step;
-    this.StorageTitle = data.StorageTitle;
-    this.ProofContainerTitle = data.ProofContainerTitle;
-    this.totalSteps = data.Steps.length;
-    this.steppers = data.Steppers;
-    this.cdr.detectChanges();
     this.isReplay = false;
     this.isPlayCompleted = false;
-    this.playbackSpeed = data.PlaybackSpeed;
+
+    const { Header, Steps } = this.proofJSON;
+
+    this.totalSteps = Steps.length;
+    this.currentStep = step;
+    this.cdr.detectChanges();
+
     // console.log(this.currentStep);
-    for (; this.currentStep < data.Steps.length; ) {
+    for (; this.currentStep < Steps.length; ) {
       this.isBackToStep = false;
       if (this.isPause) return;
       if (this.isReplay) return;
-      const action = this.parseActionData(data.Steps[this.currentStep]);
+      const stepData = this.parseActionData(Steps[this.currentStep]);
+      const { StepHeader, Action, Customizations } = stepData;
+      const {
+        ActionTitle,
+        ActionDescription,
+        ActionType,
+        ActionParameters
+      } = Action;
       // console.log(action.Id, this.demoScreenChildRefs);
       this.currentStep++;
-      this.ActionDescription = action.ActionDescription;
-      if (action.StepTo) {
-        this.toStepper(action.StepTo);
+      this.ActionDescription = ActionDescription;
+      if (StepHeader.SegmentNo) {
+        await this.toStepper(StepHeader.SegmentNo, Action._ID);
       }
-      const frameID = action.FrameId;
+      const frameID = StepHeader.FrameID;
       this.cdr.detectChanges();
 
-      // set global values
-      this.setGlobalValuesOnFrames(data, action);
+      // console.log(stepData);
 
-      switch (action.Type) {
-        case "site-screen":
+      // set global values
+      this.setGlobalValuesOnFrames(Header, stepData);
+
+      switch (ActionType) {
+        case "BrowserScreen":
+          // await this.closeSteppers();
           var scRef: ComponentRef<SiteScreenComponent>;
           if (this.demoScreenChildRefs[frameID])
             scRef = this.demoScreenChildRefs[frameID].ref;
           else {
-            scRef = await this.createFrameInProofDemo(action);
+            scRef = await this.createFrameInProofDemo(stepData);
             scRef.instance.setFrameIndex(
               Object.keys(this.demoScreenChildRefs).length - 1
             );
           }
-          this.setGlobalValuesOnFrames(data, action);
-          if (scRef && action.InnerHTML) {
-            scRef.instance.setFrameTitle(action.FrameTitle);
-            await scRef.instance.setPageHTML(action.PageURL, action.InnerHTML);
-          } else if (scRef && action.PageURL) {
-            scRef.instance.setFrameTitle(action.FrameTitle);
-            await scRef.instance.setPage(action.PageURL);
+          this.setGlobalValuesOnFrames(Header, stepData);
+          if (scRef && ActionParameters.InnerHTML) {
+            scRef.instance.setFrameTitle(StepHeader.FrameTitle);
+            await scRef.instance.setPageHTML(
+              ActionParameters.ExternalURL,
+              ActionParameters.InnerHTML
+            );
+          } else if (scRef && ActionParameters.ExternalURL) {
+            scRef.instance.setFrameTitle(StepHeader.FrameTitle);
+            await scRef.instance.setPage(ActionParameters.ExternalURL);
           }
           break;
-        case "element-attribute":
-          await this.handleFormatElementAttribute(action);
+        case "UpdateElementAttribute":
+          // await this.closeSteppers();
+          await this.handleFormatElementAttribute(stepData);
           break;
-        case "text-style":
-          await this.handleTextStyle(action);
+        case "FormatDOMText":
+          // await this.closeSteppers();
+          await this.handleTextStyle(stepData);
           break;
-        case "set-data":
-          await this.handleSetData(action);
+        case "UpdateElementProperty":
+          // await this.closeSteppers();
+          await this.handleSetData(stepData);
           break;
-        case "trigger-fn":
-          await this.handleTriggerFn(action);
-        case "get-data":
-          await this.handleGetDataFn(action);
+        case "TriggerElementFunction":
+          // await this.closeSteppers();
+          await this.handleTriggerFn(stepData);
+        case "GetElementAttributeData":
+          // await this.closeSteppers();
+          await this.handleGetDataFn(stepData);
           break;
-        case "save-data":
-          await this.handleSaveDataFn(action);
+        case "InformationStorage":
+          await this.handleSaveDataFn(stepData);
           break;
-        case "format-data":
-          this.handleVariableFormat(action);
+        case "FormatMetaData":
+          this.handleVariableFormat(stepData);
           break;
         default:
           break;
       }
 
-      this.isDisableGlobalInformationL = this.isDisableGlobalStorageScroll("L");
-      this.isDisableGlobalInformationR = this.isDisableGlobalStorageScroll("R");
+      // this.isDisableGlobalInformationL = this.isDisableGlobalStorageScroll("L");
+      // this.isDisableGlobalInformationR = this.isDisableGlobalStorageScroll("R");
 
-      if (action.ToastMessage) {
-        this.toastMSG = action.ToastMessage;
-        this.toastTop = action.ToastPosition[0];
-        this.toastLeft = action.ToastPosition[1];
+      if (Customizations.ToastMessage) {
+        this.toastMSG = Customizations.ToastMessage;
+        this.toastTop = Customizations.ToastPosition[0];
+        this.toastLeft = Customizations.ToastPosition[1];
         this.isToast = true;
       }
       this.cdr.detectChanges();
       await new Promise(resolveTime =>
         setTimeout(
           resolveTime,
-          (100 * (action.ActionSpeed ? action.ActionSpeed : 1)) /
+          (100 *
+            (Customizations.ActionDuration
+              ? Customizations.ActionDuration
+              : 1)) /
             this.playbackSpeed
         )
       );
@@ -379,194 +610,507 @@ export class VerificationScreenComponent implements OnInit {
         this.lastCompletedStep = this.currentStep;
     }
 
-    if (this.currentStep == data.Steps.length) {
+    if (this.currentStep == Steps.length) {
       this.isPlayCompleted = true;
       this.isPause = true;
     }
   }
 
-  setGlobalValuesOnFrames(data: any, action: any) {
-    const { FrameId } = action;
-    var ds = this.demoScreenChildRefs[FrameId];
+  parseActionData(action: any, storedData: any = this.variableStorage): any {
+    var data = JSON.stringify(action).toString();
+    [...data.matchAll(/"\${[^}]+}"|\${[^}]+}/g)].forEach(a => {
+      try {
+        let key = a[0].match(/\${([^}]+)}/g)[0].slice(2, -1);
+        if (key && storedData[key]) {
+          var replaceValue = storedData[key];
+          var valueType = typeof replaceValue;
+          if (valueType == "string" && a[0].match(/"\${[^}]+}"/g)) {
+            try {
+              var result = JSON.stringify(replaceValue);
+              replaceValue = result;
+            } catch (error) {
+              replaceValue = `"${replaceValue}"`;
+            }
+          }
+          data = data.replace(a[0], replaceValue);
+        }
+      } catch (error) {}
+    });
+    return JSON.parse(data);
+  }
+
+  setGlobalValuesOnFrames(
+    Header: any,
+    { StepHeader, Action, Customizations }: any
+  ) {
+    const { FrameID } = StepHeader;
+    var ds = this.demoScreenChildRefs[FrameID];
     if (ds) {
       switch (ds.type) {
-        case "site-screen":
+        case "BrowserScreen":
           var scRef: ComponentRef<SiteScreenComponent>;
-          if (this.demoScreenChildRefs[FrameId])
-            scRef = this.demoScreenChildRefs[FrameId].ref;
+          if (this.demoScreenChildRefs[FrameID])
+            scRef = this.demoScreenChildRefs[FrameID].ref;
           if (scRef) {
-            if (Object.keys(action).includes("ScrollToPointer")) {
-              scRef.instance.isPointToElement = action.ScrollToPointer;
-            } else if (Object.keys(data).includes("ScrollToPointer")) {
-              scRef.instance.isPointToElement = data.ScrollToPointer;
+            if (
+              Customizations &&
+              Object.keys(Customizations).includes("ScrollToPointer")
+            ) {
+              scRef.instance.isPointToElement = Customizations.ScrollToPointer;
+            } else if (
+              Header &&
+              Object.keys(Header).includes("ScrollToPointer")
+            ) {
+              scRef.instance.isPointToElement = Header.ScrollToPointer;
             }
           }
       }
     }
   }
 
-  async handleFormatElementAttribute(action: any) {
+  async createFrameInProofDemo(stepData: any): Promise<ComponentRef<any>> {
+    const { StepHeader, Action, Customizations } = stepData;
+    const { FrameID } = StepHeader;
     const {
-      FrameId,
-      Query,
-      EIndex,
-      Attribute,
-      Value,
-      ValueReplacement,
-      AutoScroll
-    } = action;
-    var ds = this.demoScreenChildRefs[FrameId];
-    if (ds) {
-      switch (ds.type) {
-        case "site-screen":
-          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
-          if (scRef && Query)
-            await scRef.instance.addAttributeToElement(
-              Query,
-              EIndex,
-              ValueReplacement,
-              Attribute,
-              Value,
-              AutoScroll
-            );
-          break;
-        default:
-          break;
-      }
-    }
-  }
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters
+    } = Action;
 
-  async handleTextStyle(action: any) {
-    const { FrameId, HText, CaseSensitive, TextIndex, StyleCSS } = action;
-    var ds = this.demoScreenChildRefs[FrameId];
-    if (ds) {
-      switch (ds.type) {
-        case "site-screen":
-          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
-          if (scRef && HText)
-            await scRef.instance.styleText(
-              HText,
-              CaseSensitive,
-              TextIndex,
-              StyleCSS
-            );
-          break;
-        default:
-          break;
-      }
-    }
-  }
-
-  async handleSetData(action: any) {
-    const { FrameId, Query, EIndex, Selector, Data } = action;
-    var ds = this.demoScreenChildRefs[FrameId];
-    if (ds) {
-      switch (ds.type) {
-        case "site-screen":
-          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
-          if (scRef && Query && Selector && Data)
-            await scRef.instance.setData(Query, EIndex, Selector, Data);
-          break;
-        default:
-          break;
-      }
-    }
-  }
-
-  async handleTriggerFn(action: any) {
-    const { FrameId, Query, EIndex, Event, Data, RVariable } = action;
-    var ds = this.demoScreenChildRefs[FrameId];
-    if (ds) {
-      switch (ds.type) {
-        case "site-screen":
-          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
-          if (scRef && Query && Event && Data) {
-            const result = await scRef.instance.triggerFunction(
-              Query,
-              EIndex,
-              Event,
-              Data
-            );
-            if (RVariable) this.variableStorage[RVariable] = result;
-          }
-          break;
-        default:
-          break;
-      }
-    }
-  }
-
-  async handleGetDataFn(action: any) {
-    const { FrameId, Query, EIndex, selector, RVariable } = action;
-    var ds = this.demoScreenChildRefs[FrameId];
-    if (ds) {
-      switch (ds.type) {
-        case "site-screen":
-          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
-          if (scRef && selector) {
-            const result = await scRef.instance.getData(
-              Query,
-              EIndex,
-              selector
-            );
-            if (RVariable) this.variableStorage[RVariable] = result;
-          }
-          break;
-        default:
-          break;
-      }
-    }
-  }
-
-  handleVariableFormat(action: any) {
-    const { Variable, Formater, Data, RVariable } = action;
-    var val = this.variableStorage[Variable];
-    switch (Formater) {
-      case "parseJson":
-        this.variableStorage[RVariable] = JSON.parse(val);
-        break;
-      case "stringifyJson":
-        this.variableStorage[RVariable] = JSON.stringify(val);
-        break;
-      case "jsonKeyPicker":
-        this.variableStorage[RVariable] = this.jsonKeyPicker(val, Data[0]);
-        break;
-      case "jsonValueObjectPicker":
-        this.variableStorage[RVariable] = this.jsonValueObjectPicker(
-          val,
-          Data[0]
-        )[Data[1]];
+    var component: Type<any>;
+    switch (ActionType) {
+      case "BrowserScreen":
+        component = SiteScreenComponent;
         break;
       default:
         break;
     }
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      component
+    );
+    const componentDividerFactory = this.componentFactoryResolver.resolveComponentFactory(
+      ElementDividerComponent
+    );
+    const ref = this.proofDemoRef.createComponent(componentFactory);
+    this.proofDemoRef.createComponent(componentDividerFactory);
+    this.demoScreenChildRefs[FrameID] = {
+      Id: FrameID,
+      type: ActionType,
+      ref,
+      ActionTitle
+    };
+    // ref.location.nativeElement.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "start",
+    //   inline: "start"
+    // });
+    this.cdr.detectChanges();
+    return ref;
   }
 
-  toStepper(no: number) {
-    const steppersFrame = document.querySelectorAll(
-      "#steppersFrame .bs-stepper"
-    )[0];
-    const allSteps = document.querySelectorAll(
-      ".bs-stepper-header.cs-stepper-header .step"
-    );
-    const el: any = allSteps[no - 1];
-    el.classList.add("glow");
-    // allSteps[no - 1].scrollIntoView();
-    steppersFrame.scroll({
-      top: 0,
-      left:
-        el.offsetLeft -
-        steppersFrame.getBoundingClientRect().width +
-        el.getBoundingClientRect().width,
-      behavior: "smooth"
-    });
-    for (let i = 0; i < no - 1; i++) {
-      allSteps[i].classList.remove("glow");
-      allSteps[i].classList.add("success");
+  async handleFormatElementAttribute(stepData: any) {
+    const { StepHeader, Action, Customizations } = stepData;
+
+    const { StepNo, SegmentNo, FrameID, FrameTitle } = StepHeader;
+
+    const {
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters,
+      ActionResultVariable,
+      MetaData
+    } = Action;
+
+    const {
+      ExternalURL,
+      InnerHTML,
+      Query,
+      QueryIndex,
+      YOffset,
+      XOffset,
+      ElAttributeName,
+      ElAttributeValue,
+      ElAttributeValueReplace,
+      ElProperty,
+      ElPropertyValue,
+      ElFunction,
+      ElFunctionArguments,
+      SelectiveText,
+      CaseSensitivity,
+      SelectiveTextIndex,
+      CSS,
+      StorageData
+    } = ActionParameters;
+
+    const {
+      PointerData,
+      ScrollToPointer,
+      FrameAutoScroll,
+      FrameScrollBars,
+      ToastMessage,
+      ToastPosition,
+      ActionDuration
+    } = Customizations;
+
+    var ds = this.demoScreenChildRefs[FrameID];
+    if (ds) {
+      switch (ds.type) {
+        case "BrowserScreen":
+          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
+          if (scRef && Query)
+            await scRef.instance.addAttributeToElement(
+              Query,
+              QueryIndex,
+              ElAttributeValueReplace,
+              ElAttributeName,
+              ElAttributeValue,
+              FrameAutoScroll
+            );
+          break;
+        default:
+          break;
+      }
     }
-    for (let j = no; j < allSteps.length; j++) {
-      allSteps[j].classList.remove("glow");
-      allSteps[j].classList.remove("success");
+  }
+
+  async handleTextStyle(stepData: any) {
+    const { StepHeader, Action, Customizations } = stepData;
+
+    const { StepNo, SegmentNo, FrameID, FrameTitle } = StepHeader;
+
+    const {
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters,
+      ActionResultVariable,
+      MetaData
+    } = Action;
+
+    const {
+      ExternalURL,
+      InnerHTML,
+      Query,
+      QueryIndex,
+      YOffset,
+      XOffset,
+      ElAttributeName,
+      ElAttributeValue,
+      ElAttributeValueReplace,
+      ElProperty,
+      ElPropertyValue,
+      ElFunction,
+      ElFunctionArguments,
+      SelectiveText,
+      CaseSensitivity,
+      SelectiveTextIndex,
+      CSS,
+      StorageData
+    } = ActionParameters;
+
+    const {
+      PointerData,
+      ScrollToPointer,
+      FrameAutoScroll,
+      FrameScrollBars,
+      ToastMessage,
+      ToastPosition,
+      ActionDuration
+    } = Customizations;
+
+    var ds = this.demoScreenChildRefs[FrameID];
+    if (ds) {
+      switch (ds.type) {
+        case "BrowserScreen":
+          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
+          if (scRef && SelectiveText)
+            await scRef.instance.styleText(
+              SelectiveText,
+              CaseSensitivity,
+              SelectiveTextIndex,
+              CSS
+            );
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  async handleSetData(stepData: any) {
+    const { StepHeader, Action, Customizations } = stepData;
+
+    const { StepNo, SegmentNo, FrameID, FrameTitle } = StepHeader;
+
+    const {
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters,
+      ActionResultVariable,
+      MetaData
+    } = Action;
+
+    const {
+      ExternalURL,
+      InnerHTML,
+      Query,
+      QueryIndex,
+      YOffset,
+      XOffset,
+      ElAttributeName,
+      ElAttributeValue,
+      ElAttributeValueReplace,
+      ElProperty,
+      ElPropertyValue,
+      ElFunction,
+      ElFunctionArguments,
+      SelectiveText,
+      CaseSensitivity,
+      SelectiveTextIndex,
+      CSS,
+      StorageData
+    } = ActionParameters;
+
+    const {
+      PointerData,
+      ScrollToPointer,
+      FrameAutoScroll,
+      FrameScrollBars,
+      ToastMessage,
+      ToastPosition,
+      ActionDuration
+    } = Customizations;
+
+    var ds = this.demoScreenChildRefs[FrameID];
+    if (ds) {
+      switch (ds.type) {
+        case "BrowserScreen":
+          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
+          if (scRef && Query && ElProperty && ElPropertyValue)
+            await scRef.instance.setData(
+              Query,
+              QueryIndex,
+              ElProperty,
+              ElPropertyValue
+            );
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  async handleTriggerFn(stepData: any) {
+    const { StepHeader, Action, Customizations } = stepData;
+
+    const { StepNo, SegmentNo, FrameID, FrameTitle } = StepHeader;
+
+    const {
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters,
+      ActionResultVariable,
+      MetaData
+    } = Action;
+
+    const {
+      ExternalURL,
+      InnerHTML,
+      Query,
+      QueryIndex,
+      YOffset,
+      XOffset,
+      ElAttributeName,
+      ElAttributeValue,
+      ElAttributeValueReplace,
+      ElProperty,
+      ElPropertyValue,
+      ElFunction,
+      ElFunctionArguments,
+      SelectiveText,
+      CaseSensitivity,
+      SelectiveTextIndex,
+      CSS,
+      StorageData
+    } = ActionParameters;
+
+    const {
+      PointerData,
+      ScrollToPointer,
+      FrameAutoScroll,
+      FrameScrollBars,
+      ToastMessage,
+      ToastPosition,
+      ActionDuration
+    } = Customizations;
+
+    var ds = this.demoScreenChildRefs[FrameID];
+    if (ds) {
+      switch (ds.type) {
+        case "BrowserScreen":
+          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
+          if (scRef && Query && ElFunction && ElFunctionArguments) {
+            const result = await scRef.instance.triggerFunction(
+              Query,
+              QueryIndex,
+              ElFunction,
+              ElFunctionArguments
+            );
+            if (ActionResultVariable)
+              this.variableStorage[ActionResultVariable] = result;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  async handleGetDataFn(stepData: any) {
+    const { StepHeader, Action, Customizations } = stepData;
+
+    const { StepNo, SegmentNo, FrameID, FrameTitle } = StepHeader;
+
+    const {
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters,
+      ActionResultVariable,
+      MetaData
+    } = Action;
+
+    const {
+      ExternalURL,
+      InnerHTML,
+      Query,
+      QueryIndex,
+      YOffset,
+      XOffset,
+      ElAttributeName,
+      ElAttributeValue,
+      ElAttributeValueReplace,
+      ElProperty,
+      ElPropertyValue,
+      ElFunction,
+      ElFunctionArguments,
+      SelectiveText,
+      CaseSensitivity,
+      SelectiveTextIndex,
+      CSS,
+      StorageData
+    } = ActionParameters;
+
+    const {
+      PointerData,
+      ScrollToPointer,
+      FrameAutoScroll,
+      FrameScrollBars,
+      ToastMessage,
+      ToastPosition,
+      ActionDuration
+    } = Customizations;
+
+    var ds = this.demoScreenChildRefs[FrameID];
+    if (ds) {
+      switch (ds.type) {
+        case "BrowserScreen":
+          var scRef: ComponentRef<SiteScreenComponent> = ds.ref;
+          if (scRef && ElAttributeName) {
+            const result = await scRef.instance.getData(
+              Query,
+              QueryIndex,
+              ElAttributeName
+            );
+            if (ActionResultVariable)
+              this.variableStorage[ActionResultVariable] = result;
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  handleVariableFormat(stepData: any) {
+    const { StepHeader, Action, Customizations } = stepData;
+
+    const { StepNo, SegmentNo, FrameID, FrameTitle } = StepHeader;
+
+    const {
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters,
+      ActionResultVariable,
+      MetaData
+    } = Action;
+
+    const {
+      ExternalURL,
+      InnerHTML,
+      Query,
+      QueryIndex,
+      YOffset,
+      XOffset,
+      ElAttributeName,
+      ElAttributeValue,
+      ElAttributeValueReplace,
+      ElProperty,
+      ElPropertyValue,
+      ElFunction,
+      ElFunctionArguments,
+      SelectiveText,
+      CaseSensitivity,
+      SelectiveTextIndex,
+      CSS,
+      FormatType,
+      StorageData
+    } = ActionParameters;
+
+    const {
+      PointerData,
+      ScrollToPointer,
+      FrameAutoScroll,
+      FrameScrollBars,
+      ToastMessage,
+      ToastPosition,
+      ActionDuration
+    } = Customizations;
+    var val = this.variableStorage[MetaData[0]];
+    switch (FormatType) {
+      case "parseJson":
+        try {
+          var res = JSON.parse(val);
+          this.variableStorage[ActionResultVariable] = res;
+        } catch (error) {
+          this.variableStorage[ActionResultVariable] = MetaData[0];
+        }
+        break;
+      case "stringifyJson":
+        this.variableStorage[ActionResultVariable] = JSON.stringify(val);
+        break;
+      case "jsonKeyPicker":
+        var result = this.jsonKeyPicker(val, MetaData[1], MetaData[2])[1];
+        if (MetaData[3])
+          this.variableStorage[ActionResultVariable] = result[MetaData[3]];
+        else this.variableStorage[ActionResultVariable] = result;
+        console.log(this.variableStorage[ActionResultVariable]);
+        break;
+      case "jsonValueObjectPicker":
+        this.variableStorage[ActionResultVariable] = this.jsonValueObjectPicker(
+          val,
+          MetaData[1],
+          MetaData[2]
+        )[MetaData[3]];
+        console.log(this.variableStorage[ActionResultVariable]);
+        break;
+      default:
+        break;
     }
   }
 
@@ -584,7 +1128,7 @@ export class VerificationScreenComponent implements OnInit {
     return values;
   }
 
-  jsonKeyPicker(obj: any, k: string) {
+  jsonKeyPicker(obj: any, k: string, selfReturn: boolean = false) {
     for (var key in obj) {
       var value = obj[key];
 
@@ -593,20 +1137,21 @@ export class VerificationScreenComponent implements OnInit {
       }
 
       if (typeof value === "object" && !Array.isArray(value)) {
-        var y = this.jsonKeyPicker(value, k);
+        var y = this.jsonKeyPicker(value, k, selfReturn);
         if (y && y[0] == k) return y;
       }
       if (Array.isArray(value)) {
         for (var i = 0; i < value.length; ++i) {
-          var x = this.jsonKeyPicker(value[i], k);
+          var x = this.jsonKeyPicker(value[i], k, selfReturn);
           if (x && x[0] == k) return x;
         }
       }
     }
-    return null;
+    return selfReturn ? obj : null;
   }
 
   jsonValueObjectPicker(obj: any, v: string, caseSensitive: boolean = false) {
+    // console.log(obj, v);
     for (var key in obj) {
       v = !caseSensitive ? v.toLowerCase() : v;
       var value = obj[key];
@@ -627,34 +1172,56 @@ export class VerificationScreenComponent implements OnInit {
     return {};
   }
 
-  async handleSaveDataFn(action: any) {
-    const { FrameId, Data } = action;
-    this.addDataToGlobalData(
-      FrameId,
-      this.demoScreenChildRefs[FrameId].ShortFrameTitle,
-      Data
-    );
-  }
+  async handleSaveDataFn(stepData: any) {
+    const { StepHeader, Action, Customizations } = stepData;
 
-  async scrollIntoStorageView(id: number) {
-    const index = this.globalData.findIndex((curr: any) => curr.Id == id);
-    if (index == -1) return;
-    const el: any = document.querySelectorAll(
-      "#globalInformation #frames proof-global-storage"
-    )[index];
-    await this.scrollToFrameById("proofContainer", 0);
-    document.querySelectorAll("#globalInformation #frames")[0].scroll({
-      top: 0,
-      left: el.offsetLeft - 66,
-      behavior: "smooth"
-    });
-    await new Promise(resolveTime => setTimeout(resolveTime, 1200));
-    el.scroll({
-      top: el.scrollHeight,
-      left: 0,
-      behavior: "smooth"
-    });
-    await new Promise(resolveTime => setTimeout(resolveTime, 400));
+    const { StepNo, SegmentNo, FrameID, FrameTitle } = StepHeader;
+
+    const {
+      ActionTitle,
+      ActionDescription,
+      ActionType,
+      ActionParameters,
+      ActionResultVariable,
+      MetaData
+    } = Action;
+
+    const {
+      ExternalURL,
+      InnerHTML,
+      Query,
+      QueryIndex,
+      YOffset,
+      XOffset,
+      ElAttributeName,
+      ElAttributeValue,
+      ElAttributeValueReplace,
+      ElProperty,
+      ElPropertyValue,
+      ElFunction,
+      ElFunctionArguments,
+      SelectiveText,
+      CaseSensitivity,
+      SelectiveTextIndex,
+      CSS,
+      FormatType,
+      StorageData
+    } = ActionParameters;
+
+    const {
+      PointerData,
+      ScrollToPointer,
+      FrameAutoScroll,
+      FrameScrollBars,
+      ToastMessage,
+      ToastPosition,
+      ActionDuration
+    } = Customizations;
+    this.addDataToGlobalData(
+      FrameID,
+      this.demoScreenChildRefs[FrameID].ShortFrameTitle,
+      StorageData
+    );
   }
 
   async addDataToGlobalData(Id: number, Title: string, Data: object[]) {
@@ -684,30 +1251,43 @@ export class VerificationScreenComponent implements OnInit {
     await new Promise(resolveTime => setTimeout(resolveTime, 400));
     await this.scrollIntoStorageView(Id);
     var indexTable: any = document
-      .querySelectorAll("#globalInformation #frames proof-global-storage")
+      .querySelectorAll("#globalInformation #gsFrames proof-global-storage")
       [index].querySelectorAll(".data-table")[0];
     indexTable.scrollTop = indexTable.scrollHeight;
   }
 
-  parseActionData(action: any): any {
-    var data = JSON.stringify(action).toString();
-    [...data.matchAll(/\${[^"}]+}/g)].forEach(a => {
-      let variable = a[0];
-      let key = variable.slice(2, -1);
-      key &&
-        this.variableStorage[key] &&
-        (data = data.replace(a[0], this.variableStorage[key]));
+  async scrollIntoStorageView(id: number) {
+    const index = this.globalData.findIndex((curr: any) => curr.Id == id);
+    if (index == -1) return;
+    const el: any = document.querySelectorAll(
+      "#globalInformation #gsFrames proof-global-storage"
+    )[index];
+    // await this.scrollToFrameById("proofContainer", 0);
+    // console.log(el);
+    var gsFrame = document.querySelectorAll("#globalInformation #gsFrames")[0];
+    var gsFrameRect: any = gsFrame.getBoundingClientRect();
+    var initialWidth = gsFrameRect.x;
+    gsFrame.scroll({
+      top: 0,
+      left: el.offsetLeft - initialWidth,
+      behavior: "smooth"
     });
-    return JSON.parse(data);
+    await new Promise(resolveTime => setTimeout(resolveTime, 1200));
+    el.scroll({
+      top: el.scrollHeight,
+      left: 0,
+      behavior: "smooth"
+    });
+    await new Promise(resolveTime => setTimeout(resolveTime, 400));
   }
 
   scrollWithinGlobalStorage(side: string) {
     var globalInformationScrollPos = document.querySelectorAll(
-      "#globalInformation #frames"
+      "#globalInformation #gsFrames"
     )[0].scrollLeft;
     var minScrollWidth =
       document
-        .querySelectorAll("#globalInformation #frames")[0]
+        .querySelectorAll("#globalInformation #gsFrames")[0]
         .getBoundingClientRect().width / 4;
     switch (side) {
       case "L":
@@ -717,13 +1297,13 @@ export class VerificationScreenComponent implements OnInit {
         break;
       default:
         var maxRange = document.querySelectorAll(
-          "#globalInformation #frames"
+          "#globalInformation #gsFrames"
         )[0].scrollWidth;
         if (globalInformationScrollPos + minScrollWidth <= maxRange)
           globalInformationScrollPos += minScrollWidth;
         else globalInformationScrollPos = maxRange;
     }
-    document.querySelectorAll("#globalInformation #frames")[0].scrollTo({
+    document.querySelectorAll("#globalInformation #gsFrames")[0].scrollTo({
       top: 0,
       left: globalInformationScrollPos,
       behavior: "smooth"
@@ -736,7 +1316,7 @@ export class VerificationScreenComponent implements OnInit {
   isDisableGlobalStorageScroll(side: string): boolean {
     try {
       var globalInformationScrollPos = document.querySelectorAll(
-        "#globalInformation #frames"
+        "#globalInformation #gsFrames"
       )[0].scrollLeft;
       switch (side) {
         case "L":
@@ -744,7 +1324,7 @@ export class VerificationScreenComponent implements OnInit {
           break;
         default:
           var globalInformationFrame: any = document.querySelectorAll(
-            "#globalInformation #frames"
+            "#globalInformation #gsFrames"
           )[0];
           if (
             globalInformationFrame.scrollLeft +
@@ -759,1398 +1339,10 @@ export class VerificationScreenComponent implements OnInit {
     return false;
   }
 
-  setServices() {}
-
-  //this.history.pushState({}, "", '/multiplecompare/[{"title":"sasasa","t1":"qwqwqw","t2":"212dsdsd"}]')
-  //location.reload()
-  //https://text-comparison-server.herokuapp.com/multiplecompare/[{"title":"sasasa","t1":"qwqwqw","t2":"212dsdsd"}]
-
-  getSampleUI() {
-    return {
-      Title: "",
-      Description: "",
-      StorageTitle: "Information Storage",
-      ProofContainerTitle: "",
-      NoOfFrames: 4,
-      NoOFActions: 40,
-      PlaybackSpeed: 1,
-      ScrollToPointer: true,
-      Steppers: [
-        {
-          NO: 1,
-          Name: "GET Stellar Transaction"
-        },
-        {
-          NO: 2,
-          Name: "Decode Current TXNHash"
-        },
-        {
-          NO: 3,
-          Name: "GET Current Transaction"
-        },
-        {
-          NO: 4,
-          Name: "Decode Identifier"
-        },
-        {
-          NO: 5,
-          Name: "Decode Product ID"
-        },
-        {
-          NO: 6,
-          Name: "Decode Backlink TXNHash"
-        },
-        {
-          NO: 7,
-          Name: "GET Backlink Transaction"
-        },
-        {
-          NO: 8,
-          Name: "Decode Current Transaction"
-        },
-        {
-          NO: 9,
-          Name: "GET Current Transaction"
-        },
-        {
-          NO: 10,
-          Name: "Decode Identifier"
-        },
-        {
-          NO: 11,
-          Name: "Decode Product ID"
-        },
-        {
-          NO: 12,
-          Name: "Comparison"
-        },
-        {
-          NO: 13,
-          Name: "Summary"
-        }
-      ],
-      Steps: [
-        {
-          StepNo: 1,
-          StepTo: 1,
-          SegmentNo: 1,
-          Title: "Step 1 - Retrieve Current Transaction",
-          Discription: "Step 1 - Retrieve Current Transaction .....",
-          Action: {
-            Type: "BrowserScreen",
-            Speed: 30,
-            Description:
-              "Retrieve the current transaction from Stellar Blockchain.",
-            Toast: "Retrieve Blockchain Transaction",
-            Parameters: {
-              ServiceURL: `https://horizon-testnet.stellar.org/transactions/${this.TXNhash}/operations`,
-              InnerHTML: ``,
-
-              Query: "",
-              QuerySelector: "",
-              ElementIndex: "",
-
-              FormatData: "",
-              FormatType: "",
-              FormatParameters: "",
-
-              InputData: "",
-              OutputVariable: "",
-              EventProperty: "",
-
-              TextSelector: "${MainTXNCurentTXNHash}",
-              CaseSensitive: true,
-              TextIndex: 0,
-              TextStyle: "",
-
-              StorageView: [
-                {
-                  Key: "TXN2 CurrentTXN",
-                  Value: "${var_currenttxn}"
-                }
-              ],
-              DocumentationLink: ""
-            }
-          }
-        },
-        {
-          Id: 1,
-          StepTo: 1,
-          FrameTitle: "Step 1 - Retrieve Current Transaction",
-          ShortFrameTitle: "Step 1",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription:
-            "Retrieve the current transaction from Stellar Blockchain.",
-          FrameId: 1,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: `https://horizon-testnet.stellar.org/transactions/${this.TXNhash}/operations`,
-          ScrollToPointer: false
-        },
-        {
-          Id: 2,
-          ActionTitle: "",
-          ActionDescription:
-            "Format transaction data to JSON (Javascript Object Notation)",
-          FrameId: 1,
-          ActionSpeed: 2,
-          Type: "get-data",
-          Query: "body",
-          EIndex: 0,
-          selector: "innerText",
-          RVariable: "MainTXNDataString",
-          ScrollToPointer: false
-        },
-        {
-          Id: 3,
-          ActionTitle: "",
-          ActionDescription:
-            "Format transaction data to JSON (Javascript Object Notation)",
-          FrameId: 2,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNDataString",
-          Formater: "parseJson",
-          Data: null,
-          RVariable: "MainTXNData",
-          ScrollToPointer: false
-        },
-        {
-          Id: 4,
-          StepTo: 2,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the CurrentTXN Hash (base64 encoded) from the transaction details.",
-          FrameId: 2,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNData",
-          Formater: "jsonValueObjectPicker",
-          Data: ["CurrentTXN", "value"],
-          RVariable: "MainTXNCurentTXNHash"
-        },
-        // select CurrentTXN
-        {
-          Id: 5,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded CurrentTXN Hash from the transaction details.",
-          FrameId: 1,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "CurrentTXN",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-        {
-          Id: 6,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded CurrentTXN Hash from the transaction details.",
-          FrameId: 1,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "${MainTXNCurentTXNHash}",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-        {
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the base64 encoded CurrentTXN Hash value for future usage.",
-          FrameId: 1,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "TXN2 CurrentTXN (base64)",
-              Value: "${MainTXNCurentTXNHash}"
-            }
-          ]
-        },
-        // decode currenttxnhash
-        {
-          Id: 7,
-          FrameTitle: "Step 2 - Decode CurrentTXN",
-          ShortFrameTitle: "Step 2 - Decode CurrentTXN",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded CurrentTXN Hash value",
-          FrameId: 2,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
-          ScrollToPointer: false
-        },
-        {
-          Id: 8,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded CurrentTXN Hash value.",
-          FrameId: 2,
-          ActionSpeed: 10,
-          Type: "set-data",
-          Query: ".input textarea",
-          EIndex: 0,
-          Selector: "value",
-          Data: "${MainTXNCurentTXNHash}"
-        },
-        {
-          Id: 9,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded CurrentTXN Hash value.",
-          FrameId: 2,
-          ActionSpeed: 2,
-          Type: "trigger-fn",
-          Query: ".btn.btn-default",
-          EIndex: 0,
-          Event: "click",
-          Data: []
-        },
-        {
-          Id: 10,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded CurrentTXN Hash value.",
-          FrameId: 2,
-          ActionSpeed: 30,
-          Type: "get-data",
-          Query: ".output textarea",
-          EIndex: 0,
-          selector: "value",
-          RVariable: "var_currenttxn",
-          ToastMessage: "Decoded CurrentTXN Hash",
-          ToastPosition: ["60%", "10%"]
-        },
-        {
-          Id: 11,
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the decoded CurrentTXN Hash value for future usage.",
-          FrameId: 2,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "TXN2 CurrentTXN",
-              Value: "${var_currenttxn}"
-            }
-          ]
-        },
-
-        // get the current txn
-        {
-          Id: 12,
-          StepTo: 3,
-          FrameTitle: "Step 3 - Retrieve Current Transaction",
-          ShortFrameTitle: "Step 3",
-          ActionTitle: "",
-          ActionDescription:
-            "Retrieve the current transaction of the gateway transaction from Stellar Blockchain.",
-          FrameId: 3,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL:
-            "https://horizon-testnet.stellar.org/transactions/${var_currenttxn}/operations",
-          ScrollToPointer: false
-        },
-
-        {
-          Id: 13,
-          ActionTitle: "",
-          ActionDescription: "Parse transaction data to JSON",
-          FrameId: 3,
-          ActionSpeed: 2,
-          Type: "get-data",
-          Query: "body",
-          EIndex: 0,
-          selector: "innerText",
-          RVariable: "MainTXNCurentTXNDataString",
-          ScrollToPointer: false
-        },
-        {
-          Id: 14,
-          ActionTitle: "",
-          ActionDescription: "Parse transaction data to JSON",
-          FrameId: 2,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNCurentTXNDataString",
-          Formater: "parseJson",
-          Data: null,
-          RVariable: "MainTXNCurentTXNData",
-          ScrollToPointer: false
-        },
-        {
-          Id: 15,
-          StepTo: 4,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Identifier from the transaction details.",
-          FrameId: 2,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNCurentTXNData",
-          Formater: "jsonValueObjectPicker",
-          Data: ["identifier", "value"],
-          RVariable: "MainTXNCurentTXNDataIdentifier",
-          ScrollToPointer: false
-        },
-
-        // highlight identifier
-        {
-          Id: 16,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Identifier from the transaction details.",
-          FrameId: 3,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "identifier",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-
-        // highlight identifier value
-        {
-          Id: 17,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Identifier from the transaction details.",
-          FrameId: 3,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "${MainTXNCurentTXNDataIdentifier}",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-
-        {
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the base64 encoded Identifier value for future usage.",
-          FrameId: 3,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "Identifier (base64)",
-              Value: "${MainTXNCurentTXNDataIdentifier}"
-            }
-          ]
-        },
-
-        // decode identifier
-        {
-          Id: 18,
-          FrameTitle: "Step 4 - Decode MainTXN Identifier",
-          ShortFrameTitle: "Step 4 - Decode MainTXN Identifier",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Identifier value.",
-          FrameId: 4,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
-          ScrollToPointer: false
-        },
-        {
-          Id: 19,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Identifier value.",
-          FrameId: 4,
-          ActionSpeed: 20,
-          Type: "set-data",
-          Query: ".input textarea",
-          EIndex: 0,
-          Selector: "value",
-          Data: "${MainTXNCurentTXNDataIdentifier}"
-        },
-        {
-          Id: 20,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Identifier value.",
-          FrameId: 4,
-          ActionSpeed: 2,
-          Type: "trigger-fn",
-          Query: ".btn.btn-default",
-          EIndex: 0,
-          Event: "click",
-          Data: []
-        },
-        {
-          Id: 21,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Identifier value.",
-          FrameId: 4,
-          ActionSpeed: 30,
-          Type: "get-data",
-          Query: ".output textarea",
-          EIndex: 0,
-          selector: "value",
-          RVariable: "MainTXNCurentTXNDataIdentifierDecoded",
-          ToastMessage: "Decoded Identifier",
-          ToastPosition: ["60%", "10%"]
-        },
-        {
-          Id: 22,
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the decoded Identifier value for future usage.",
-          FrameId: 4,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "Identifier",
-              Value: "${MainTXNCurentTXNDataIdentifierDecoded}"
-            }
-          ]
-        },
-
-        {
-          Id: 23,
-          StepTo: 5,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Product ID from the transaction details.",
-          FrameId: 2,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNCurentTXNData",
-          Formater: "jsonValueObjectPicker",
-          Data: ["productId", "value"],
-          RVariable: "MainTXNCurentTXNDataProductId",
-          ScrollToPointer: false
-        },
-
-        // highlight Datahash
-        {
-          Id: 24,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Product ID from the transaction details.",
-          FrameId: 3,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "productId",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-
-        // highlight productId value
-        {
-          Id: 25,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Product ID from the transaction details.",
-          FrameId: 3,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "${MainTXNCurentTXNDataProductId}",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-
-        {
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the base64 encoded Product Id value for future usage.",
-          FrameId: 3,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "Product ID (base64)",
-              Value: "${MainTXNCurentTXNDataProductId}"
-            }
-          ]
-        },
-
-        // Decode productId
-        {
-          Id: 26,
-          FrameTitle: "Step 2 - Decode MainTXN Product Id",
-          ShortFrameTitle: "Step 2 - Decode MainTXN Product Id",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Product Id value",
-          FrameId: 5,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
-          ScrollToPointer: false
-        },
-        {
-          Id: 27,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Product Id value",
-          FrameId: 5,
-          ActionSpeed: 30,
-          Type: "set-data",
-          Query: ".input textarea",
-          EIndex: 0,
-          Selector: "value",
-          Data: "${MainTXNCurentTXNDataProductId}"
-        },
-        {
-          Id: 28,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Product Id value",
-          FrameId: 5,
-          ActionSpeed: 2,
-          Type: "trigger-fn",
-          Query: ".btn.btn-default",
-          EIndex: 0,
-          Event: "click",
-          Data: []
-        },
-        {
-          Id: 29,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Product Id value",
-          FrameId: 5,
-          ActionSpeed: 30,
-          Type: "get-data",
-          Query: ".output textarea",
-          EIndex: 0,
-          selector: "value",
-          RVariable: "MainTXNCurentTXNDataProductIdDecoded",
-          ToastMessage: "Decoded Product Id",
-          ToastPosition: ["60%", "10%"]
-        },
-        {
-          Id: 30,
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the decoded Product Id value for future usage.",
-          FrameId: 5,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "Product ID",
-              Value: "${MainTXNCurentTXNDataProductIdDecoded}"
-            }
-          ]
-        },
-
-        {
-          Id: 31,
-          StepTo: 6,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded PreviousTXN Hash value from the transaction details.",
-          FrameId: 1,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNData",
-          Formater: "jsonValueObjectPicker",
-          Data: ["PreviousTXN", "value"],
-          RVariable: "MainTXNPreviousTXN",
-          ScrollToPointer: false
-        },
-
-        // Highlight Previous hash
-        {
-          Id: 32,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded PreviousTXN Hash value from the transaction details.",
-          FrameId: 1,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "PreviousTXN",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-        {
-          Id: 33,
-          StepTo: 6,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded PreviousTXN Hash value from the transaction details.",
-          FrameId: 1,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "${MainTXNPreviousTXN}",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-
-        {
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the base64 encoded Previous TXN Hash value for future usage.",
-          FrameId: 1,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "PreviousTXN Hash (base64)",
-              Value: "${MainTXNPreviousTXN}"
-            }
-          ]
-        },
-
-        // Decode Previous hash
-        {
-          Id: 34,
-          FrameTitle: "Step 7 - Decode MainTXN Previous hash",
-          ShortFrameTitle: "Step 7 - Decode MainTXN Previous hash",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription:
-            "Decode the base64 encoded MainTXN Previous hash value.",
-          FrameId: 7,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
-          ScrollToPointer: false
-        },
-        {
-          Id: 35,
-          ActionTitle: "",
-          ActionDescription:
-            "Decode the base64 encoded MainTXN Previous hash value.",
-          FrameId: 7,
-          ActionSpeed: 20,
-          Type: "set-data",
-          Query: ".input textarea",
-          EIndex: 0,
-          Selector: "value",
-          Data: "${MainTXNPreviousTXN}"
-        },
-        {
-          Id: 36,
-          ActionTitle: "",
-          ActionDescription:
-            "Decode the base64 encoded MainTXN Previous hash value.",
-          FrameId: 7,
-          ActionSpeed: 2,
-          Type: "trigger-fn",
-          Query: ".btn.btn-default",
-          EIndex: 0,
-          Event: "click",
-          Data: []
-        },
-        {
-          Id: 37,
-          ActionTitle: "",
-          ActionDescription:
-            "Decode the base64 encoded MainTXN Previous hash value.",
-          FrameId: 7,
-          ActionSpeed: 30,
-          Type: "get-data",
-          Query: ".output textarea",
-          EIndex: 0,
-          selector: "value",
-          RVariable: "MainTXNPreviousTXNDecoded",
-          ToastMessage: "Decoded MainTXN Previous Hash",
-          ToastPosition: ["60%", "10%"]
-        },
-        {
-          Id: 38,
-          FrameTitle: "",
-          ActionDescription:
-            "Save the decoded MainTXN Previous hash value for future usage.",
-          FrameId: 7,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "PreviousTXN Hash",
-              Value: "${MainTXNPreviousTXNDecoded}"
-            }
-          ]
-        },
-
-        // previous parts
-        {
-          Id: 39,
-          StepTo: 7,
-          FrameTitle: "Step 8 - Retrieve Backlink Transaction",
-          ShortFrameTitle: "Step 8 - Retrieve Backlink Transaction",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription:
-            "Retrieve the Backlink transaction from Stellar Blockchain.",
-          FrameId: 8,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL:
-            "https://horizon-testnet.stellar.org/transactions/${MainTXNPreviousTXNDecoded}/operations",
-          ScrollToPointer: false
-        },
-
-        {
-          Id: 40,
-          ActionTitle: "",
-          ActionDescription: "Parse transaction data to JSON",
-          FrameId: 8,
-          ActionSpeed: 2,
-          Type: "get-data",
-          Query: "body",
-          EIndex: 0,
-          selector: "innerText",
-          RVariable: "MainTXNPreviousTXNDataString"
-        },
-        {
-          Id: 41,
-          ActionTitle: "",
-          ActionDescription: "Parse transaction data to JSON",
-          FrameId: 8,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNPreviousTXNDataString",
-          Formater: "parseJson",
-          Data: null,
-          RVariable: "MainTXNPreviousTXNData"
-        },
-        {
-          Id: 42,
-          StepTo: 8,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
-          FrameId: 2,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNPreviousTXNData",
-          Formater: "jsonValueObjectPicker",
-          Data: ["CurrentTXN", "value"],
-          RVariable: "MainTXNPreviousTXNCurrentTXNHash"
-        },
-
-        {
-          Id: 43,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
-          FrameId: 8,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "CurrentTXN",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-        {
-          Id: 44,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded CurrentTXN Hash of the Backlink transaction from the transaction details.",
-          FrameId: 8,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "${MainTXNPreviousTXNCurrentTXNHash}",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-
-        {
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the base64 encoded CurrentTXN Hash value of the Previuos TXN for future usage.",
-          FrameId: 8,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "CurentTXNHash (base64)",
-              Value: "${MainTXNPreviousTXNCurrentTXNHash}"
-            }
-          ]
-        },
-
-        // decode current hash
-        {
-          Id: 45,
-          FrameTitle: "Step 9 - Decode PreviousTXN CurentTXN Hash",
-          ShortFrameTitle: "Step 9 - Decode PreviousTXN CurentTXN Hash",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription:
-            "Decode the base64 encoded CurrentTXN Hash value from the PreviousTXN details.",
-          FrameId: 9,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
-          ScrollToPointer: false
-        },
-        {
-          Id: 46,
-          ActionTitle: "",
-          ActionDescription:
-            "Decode the base64 encoded CurrentTXN Hash value from the PreviousTXN details.",
-          FrameId: 9,
-          ActionSpeed: 20,
-          Type: "set-data",
-          Query: ".input textarea",
-          EIndex: 0,
-          Selector: "value",
-          Data: "${MainTXNPreviousTXNCurrentTXNHash}"
-        },
-        {
-          Id: 47,
-          ActionTitle: "",
-          ActionDescription:
-            "Decode the base64 encoded CurrentTXN Hash value from the PreviousTXN details.",
-          FrameId: 9,
-          ActionSpeed: 2,
-          Type: "trigger-fn",
-          Query: ".btn.btn-default",
-          EIndex: 0,
-          Event: "click",
-          Data: []
-        },
-        {
-          Id: 48,
-          ActionTitle: "",
-          ActionDescription:
-            "Decode the base64 encoded CurrentTXN Hash value from the PreviousTXN details.",
-          FrameId: 9,
-          ActionSpeed: 30,
-          Type: "get-data",
-          Query: ".output textarea",
-          EIndex: 0,
-          selector: "value",
-          RVariable: "MainTXNPreviousTXNCurrentTXNHashDecoded",
-          ToastMessage: "Decoded PreviousTXN's CurrentTXN Hash",
-          ToastPosition: ["60%", "10%"]
-        },
-        {
-          Id: 49,
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the decoded CurrentTXN Hash value from the Backlink transaction for future usage.",
-          FrameId: 9,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "CurentTXNHash",
-              Value: "${MainTXNPreviousTXNCurrentTXNHashDecoded}"
-            }
-          ]
-        },
-
-        // BK CurrentTXNHash
-        {
-          Id: 50,
-          StepTo: 9,
-          FrameTitle: "Step 10 - Retrieve Backlink Current Transaction",
-          ShortFrameTitle: "Step 10 - Retrieve Backlink Current Transaction",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription:
-            "Retrieve the current transaction of the backlink transaction from Stellar Blockchain.",
-          FrameId: 10,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL:
-            "https://horizon-testnet.stellar.org/transactions/${MainTXNPreviousTXNCurrentTXNHashDecoded}/operations",
-          ScrollToPointer: false
-        },
-        {
-          Id: 51,
-          ActionTitle: "",
-          ActionDescription: "Parse transaction data to JSON",
-          FrameId: 10,
-          ActionSpeed: 2,
-          Type: "get-data",
-          Query: "body",
-          EIndex: 0,
-          selector: "innerText",
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataString",
-          ScrollToPointer: false
-        },
-        {
-          Id: 52,
-          ActionTitle: "",
-          ActionDescription: "Parse transaction data to JSON",
-          FrameId: 10,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNPreviousTXNCurrentTXNDataString",
-          Formater: "parseJson",
-          Data: null,
-          RVariable: "MainTXNPreviousTXNCurrentTXNData",
-          ScrollToPointer: false
-        },
-        {
-          Id: 53,
-          StepTo: 10,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Identifier from the transaction details.",
-          FrameId: 10,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNPreviousTXNCurrentTXNData",
-          Formater: "jsonValueObjectPicker",
-          Data: ["identifier", "value"],
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataIdentifier",
-          ScrollToPointer: false
-        },
-
-        {
-          Id: 54,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Identifier from the transaction details.",
-          FrameId: 10,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "Identifier",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-        {
-          Id: 55,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Identifier from the transaction details.",
-          FrameId: 10,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "${MainTXNPreviousTXNCurrentTXNDataIdentifier}",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-
-        {
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the base64 encoded Identifier value of the Previuos TXN for future usage.",
-          FrameId: 10,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "Identifier (base64)",
-              Value: "${MainTXNPreviousTXNCurrentTXNDataIdentifier}"
-            }
-          ]
-        },
-
-        // decode current hash
-        {
-          Id: 56,
-          FrameTitle: "Step 11 - Decode PreviousTXN's CurrentTXN'sIdentifier",
-          ShortFrameTitle:
-            "Step 11 - Decode PreviousTXN's CurrentTXN' Identifier",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Identifier value.",
-          FrameId: 11,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
-          ScrollToPointer: false
-        },
-        {
-          Id: 57,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Identifier value.",
-          FrameId: 11,
-          ActionSpeed: 20,
-          Type: "set-data",
-          Query: ".input textarea",
-          EIndex: 0,
-          Selector: "value",
-          Data: "${MainTXNPreviousTXNCurrentTXNDataIdentifier}"
-        },
-        {
-          Id: 58,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Identifier value.",
-          FrameId: 11,
-          ActionSpeed: 2,
-          Type: "trigger-fn",
-          Query: ".btn.btn-default",
-          EIndex: 0,
-          Event: "click",
-          Data: []
-        },
-        {
-          Id: 59,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Identifier value.",
-          FrameId: 11,
-          ActionSpeed: 30,
-          Type: "get-data",
-          Query: ".output textarea",
-          EIndex: 0,
-          selector: "value",
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataIdentifierDecoded",
-          ToastMessage: "Decoded Identifier",
-          ToastPosition: ["60%", "10%"]
-        },
-        {
-          Id: 60,
-          FrameTitle: "",
-          FrameDescription: "",
-          FrameId: 11,
-          ActionSpeed: 40,
-          ActionDescription:
-            "Save the dec3ded Identifier value for future usage.",
-          Type: "save-data",
-          Data: [
-            {
-              Key: "Identifier",
-              Value: "${MainTXNPreviousTXNCurrentTXNDataIdentifierDecoded}"
-            }
-          ]
-        },
-
-        {
-          Id: 61,
-          StepTo: 11,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Product ID from the transaction details.",
-          FrameId: 10,
-          ActionSpeed: 2,
-          Type: "format-data",
-          Variable: "MainTXNPreviousTXNCurrentTXNData",
-          Formater: "jsonValueObjectPicker",
-          Data: ["productId", "value"],
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataProductID",
-          ScrollToPointer: false
-        },
-
-        {
-          Id: 62,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Product ID from the transaction details.",
-          FrameId: 10,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "productId",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-        {
-          Id: 63,
-          ActionTitle: "",
-          ActionDescription:
-            "Select the encoded Product ID from the transaction details.",
-          FrameId: 10,
-          ActionSpeed: 20,
-          Type: "text-style",
-          HText: "${MainTXNPreviousTXNCurrentTXNDataProductID}",
-          CaseSensitive: true,
-          TextIndex: 0,
-          StyleCSS:
-            "background-color: blue; color: white; padding: 4px 8px; margin: 2px; font-weight: bold; display: inline-block; border-radius: 6px"
-        },
-
-        {
-          FrameTitle: "",
-          FrameDescription: "",
-          ActionDescription:
-            "Save the base64 encoded Product ID value of the Previuos TXN for future usage.",
-          FrameId: 10,
-          ActionSpeed: 30,
-          Type: "save-data",
-          Data: [
-            {
-              Key: "Product ID (base64)",
-              Value: "${MainTXNPreviousTXNCurrentTXNDataProductID}"
-            }
-          ]
-        },
-
-        {
-          Id: 64,
-          FrameTitle: "Step 12 - Decode PreviousTXN's CurrentTXN's  ProductID",
-          ShortFrameTitle:
-            "Step 12 - Decode PreviousTXN's CurrentTXN's ProductID",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Product ID value.",
-          FrameId: 12,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: "https://emn178.github.io/online-tools/base64_decode.html",
-          ScrollToPointer: false
-        },
-        {
-          Id: 65,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Product ID value.",
-          FrameId: 12,
-          ActionSpeed: 10,
-          Type: "set-data",
-          Query: ".input textarea",
-          EIndex: 0,
-          Selector: "value",
-          Data: "${MainTXNPreviousTXNCurrentTXNDataProductID}"
-        },
-        {
-          Id: 66,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Product ID value.",
-          FrameId: 12,
-          ActionSpeed: 2,
-          Type: "trigger-fn",
-          Query: ".btn.btn-default",
-          EIndex: 0,
-          Event: "click",
-          Data: []
-        },
-        {
-          Id: 67,
-          ActionTitle: "",
-          ActionDescription: "Decode the base64 encoded Product ID value.",
-          FrameId: 12,
-          ActionSpeed: 30,
-          Type: "get-data",
-          Query: ".output textarea",
-          EIndex: 0,
-          selector: "value",
-          RVariable: "MainTXNPreviousTXNCurrentTXNDataProductIDDecoded",
-          ToastMessage: "Decoded Product ID",
-          ToastPosition: ["60%", "10%"]
-        },
-        {
-          Id: 68,
-          FrameTitle: "",
-          FrameDescription: "",
-          FrameId: 12,
-          ActionSpeed: 30,
-          Type: "save-data",
-          ActionDescription:
-            "Save the decoded Product ID value for future usage.",
-          Data: [
-            {
-              Key: "Product ID",
-              Value: "${MainTXNPreviousTXNCurrentTXNDataProductIDDecoded}"
-            }
-          ]
-        },
-        {
-          Id: 69,
-          StepTo: 12,
-          FrameTitle: "Step 13 - Compare the base64 decoded Identifier",
-          ShortFrameTitle: "Step 13 - Compare the base64 decoded Identifier",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription:
-            "Compare the base64 decoded Identifier values from the transactions.",
-          FrameId: 13,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          PageURL: "https://text-comparison-server.herokuapp.com",
-          ScrollToPointer: false
-        },
-        {
-          Id: 70,
-          ActionTitle: "",
-          ActionDescription:
-            "Compare the base64 decoded Identifier values from the transactions.",
-          FrameId: 13,
-          ActionSpeed: 20,
-          Type: "set-data",
-          Query: "textarea",
-          EIndex: 0,
-          Selector: "value",
-          Data:
-            '[{"title": "Identifiers from the Main transaction and Backlink transaction", "t1": "${MainTXNCurentTXNDataIdentifierDecoded}", "t2": "${MainTXNPreviousTXNCurrentTXNDataIdentifierDecoded}"}]'
-        },
-        {
-          Id: 71,
-          ActionTitle: "",
-          ActionDescription:
-            "Compare the base64 decoded Identifier values from the transactions.",
-          FrameId: 13,
-          ActionSpeed: 10,
-          Type: "trigger-fn",
-          Query: "button",
-          EIndex: 0,
-          Event: "click",
-          Data: []
-        },
-        {
-          Id: 72,
-          ActionTitle: "",
-          ActionDescription:
-            "Compare the base64 decoded Identifier values from the transactions.",
-          FrameId: 13,
-          ActionSpeed: 40,
-          Type: "element-attribute",
-          Query: ".comparissonBannerMargin",
-          EIndex: 0,
-          Attribute: "style",
-          Value: "",
-          ValueReplacement: 2,
-          AutoScroll: true
-        },
-        {
-          Id: 73,
-          StepTo: 13,
-          FrameTitle: "Step 14 - Verification Summary",
-          ShortFrameTitle: "Step 14 - Verification Summary",
-          FrameDescription: "",
-          ActionTitle: "",
-          ActionDescription:
-            "Verification summary on the proof of the backlink.",
-          FrameId: 14,
-          ActionSpeed: 10,
-          Type: "site-screen",
-          InnerHTML: `
-          <!DOCTYPE html>
-<html>
-  <head>
-    <link
-      href="https://www.online-html-editor.org/assets/minimalist-blocks/content.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-  </head>
-  <body style="height: 100vh; display: flex; justify-content: center; align-items: center;">
-    <div class="container">
-      <div class="row clearfix">
-        <div class="column full">
-          <h2
-            class="size-18"
-            style="font-weight: 800; text-align: center; letter-spacing: 8px; text-transform: uppercase;"
-          >
-            Verification summary
-          </h2>
-        </div>
-        <div class="is-tool is-row-tool">
-          <div
-            class="row-handle"
-            data-title="Move"
-            style="width:100%;cursor:move;text-align:center;"
-            title="Move"
-          >
-            <br />
-          </div>
-        </div>
-        <div class="is-rowadd-tool" style="height:0;"><br /></div>
-      </div>
-      <div class="row clearfix">
-        <div class="column full">
-          <p
-            class="size-12"
-            style="text-align: center; letter-spacing: 3px; color: rgb(94, 94, 94); text-transform: uppercase;"
-          >
-            <b
-              style="color: rgb(71, 88, 204); background-color: rgb(240, 249, 254);"
-              >PROOF OF THE BACKLINK</b
-            >
-          </p>
-        </div>
-        <div class="is-tool is-row-tool">
-          <div
-            class="row-handle"
-            data-title="Move"
-            style="width:100%;cursor:move;text-align:center;"
-            title="Move"
-          >
-            <br />
-          </div>
-        </div>
-        <div class="is-rowadd-tool" style="height:0;"><br /></div>
-      </div>
-      <div class="row clearfix">
-        <div class="column half">
-          <p style="text-align: justify;">
-            <strong
-              ><span class="size-14">Current Transaction Hash</span></strong
-            >
-          </p>
-          <p
-            class="size-14"
-            style="text-align: justify; overflow-wrap: break-word;"
-          >
-          \${var_currenttxn}
-          </p>
-        </div>
-        <div class="column half">
-          <p class="size-14" style="text-align: justify; ">
-            <strong>Previous Transaction Hash</strong>
-          </p>
-          <p
-            class="size-14"
-            style="text-align: justify; overflow-wrap: break-word;"
-          >
-            \${MainTXNPreviousTXNCurrentTXNHashDecoded}
-          </p>
-        </div>
-        <div class="is-tool is-row-tool">
-          <div
-            class="row-handle"
-            data-title="Move"
-            style="width:100%;cursor:move;text-align:center;"
-            title="Move"
-          >
-            <br />
-          </div>
-        </div>
-        <div class="is-rowadd-tool" style="height:0;"><br /></div>
-      </div>
-      <div class="row clearfix">
-        <pre
-          class="size-14"
-          style="background-color: rgb(46, 125, 50); color: rgb(245, 243, 252); font-weight: bold; text-align: center; border-radius: 8px; margin: 0; padding: 8px;"
-        >
-Verification Completed</pre
-        >
-        <div class="is-rowadd-tool" style="height:0;"><br /></div>
-      </div>
-    </div>
-  </body>
-</html>
-
-          `,
-          PageURL: "about: Verification Summary - PROOF OF THE BACKLINK",
-          ScrollToPointer: false
-        }
-      ]
-    };
-  }
+  // to understand the process
   verifyBackLinkVerify() {
     return {
-      // 1 site-screen TXNHash2 - F1
+      // 1 BrowserScreen TXNHash2 - F1
       // 2 get-data body TXN text and store to variable MainTXNData - F1
       // 3 format MainTXNData variable to json and replace
       // 4 access MainTXNData variable for CurentTXNHash and store as MainTXNCurentTXNHash

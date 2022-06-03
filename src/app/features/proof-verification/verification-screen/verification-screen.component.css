@@ -43,8 +43,8 @@
   display: flex;
   justify-content: flex-start;
   background-color: white;
-  padding: 10px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  /* padding: 10px; */
+  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2); */
   transition: 0.3s;
   border-radius: 8px;
 }
@@ -80,7 +80,7 @@
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-#globalInformation #frames {
+#globalInformation #gsFrames {
   height: 100%;
   width: 100%;
   overflow-y: hidden;
@@ -93,7 +93,6 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
   overflow-y: hidden;
   overflow-x: hidden;
   display: flex;
@@ -136,12 +135,121 @@
   align-items: center;
 }
 
+.dropdown-menu {
+  min-width: auto !important;
+  font-size: 12px !important;
+  padding: 0 !important;
+  cursor: pointer;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+  margin-left: 0.255em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-menu a:focus {
+  background-color: #007bff !important;
+  color: #fdfcfc !important;
+}
+
+.dropdown-menu .active {
+  background-color: #007bff;
+  color: #fdfcfc;
+}
+
+.steppersMenu {
+  position: absolute;
+  z-index: 4000;
+  left: -20px;
+  top: 20%;
+}
+
+#steppersFrame {
+  height: auto;
+  /* background: #fdfcfc; */
+  transition: 1200ms ease-in-out;
+  z-index: 1;
+  /* left: 0; */
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  align-items: flex-start;
+  justify-items: flex-start;
+}
+
+#segments .step {
+  background-color: #7AABE0;
+  color: rgb(255, 255, 255);
+  border-radius: 8px;
+}
+
+#subSteppers .step {
+  background-color: #FFD754;
+  border-radius: 8px;
+}
+
+.steppersShow {
+  left: 0 !important;
+}
+
 .cs-stepper-label {
-  font-size: 10px !important;
+  font-size: 11px !important;
+  color: white;
+  font-weight: 100;
 }
 
 .cs-stepper-circle {
   font-size: 10px !important;
+  border-color: white !important;
+  border: 1px solid !important;
+  width: 22px !important;
+  height: 22px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  background: #BDBDBD;
+}
+
+.cs-stepper-header {
+  /* display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start; */
+  padding: 0px !important;
+  margin: 0px !important;
+  width: fit-content !important;
+}
+
+.cs-stepper-header .step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  /* background: rgba(18,102,241,.05); */
+}
+
+.cs-stepper-header .step button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.cs-stepper-header .line {
+  margin-left: 14px;
+  margin-right: 14px;
+  min-width: 2.4px;
 }
 
 .cs-stepper-header .line:last-child {
@@ -149,7 +257,17 @@
 }
 
 .success .bs-stepper-circle {
-  background-color: rgb(8, 170, 21);
+  background-color: #00B54B;
+}
+
+.stepBtn {
+  margin: 0 !important;
+  width: 100% !important;
+  justify-content: flex-start;
+  padding: 4px !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
 }
 
 .stepBtn:focus {
@@ -158,7 +276,7 @@
 }
 
 .glow .bs-stepper-circle {
-  background: #4709d6;
+  background: #333BEC;
   box-shadow: 0 0 0 rgba(204, 169, 44, 0.4);
   -webkit-animation: glow 2s infinite;
   -moz-animation: glow 2s infinite;

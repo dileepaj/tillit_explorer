@@ -71,6 +71,16 @@ export class SiteScreenComponent implements OnInit {
 
   ngOnInit() {}
 
+  ngAfterViewInit() {
+    // let scripts = this.iframe.nativeElement.getElementsByTagName("script");
+
+    // for (let script of scripts) {
+    //   eval(script.text);
+    // }
+
+    // // eval(scripts[0].text);
+  }
+
   ngAfterContentChecked() {
     this.cdref.detectChanges();
   }
@@ -90,7 +100,7 @@ export class SiteScreenComponent implements OnInit {
     //   left -= sFrame.getBoundingClientRect().left;
     sFrame.scroll({
       top: 0,
-      left,
+      left: left,
       behavior: "smooth"
     });
     await new Promise(resolveTime => setTimeout(resolveTime, 400));
@@ -536,86 +546,6 @@ export class SiteScreenComponent implements OnInit {
       startIndex = index + searchStrLen;
     }
     return indices;
-  }
-
-  loadFn2(pageUrl: string) {
-    setTimeout(() => {
-      // this.pageUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pageUrl);
-      this.displayPageUrl = pageUrl;
-      this.verificationHttpService.loadPage(pageUrl).subscribe(
-        data => {
-          var domainUrl = pageUrl
-            .split("/")
-            .filter(n => n)
-            .join("/");
-          if (
-            pageUrl
-              .split("/")
-              .slice(-1)[0]
-              .search(".") != -1
-          )
-            domainUrl = pageUrl
-              .split("/")
-              .slice(0, -1)
-              .join("/");
-          this.HTMLData = data.replace(
-            /src="(?!http)[\/]?/g,
-            `src="${domainUrl}/`
-          );
-          this.HTMLData = this.HTMLData.replace(
-            /href="(?!http)[\/]?/g,
-            `href="${domainUrl}/`
-          );
-          let doc = this.iframe.nativeElement.contentDocument;
-          doc.open();
-          doc.write(this.HTMLData);
-          // doc.write(this.sanitizer.bypassSecurityTrustHtml(data));
-          // execute srcipts
-          // const scripts = doc.getElementsByTagName("script");
-          // for (let script of scripts) {
-          //   this.iframe.nativeElement.contentWindow.eval(script.text);
-          // }
-
-          // var scriptElm = document.createElement("script");
-          // var inlineCode = document.createTextNode('alert("hello world")');
-          // scriptElm.appendChild(inlineCode);
-          // doc.documentElement.appendChild(scriptElm);
-
-          doc.close();
-
-          // this.HTMLData = data;
-
-          //  setTimeout(()=> {
-          //     const scripts = this.iframe.nativeElement.contentWindow.document.getElementsByTagName("script");
-          //     const mainUrl = new URL(this.displayPageUrl);
-          //     console.log(mainUrl);
-          //     var scriptList = Array.prototype.slice.call(scripts);
-          //     scriptList.forEach(customize);
-          //     function customize(script, index, ar) {
-          //       var upUrl = new URL(script.src);
-          //       var newScript = document.createElement("script");
-          //       newScript.type = "text/javascript";
-          //       newScript.innerHTML = script.innerHTML;
-          //       newScript.src = mainUrl.origin + "/online-tools" + upUrl.pathname;
-          //       doc.body.appendChild(newScript);
-          //     }
-          //  }, 8000)
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    }, 1400);
-  }
-
-  ngAfterViewInit() {
-    let scripts = this.iframe.nativeElement.getElementsByTagName("script");
-
-    for (let script of scripts) {
-      eval(script.text);
-    }
-
-    // eval(scripts[0].text);
   }
 
   openInNewWindowFn() {
