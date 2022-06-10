@@ -5,12 +5,13 @@ import {
   ElementRef,
   OnInit,
   Renderer2,
-  ViewChild
+  ViewChild, 
+  Input
 } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { VerificationServiceService } from "../../../../services/verification-service.service";
 import Url from "url-parse";
-
+ 
 @Component({
   selector: "app-site-screen",
   templateUrl: "./site-screen.component.html",
@@ -58,6 +59,7 @@ export class SiteScreenComponent implements OnInit {
   pointerIcon: string = "";
   isScrollToElement: boolean = true;
   isPointToElement: boolean = true;
+  @Input() lang: string = "en";
 
   @ViewChild("iframe", { read: ElementRef, static: false }) iframe: ElementRef;
 
@@ -395,6 +397,7 @@ export class SiteScreenComponent implements OnInit {
 
   setFrameTitle(title: string) {
     this.FrameTitle = title;
+    console.log("title", this.FrameTitle);
   }
 
   // style an element

@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class GlobalStorageComponent implements OnInit {
 
   @Input() frameData: any = {};
+  @Input() lang: string = "en";
 
   constructor() { }
 

@@ -155,6 +155,7 @@
         }"
         [globalData]="globalData"
         [gsOverflowX]="gsOverflowX"
+        [lang]="lang"
       ></app-bot-globaldata>
 
       <app-bot-segments
@@ -162,6 +163,7 @@
         [SegmentNumber]="SegmentNumber"
         [steppers]="steppers"
         [subSteppers]="subSteppers"
+        [lang]="lang"
         (backToStepFn)="backToStep($event)"
         (backToActionFn)="backToAction($event)"
       ></app-bot-segments>

@@ -14,8 +14,8 @@
       <tbody>
         <tr *ngFor="let data of frameData.Data; let index = index">
           <th scope="row">{{ index + 1 }}</th>
-          <td class="text-nowrap">{{ data.Key }}</td>
-          <td class="text-nowrap">{{ data.Value }}</td>
+          <td class="text-nowrap">{{ data.Key[lang]}}</td>
+          <td class="text-nowrap">{{ data.Value}}</td>
         </tr>
       </tbody>
     </table>

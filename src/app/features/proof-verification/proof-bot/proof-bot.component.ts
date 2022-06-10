@@ -17,6 +17,7 @@ import * as POBLJSON from "../ProofJSONs/POBL.json";
 import * as POGJSON from "../ProofJSONs/POG.json";
 import * as POEJSON from "../ProofJSONs/POE.json";
 import * as POELangJSON from "../ProofJSONs/POE_lang.json";
+import * as POGLangJSON from "../ProofJSONs/POG_lang.json";
 import * as ActionConfigurations from "../ProofJSONs/ActionConfigurations.json";
 
 @Component({
@@ -100,7 +101,7 @@ export class ProofBotComponent implements OnInit {
   availableProofs: any[] = ["pog", "poe", "pobl"];
   proofType: string = "";
   lang: string = "en";
-
+  Name: string =""
   @ViewChild("ProofDemoDirective", { read: ViewContainerRef, static: false })
   proofDemoRef: ViewContainerRef;
 
@@ -113,15 +114,20 @@ export class ProofBotComponent implements OnInit {
   ngOnInit() {
     if (!this.isEmbedded) {
       this.route.queryParamMap.subscribe(params => {
-        this.proofBotParams = { ...params.keys, ...params };
+        this.proofBotParams = {
+          params:{
+          txn: 'be22a568072abfc106f2f1e37809befb4c260d7ebe21f89ba8e2e7dcda27e8e7',
+          type: 'pog'
+          }
+        }
       });
     }
-    // console.log(this.proofBotParams);
+    console.log('Params', this.proofBotParams);
     this.proofType = this.proofBotParams.params.type;
   }
 
   async ngAfterViewInit() {
-    // this.scrollToFrameById("proofContainer");
+    // this.scrollToFrameById('proofContainer');
     this.cdr.detectChanges();
   }
 
@@ -133,7 +139,7 @@ export class ProofBotComponent implements OnInit {
     ) {
       this.TXNhash = this.proofBotParams.params.txn;
       this.TXNhash2 = this.proofBotParams.params.txn2;
-      this.variableStorage["TXNhash"] = this.TXNhash;
+      this.variableStorage['TXNhash'] = 'be22a568072abfc106f2f1e37809befb4c260d7ebe21f89ba8e2e7dcda27e8e7'
       this.isLoading = true;
 
       // backend call
@@ -142,13 +148,12 @@ export class ProofBotComponent implements OnInit {
       // start demo (not -verifing)
       this.initiateProofDemo();
     } else
-      alert("Proof verification is not yet available for the selected type.");
+      alert('Proof verification is not yet available for the selected type.');
   }
 
   async initiateProofDemo() {
     const { protocolJson, langJson } = this.getProtocolJSON();
     this.proofJSON = protocolJson;
-
     // handle lang
     if (langJson) this.handleLangJson(langJson);
 
@@ -157,6 +162,7 @@ export class ProofBotComponent implements OnInit {
     // handleMultiStepAction
     this.handleMultiStepActions();
 
+    console.log('langJson', langJson);
     // if verification success
     console.log(this.proofJSON);
 
@@ -164,16 +170,18 @@ export class ProofBotComponent implements OnInit {
     this.StorageTitle = Header.StorageTitle;
     this.ProofContainerTitle = Header.ProofContainerTitle;
     this.steppers = this.filterSegmentsAndActions(Header.Segments);
+    
+    console.log('Steppers',this.steppers);
     this.playbackSpeed = Header.PlaybackSpeed;
     this.gsHeightExpand = Header.GSHeightExpand;
     this.gsOverflowX = Header.GSOverflowX;
-    if (Object.keys(Header).includes("VSHeightExpand"))
+    if (Object.keys(Header).includes('VSHeightExpand'))
       this.vsHeightExpand = Header.VSHeightExpand;
     this.vsOverflowX = Header.VSOverflowX;
 
-    console.log(this.steppers);
+    //console.log(this.steppers);
 
-    await this.scrollToFrameById("proofHeaderTitle", 20);
+    await this.scrollToFrameById('proofHeaderTitle', 20);
     this.isStartDemo = true;
     this.playProofDemo(0);
   }
@@ -187,7 +195,7 @@ export class ProofBotComponent implements OnInit {
         break;
       case "pog":
         protocolJson = POGJSON;
-        langJson = POELangJSON;
+        langJson = POGLangJSON;
         break;
       case "poe":
         protocolJson = POEJSON;
@@ -201,10 +209,12 @@ export class ProofBotComponent implements OnInit {
 
   handleLangJson(langJson: any) {
     let { Segments, Actions } = langJson;
+    console.log('Sementics', Segments)
     var variables = Segments;
 
     for (let index = 0; index < Actions.length; index++) {
       const action = Actions[index];
+     // console.log("Action : ",Actions[index]);
       variables = {
         ...variables,
         ...action.Languages
@@ -212,7 +222,8 @@ export class ProofBotComponent implements OnInit {
     }
 
     this.proofJSON = this.parseLangData(this.proofJSON, variables);
-    console.log( this.proofJSON )
+    console.log(' this.proofJSONss', this.parseLangData(this.proofJSON, variables));
+    //console.log( this.proofJSON )
   }
 
   parseLangData(action: any, storedData: any = this.variableStorage): any {
@@ -220,9 +231,13 @@ export class ProofBotComponent implements OnInit {
     [...data.matchAll(/"\&{[^}]+}"|\&{[^}]+}/g)].forEach(a => {
       try {
         let key = a[0].match(/\&{([^}]+)}/g)[0].slice(2, -1);
+       // console.log('key', key);
+       // console.log('storedData',storedData);
+
         if (key && storedData) {
           var replaceValue = storedData[key];
           var valueType = typeof replaceValue;
+          
           if (valueType == "string" && a[0].match(/"\&{[^}]+}"/g)) {
             try {
               var result = JSON.stringify(replaceValue);
@@ -234,14 +249,20 @@ export class ProofBotComponent implements OnInit {
             replaceValue = JSON.stringify(replaceValue);
 
           data = data.replace(a[0], replaceValue);
+         // console.log('replaceValue:', replaceValue);
+         // console.log('valueType:',valueType);
+          //console.log('data:',data);
         }
       } catch (error) {}
     });
+    console.log('parseLangDataJSon: under me');
+    console.log('parseLangDataJSon:', JSON.parse(data));
     return JSON.parse(data);
   }
 
   getActionConfigurations() {
     var actionConfigs: any = ActionConfigurations;
+    console.log('ActionConfigs',actionConfigs);
     return actionConfigs.default;
   }
 
@@ -250,21 +271,25 @@ export class ProofBotComponent implements OnInit {
     var { Steps } = this.proofJSON;
     for (let index = 0; index < Steps.length; index++) {
       const step = Steps[index];
-      if (step.Action.ActionType == "MultiStepAction") {
+      console.log("step",step["Action"]);
+
+      console.log(typeof step);
+
+      if (step["Action"].ActionType == "MultiStepAction") {
         var subActions = this.ActionConfigurations[
-          step.Action.ActionParameters.ActionConfigurationID
+          step["Action"].ActionParameters.ActionConfigurationID
         ].Actions;
         for (let j = 0; j < subActions.length; j++) {
           const subAction = subActions[j];
           const formattedAction = this.parseSubActionData(
             subAction,
-            step.Action.ActionParameters.SubActionArguments
+            step["Action"].ActionParameters.SubActionArguments
           );
           formattedAction.Action._ID = proofJSONSteps.length;
           proofJSONSteps.push(formattedAction);
         }
       } else {
-        step.Action._ID = proofJSONSteps.length;
+        step["Action"]._ID = proofJSONSteps.length;
         proofJSONSteps.push(step);
       }
     }
@@ -272,8 +297,10 @@ export class ProofBotComponent implements OnInit {
   }
 
   parseSubActionData(action: any, storedData: any = this.variableStorage): any {
-    var data = JSON.stringify(action).toString();
+    let data = JSON.stringify(action).toString();
+   // console.log("JSON.stringify(action).toString()",JSON.stringify(action).toString());
     [...data.matchAll(/"\#{[^}]+}"|\#{[^}]+}/g)].forEach(a => {
+      //console.log("a--",a);
       try {
         let key = a[0].match(/\#{([^}]+)}/g)[0].slice(2, -1);
         if (key && storedData) {
@@ -282,18 +309,21 @@ export class ProofBotComponent implements OnInit {
           if (valueType == "string" && a[0].match(/"\#{[^}]+}"/g)) {
             try {
               var result = JSON.stringify(replaceValue);
+              console.log("result-------",result);
               replaceValue = result;
             } catch (error) {
               replaceValue = `"${replaceValue}"`;
             }
           } else if (valueType == "object")
             replaceValue = JSON.stringify(replaceValue);
-
+              console.log("replaceValue------------------",replaceValue);
           data = data.replace(a[0], replaceValue);
+         // console.log("data.replace(a[0], replaceValue);---",data.replace(a[0], replaceValue));
         }
       } catch (error) {}
     });
-    console.log(data)
+    console.log('Data----',data);
+    console.log('parseSubActionDataParseSubActionData', JSON.parse(data));
     return JSON.parse(data);
   }
 
@@ -303,13 +333,15 @@ export class ProofBotComponent implements OnInit {
         (subActions: Array<any>, job: any) => {
           const {
             StepHeader: { SegmentNo },
-            Action: { _ID, ActionTitle }
+            Action: { _ID, ActionTitle}
           } = job;
           if (SegmentNo == Segment.NO) {
-            subActions.push({
-              ActionID: _ID,
-              ActionName: ActionTitle
-            });
+              subActions.push({
+                ActionID: _ID,
+                ActionName: ActionTitle
+                
+              });
+               
           }
           return subActions;
         },
@@ -341,8 +373,9 @@ export class ProofBotComponent implements OnInit {
 
   setLangFn(lang: string) {
     this.lang = lang;
+    console.log("language",this.lang);
   }
-
+  
   togglePlayPauseFn() {
     if (this.isPause) {
       this.isPause = false;
@@ -529,13 +562,15 @@ export class ProofBotComponent implements OnInit {
     this.subSteppers = this.steppers.find(
       (step: any) => step.NO == segmentNo
     ).SubActions;
+    console.log("substeppers",this.subSteppers);
     await new Promise(resolveTime => setTimeout(resolveTime, 1000));
     var index = this.subSteppers.findIndex(
       (step: any) => step.ActionID == actionID
     );
-    this.ActionDescription =
+    /*this.ActionDescription =
       this.ActionDescription +
       ` (Segment NO: ${segmentNo}, Action ID: ${segmentNo}.${actionID + 1})`;
+      console.log("actionDescription",this.ActionDescription);*/
     var allSubSteps = document.querySelectorAll(
       "#subSteppers .bs-stepper-header.cs-stepper-header .step"
     );
@@ -613,7 +648,11 @@ export class ProofBotComponent implements OnInit {
       } = Action;
       // console.log(action.Id, this.demoScreenChildRefs);
       this.currentStep++;
-      this.ActionDescription = ActionDescription;
+      this.ActionDescription = ActionDescription[this.lang];
+      
+      
+      //console.log("actionDescription2",ActionDescription);
+      //console.log("Action1",Action);
       if (StepHeader.SegmentNo) {
         await this.toStepper(StepHeader.SegmentNo, Action._ID);
       }
@@ -639,13 +678,13 @@ export class ProofBotComponent implements OnInit {
           }
           this.setGlobalValuesOnFrames(Header, stepData);
           if (scRef && ActionParameters.InnerHTML) {
-            scRef.instance.setFrameTitle(StepHeader.FrameTitle);
+            scRef.instance.setFrameTitle(StepHeader.FrameTitle[this.lang]);
             await scRef.instance.setPageHTML(
               ActionParameters.ExternalURL,
               ActionParameters.InnerHTML
             );
           } else if (scRef && ActionParameters.ExternalURL) {
-            scRef.instance.setFrameTitle(StepHeader.FrameTitle);
+            scRef.instance.setFrameTitle(StepHeader.FrameTitle[this.lang]);
             await scRef.instance.setPage(
               ActionParameters.ExternalURL,
               ActionParameters.Translatable,
@@ -733,6 +772,7 @@ export class ProofBotComponent implements OnInit {
         }
       } catch (error) {}
     });
+    console.log('JSON.parse(data)', JSON.parse(data))
     return JSON.parse(data);
   }
 
@@ -819,7 +859,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-
+    
     const {
       ExternalURL,
       InnerHTML,
@@ -850,7 +890,7 @@ export class ProofBotComponent implements OnInit {
       ToastPosition,
       ActionDuration
     } = Customizations;
-
+    console.log("action",Action);
     var ds = this.demoScreenChildRefs[FrameID];
     if (ds) {
       switch (ds.type) {
@@ -885,7 +925,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-
+    console.log("action2",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -949,7 +989,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-
+    console.log("action3",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -1013,7 +1053,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-
+    console.log("action4",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -1080,7 +1120,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-
+    console.log("action5",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -1146,7 +1186,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-
+    console.log("action6",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -1182,6 +1222,7 @@ export class ProofBotComponent implements OnInit {
     switch (FormatType) {
       case "parseJson":
         try {
+          console.log('JSON.parse(val)', JSON.parse(val))
           var res = JSON.parse(val);
           this.variableStorage[ActionResultVariable] = res;
         } catch (error) {
@@ -1282,7 +1323,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-
+    console.log("action6",Action);
     const {
       ExternalURL,
       InnerHTML,
