@@ -11,6 +11,7 @@ export class BotSegmentsComponent implements OnInit {
   @Input() subSteppers: any[];
   @Output() backToStepFn = new EventEmitter();
   @Output() backToActionFn = new EventEmitter();
+  @Input() lang: string = "en";
 
   constructor() {}
 

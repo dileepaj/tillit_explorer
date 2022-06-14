@@ -44,7 +44,7 @@
       },
       "Action": {
         "ActionTitle": "Tracified API Request",
-        "ActionDescription": "",
+        "ActionDescription": "Retrieve TDP data from Tracified Gateway.",
         "ActionType": "MultiStepAction",
         "ActionParameters": {
           "ExternalURL": "",
@@ -72,7 +72,7 @@
             "SegmentNo": 1,
             "FrameID": 1,
             "FrameTitle": "&{Text0}",
-            "ActionTitle": "&{Text1}",
+            "ActionTitle": "&{Text149}",
             "ActionDescription": "&{Text2}",
             "FrameTitle_1": "&{Text3}",
             "ActionTitle_1": "&{Text4}",
@@ -81,6 +81,7 @@
             "ActionTitle_2": "&{Text7}",
             "ActionDescription_2": "&{Text8}",
             "TXNHash": "${TXNhash}",
+            "OperationName": "&{Text1}",
             "ResponseVariable": "MainTDPDataString",
             "JSONResultVariable": "MainTDPData"
           }
@@ -178,14 +179,16 @@
             "StepNo": 3,
             "SegmentNo": 1,
             "FrameID": 1,
-            "FrameTitle": "&{Text11}",
+            "FrameTitle": "",
             "ActionTitle": "&{Text12}",
             "ActionDescription": "&{Text13}",
             "FrameTitle_1": "&{Text14}",
             "ActionTitle_1": "&{Text15}",
             "ActionDescription_1": "&{Text16}",
             "OperationKey": "Identifier",
-            "OperationValue": "TDPIdentifier"
+            "OperationValue": "TDPIdentifier",
+            "OperationKeyName": "identifier from the TDP details",
+            "OperationValueName": "identifier from the TDP details"
           }
         },
         "ActionResultVariable": "",
@@ -331,14 +334,16 @@
             "StepNo": 6,
             "SegmentNo": 1,
             "FrameID": 1,
-            "FrameTitle": "&{Text22}",
+            "FrameTitle": "",
             "ActionTitle": "&{Text23}",
             "ActionDescription": "&{Text24}",
             "FrameTitle_1": "&{Text25}",
             "ActionTitle_1": "&{Text26}",
             "ActionDescription_1": "&{Text27}",
             "OperationKey": "DataHash",
-            "OperationValue": "TDPDatahash"
+            "OperationValue": "TDPDatahash",
+            "OperationKeyName": "Datahash from the TDP details",
+            "OperationValueName": "Datahash from the TDP details"
           }
         },
         "ActionResultVariable": "",
@@ -489,7 +494,10 @@
             "ActionTitle_1": "&{Text37}",
             "ActionDescription_1": "&{Text38}",
             "OperationKey": "Txnhash",
-            "OperationValue": "TDPTxnhash"
+            "OperationValue": "TDPTxnhash",
+            "OperationKeyName": "txnhash from the TDP details",
+            "OperationValueName": "txnhash from the TDP details"
+
           }
         },
         "ActionResultVariable": "",
@@ -537,7 +545,7 @@
           "FormatType": "",
           "StorageData": [
             {
-              "Key": "&{Text41}",
+              "Key": "&{Text150}",
               "Value": "${TDPTxnhash}"
             }
           ]
@@ -600,6 +608,7 @@
             "ActionDescription_2": "&{Text48}",
             "TXNHash": "${TXNhash}",
             "ResponseVariable": "MainTXNDataString",
+            "OperationName": "current transaction",
             "JSONResultVariable": "MainTXNData"
           }
         },
@@ -664,7 +673,7 @@
     {
       "StepHeader": {
         "StepNo": 13,
-        "SegmentNo": 3,
+        "SegmentNo": 2,
         "FrameID": 2,
         "FrameTitle": ""
       },
@@ -701,7 +710,9 @@
             "ActionTitle_1": "&{Text53}",
             "ActionDescription_1": "&{Text54}",
             "OperationKey": "CurrentTXN",
-            "OperationValue": "MainTXNCurentTXNHash"
+            "OperationValue": "MainTXNCurentTXNHash",
+            "OperationKeyName": "encoded CurrentTXN Hash from the transaction details",
+            "OperationValueName": "encoded CurrentTXN Hash from the transaction details"
           }
         },
         "ActionResultVariable": "",
@@ -749,7 +760,7 @@
           "FormatType": "",
           "StorageData": [
             {
-              "Key": "&{Text57}",
+              "Key": "&{Text151}",
               "Value": "${MainTXNCurentTXNHash}"
             }
           ]
@@ -817,6 +828,7 @@
             "ToastMessage":"&{Text70}",
             "EncodedInputValue": "${MainTXNCurentTXNHash}",
             "DecodedResultVariable": "var_currenttxn"
+            
           }
         },
         "ActionResultVariable": "",
@@ -867,11 +879,17 @@
             "StepNo": 16,
             "SegmentNo": 4,
             "FrameID": 4,
+            "ActionTitle": "&{Text73}",
+            "ActionDescription": "&{Text74}",
+            "ActionTitle_1": "&{Text76}",
+            "ActionDescription_1": "&{Text77}",
+            "ActionTitle_2": "&{Text125}",
+            "ActionDescription_2": "&{Text125}",
             "FrameTitle": "&{Text71}",
             "TXNHash": "${var_currenttxn}",
             "OperationName": "&{Text72}",
-            "ResponseVariable": "&{Text73}",
-            "JSONResultVariable": "&{Text74}"
+            "ResponseVariable": "MainTXNCurentTXNDataString",
+            "JSONResultVariable": "MainTXNCurentTXNData"
           }
         },
         "ActionResultVariable": "",
@@ -897,7 +915,7 @@
       "Action": {
         "ActionTitle": "&{Text78}",
         "ActionDescription": "&{Text79}",
-        "ActionType": "&{Text80}",
+        "ActionType": "FormatMetaData",
         "ActionParameters": {
           "ExternalURL": "",
           "InnerHTML": "",
@@ -968,6 +986,11 @@
             "SegmentNo": 5,
             "FrameID": 4,
             "FrameTitle": "",
+            "ActionTitle": "&{Text81}",
+            "ActionDescription": "&{Text82}",
+            "FrameTitle_1": "&{Text83}",
+            "ActionTitle_1": "&{Text84}",
+            "ActionDescription_1": "&{Text85}",
             "OperationKey": "identifier",
             "OperationValue": "MainTXNCurentTXNDataIdentifier",
             "OperationKeyName": "encoded Identifier from the transaction details",
@@ -995,8 +1018,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Save Base64Encoded CurrentTxn Identifier",
-        "ActionDescription": "Save the base64 encoded Identifier value for future usage.",
+        "ActionTitle": "&{Text87}",
+        "ActionDescription": "&{Text88}",
         "ActionType": "InformationStorage",
         "ActionParameters": {
           "ExternalURL": "",
@@ -1019,7 +1042,7 @@
           "FormatType": "",
           "StorageData": [
             {
-              "Key": "Identifier (base64)",
+              "Key": "&{Text152}",
               "Value": "${MainTXNCurentTXNDataIdentifier}"
             }
           ]
@@ -1072,11 +1095,22 @@
             "StepNo": 20,
             "SegmentNo": 5,
             "FrameID": 5,
-            "FrameTitle": "Step 5 - Decode CurrentTXN Identifier",
+            "FrameTitle": "&{Text90}",
+            "ActionTitle":"&{Text91}",
+            "ActionDescription":"&{Text92}",
+            "ActionTitle_1":"&{Text93}",
+            "ActionDescription_1":"&{Text94}",
+            "ActionTitle_2":"&{Text95}",
+            "ActionDescription_2":"&{Text127}",
+            "ActionTitle_3":"&{Text128}",
+            "ActionDescription_3":"&{Text129}",
+            "ActionTitle_4":"&{Text130}",
+            "ActionDescription_4":"&{Text131}",
+            "InformationStorageKey":"&{Text132}",
+            "ToastMessage":"&{Text133}",
             "DecodeKeyName": "CurrentTXN Identifier",
             "EncodedInputValue": "${MainTXNCurentTXNDataIdentifier}",
-            "DecodedResultVariable": "MainTXNCurentTXNDataIdentifierDecoded",
-            "InformationStorageKey": "CurrentTXN Identifier"
+            "DecodedResultVariable": "MainTXNCurentTXNDataIdentifierDecoded"
           }
         },
         "ActionResultVariable": "",
@@ -1100,8 +1134,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Select Base64Encoded datahash",
-        "ActionDescription": "Select the encoded datahash from the transaction details.",
+        "ActionTitle": "&{Text96}",
+        "ActionDescription": "&{Text97}",
         "ActionType": "FormatMetaData",
         "ActionParameters": {
           "ExternalURL": "",
@@ -1172,10 +1206,13 @@
             "StepNo": 22,
             "SegmentNo": 5,
             "FrameID": 4,
-            "FrameTitle": "",
+            "ActionTitle": "&{Text100}",
+            "ActionDescription": "&{Text101}",
+            "ActionTitle_1": "&{Text102}",
+            "ActionDescription_1": "&{Text103}",
             "OperationKey": "dataHash",
             "OperationValue": "MainTXNCurentTXNDatadatahash",
-            "OperationKeyName": "encoded datahash from the transaction details",
+            "OperationKeyName": "encoded datahash from the transaction details.",
             "OperationValueName": "encoded datahash value from the transaction details"
           }
         },
@@ -1200,8 +1237,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Save Base64Encoded datahash",
-        "ActionDescription": "Save the base64 encoded datahash value for future usage.",
+        "ActionTitle": "&{Text106}",
+        "ActionDescription": "&{Text107}",
         "ActionType": "InformationStorage",
         "ActionParameters": {
           "ExternalURL": "",
@@ -1224,7 +1261,7 @@
           "FormatType": "",
           "StorageData": [
             {
-              "Key": "CurrentTXN datahash (base64)",
+              "Key": "&{Text109}",
               "Value": "${MainTXNCurentTXNDatadatahash}"
             }
           ]
@@ -1277,11 +1314,22 @@
             "StepNo": 24,
             "SegmentNo": 5,
             "FrameID": 6,
-            "FrameTitle": "Step 9 - Decode CurrentTXN Datahash",
-            "DecodeKeyName": "CurrentTXN datahash",
+            "FrameTitle": "&{Text110}",
+            "ActionTitle":"&{Text111}",
+            "ActionDescription":"&{Text112}",
+            "ActionTitle_1":"&{Text113}",
+            "ActionDescription_1":"&{Text134}",
+            "ActionTitle_2":"&{Text135}",
+            "ActionDescription_2":"&{Text136}",
+            "ActionTitle_3":"&{Text137}",
+            "ActionDescription_3":"&{Text138}",
+            "ActionTitle_4":"&{Text139}",
+            "ActionDescription_4":"&{Text140}",
+            "ToastMessage":"&{Text141}",
             "EncodedInputValue": "${MainTXNCurentTXNDatadatahash}",
             "DecodedResultVariable": "MainTXNCurentTXNDatadatahashDecoded",
-            "InformationStorageKey": "CurrentTXN datahash"
+            "InformationStorageKey": "CurrentTXN datahash",
+            "DecodeKeyName": "CurrentTXN datahash"
           }
         },
         "ActionResultVariable": "",
@@ -1332,7 +1380,18 @@
             "StepNo": 25,
             "SegmentNo": 5,
             "FrameID": 7,
-            "FrameTitle": "Step 10 - Compare datahashs",
+            "FrameTitle": "&{Text115}",
+            "ActionTitle":"&{Text116}",
+            "ActionDescription":"&{Text117}",
+            "FrameTitle_1":"&{Text118}",
+            "ActionTitle_1":"&{Text119}",
+            "ActionDescription_1":"&{Text142}",
+            "FrameTitle_2":"&{Text143}",
+            "ActionTitle_2":"&{Text144}",
+            "ActionDescription_2":"&{Text145}",
+            "FrameTitle_3":"&{Text146}",
+            "ActionTitle_3":"&{Text147}",
+            "ActionDescription_3":"&{Text148}",
             "InputKeyName": "the base64 decoded Datahash values from the transactions.",
             "InputValue": "[{\"title\": \"Identifiers from the TDP and Blockchain transaction\", \"t1\": \"${MainTXNCurentTXNDatadatahashDecoded}\", \"t2\": \"${TDPDatahash}\"}]"
           }
@@ -1355,16 +1414,16 @@
         "StepNo": 26,
         "SegmentNo": 6,
         "FrameID": 8,
-        "FrameTitle": "Step 11 - Verification Summary"
+        "FrameTitle": "&{Text120}"
       },
       "Action": {
-        "ActionTitle": "Verification Summary",
-        "ActionDescription": "Verification Summary",
+        "ActionTitle": "&{Text121}",
+        "ActionDescription": "&{Text121}",
         "ActionType": "BrowserScreen",
         "ActionParameters": {
           "ExternalURL": "",
           "InnerHTML": "<?xml version=\"1.0\"?>\r\n<!DOCTYPE html>\r\n<html><head><link href=\"https://www.online-html-editor.org/assets/minimalist-blocks/content.css\" rel=\"stylesheet\" type=\"text/css\"/></head><body style=\"height: 100vh; display: flex; justify-content: center; align-items: center;\"><div class=\"container\"><div class=\"row clearfix\"><div class=\"column full\"><h2 class=\"size-18\" style=\"font-weight: 800; text-align: center; letter-spacing: 8px; text-transform: uppercase;\">\r\n Verification summary\r\n </h2></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><div class=\"column full\"><p class=\"size-12\" style=\"text-align: center; letter-spacing: 3px; color: rgb(94, 94, 94); text-transform: uppercase;\"><b style=\"color: rgb(71, 88, 204); background-color: rgb(240, 249, 254);\">PROOF OF THE EXISTENCE</b></p></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><div class=\"column half\"><p style=\"text-align: justify;\"><strong><span class=\"size-14\">identifier</span></strong></p><p class=\"size-14\" style=\"text-align: justify; overflow-wrap: break-word;\">\r\n ${MainTXNCurentTXNDataIdentifierDecoded}\r\n </p></div><div class=\"column half\"><p class=\"size-14\" style=\"text-align: justify; \"><strong>Transaction Hash</strong></p><p class=\"size-14\" style=\"text-align: justify; overflow-wrap: break-word;\">\r\n ${var_currenttxn}\r\n </p></div><div class=\"is-tool is-row-tool\"><div class=\"row-handle\" data-title=\"Move\" style=\"width:100%;cursor:move;text-align:center;\" title=\"Move\"><br/></div></div><div class=\"is-rowadd-tool\" style=\"height:0;\"><br/></div></div><div class=\"row clearfix\"><pre class=\"size-14\" style=\"background-color: rgb(46, 125, 50); color: rgb(245, 243, 252); font-weight: bold; text-align: center; border-radius: 8px; margin: 0; padding: 8px;\">\r\nVerification Completed</pre><div class=\"is-rowadd-tool\" style=\"height:0\"><br/></div></div></div></body></html>",
-          "PageURL": "about: Verification Summary - PROOF OF THE EXISTANCE",
+          "PageURL": "&{Text123}",
           "Query": "",
           "QueryIndex": "",
           "YOffset": "",

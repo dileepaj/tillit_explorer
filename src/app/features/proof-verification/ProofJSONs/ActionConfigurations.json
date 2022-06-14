@@ -940,7 +940,7 @@
           "ScrollToPointer": false,
           "FrameAutoScroll": true,
           "FrameScrollBars": "",
-          "ToastMessage": "",
+          "ToastMessage": "#{ToastMessage}",
           "ToastPosition": null,
           "ActionDuration": 2
         }

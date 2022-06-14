@@ -11,35 +11,35 @@
     "Segments": [
       {
         "NO": 1,
-        "Name": "GET Stellar Transaction"
+        "Name": "&{SegName1}"
       },
       {
         "NO": 2,
-        "Name": "Decode Current TXNHash"
+        "Name": "&{SegName2}"
       },
       {
         "NO": 3,
-        "Name": "GET Current Transaction"
+        "Name": "&{SegName3}"
       },
       {
         "NO": 4,
-        "Name": "Decode Identifier"
+        "Name": "&{SegName4}"
       },
       {
         "NO": 5,
-        "Name": "Decode Product ID"
+        "Name": "&{SegName5}"
       },
       {
         "NO": 6,
-        "Name": "Decode Backlink TXNHash"
+        "Name": "&{SegName6}"
       },
       {
         "NO": 7,
-        "Name": "Decode Transaction Type"
+        "Name": "&{SegName7}"
       },
       {
         "NO": 8,
-        "Name": "Summary"
+        "Name": "&{SegName8}"
       }
     ]
   },
@@ -52,8 +52,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Retrieve Current Transaction",
-        "ActionDescription": "",
+        "ActionTitle": "&{Text1}",
+        "ActionDescription": "&{Text2}",
         "ActionType": "MultiStepAction",
         "ActionParameters": {
           "ExternalURL": "",
@@ -80,7 +80,13 @@
             "StepNo": 1,
             "SegmentNo": 1,
             "FrameID": 1,
-            "FrameTitle": "Step 1 - Retrieve Current Transaction",
+            "FrameTitle": "&{Text3}",
+            "ActionTitle":"&{Text101}",
+            "ActionDescription":"&{Text102}",
+            "ActionTitle_1":"&{Text4}",
+            "ActionDescription_1":"&{Text5}",
+            "ActionTitle_2":"&{Text6}",
+            "ActionDescription_2":"&{Text7}",
             "TXNHash": "${TXNhash}",
             "OperationName": "current transaction",
             "ResponseVariable": "MainTXNDataString",
@@ -108,8 +114,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Extract CurrentTXN Hash",
-        "ActionDescription": "Select the CurrentTXN Hash (base64 encoded) from the transaction details.",
+        "ActionTitle": "&{Text8}",
+        "ActionDescription": "&{Text9}",
         "ActionType": "FormatMetaData",
         "ActionParameters": {
           "ExternalURL": "",
@@ -177,10 +183,14 @@
           "StorageData": [],
           "ActionConfigurationID": "KeyValueHighlighter",
           "SubActionArguments": {
-            "StepNo": 5,
+            "StepNo": 3,
             "SegmentNo": 2,
             "FrameID": 1,
             "FrameTitle": "",
+            "ActionTitle":"&{Text10}",
+            "ActionDescription": "&{Text11}",
+            "ActionTitle_1": "&{Text12}",
+            "ActionDescription_1": "&{Text13}",
             "OperationKey": "CurrentTXN",
             "OperationValue": "MainTXNCurentTXNHash",
             "OperationKeyName": "encoded CurrentTXN Hash from the transaction details",
@@ -208,8 +218,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Save Base64Encoded CurrentTXN",
-        "ActionDescription": "Save the base64 encoded CurrentTXN Hash value for future usage.",
+        "ActionTitle": "&{Text14}",
+        "ActionDescription": "&{Text15}",
         "ActionType": "InformationStorage",
         "ActionParameters": {
           "ExternalURL": "",
@@ -285,9 +295,19 @@
             "StepNo": 5,
             "SegmentNo": 2,
             "FrameID": 2,
-            "FrameTitle": "Step 2 - Decode CurrentTXN",
+            "FrameTitle": "&{Text26}",
+            "ActionTitle": "&{Text16}",
+            "ActionDescription": "&{Text17}",
+            "ActionTitle_1": "&{Text18}",
+            "ActionDescription_1": "&{Text19}",
+            "ActionTitle_2": "&{Text20}",
+            "ActionDescription_2": "&{Text21}",
+            "ActionTitle_3": "&{Text22}",
+            "ActionDescription_3": "&{Text23}",
+            "ActionTitle_4": "&{Text24}",
+            "ActionDescription_4": "&{Text25}",
             "DecodeKeyName": "CurrentTXN Hash",
-            "EncodedInputValue": "${MainTXNCurentTXNHash}",
+            "EncodedInputValue": "${MainTXNCurrentTXNHash}",
             "DecodedResultVariable": "var_currenttxn",
             "InformationStorageKey": "TXN2 CurrentTXN"
           }
@@ -300,7 +320,7 @@
         "ScrollToPointer": false,
         "FrameAutoScroll": true,
         "FrameScrollBars": "",
-        "ToastMessage": "",
+        "ToastMessage": "&{Text110}",
         "ToastPosition": null,
         "ActionDuration": 10
       }
@@ -340,11 +360,17 @@
             "StepNo": 6,
             "SegmentNo": 3,
             "FrameID": 3,
-            "FrameTitle": "Step 3 - Retrieve Current Transaction",
+            "FrameTitle": "&{Text29}",
+            "ActionTitle":"&{Text103}",
+            "ActionDescription":"&{Text104}",
+            "ActionTitle_1": "&{Text30}",
+            "ActionDescription_1": "&{Text31}",
+            "ActionTitle_2": "&{Text32}",
+            "ActionDescription_2": "&{Text33}",
             "TXNHash": "${var_currenttxn}",
             "OperationName": "current transaction of the gateway transaction",
-            "ResponseVariable": "MainTXNCurentTXNDataString",
-            "JSONResultVariable": "MainTXNCurentTXNData"
+            "ResponseVariable": "MainTXNCurrentTXNDataString",
+            "JSONResultVariable": "MainTXNCurrentTXNData"
           }
         },
         "ActionResultVariable": "",
@@ -368,8 +394,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Select Base64Encoded Identifier",
-        "ActionDescription": "Select the encoded Identifier from the transaction details.",
+        "ActionTitle": "&{Text34}",
+        "ActionDescription": "&{Text35}",
         "ActionType": "FormatMetaData",
         "ActionParameters": {
           "ExternalURL": "",
@@ -441,6 +467,10 @@
             "SegmentNo": 4,
             "FrameID": 3,
             "FrameTitle": "",
+            "ActionTitle": "&{Text36}",
+            "ActionDescription": "&{Text37}",
+            "ActionTitle_1": "&{Text38}",
+            "ActionDescription_1": "&{Text39}",
             "OperationKey": "identifier",
             "OperationValue": "MainTXNCurentTXNDataIdentifier",
             "OperationKeyName": "encoded Identifier from the transaction details",
@@ -468,8 +498,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Save Base64Encoded Identifier",
-        "ActionDescription": "Save the base64 encoded Identifier value for future usage.",
+        "ActionTitle": "&{Text40}",
+        "ActionDescription": "&{Text41}",
         "ActionType": "InformationStorage",
         "ActionParameters": {
           "ExternalURL": "",
@@ -545,7 +575,17 @@
             "StepNo": 10,
             "SegmentNo": 4,
             "FrameID": 4,
-            "FrameTitle": "Step 4 - Decode MainTXN Identifier",
+            "FrameTitle": "&{Text52}",
+            "ActionTitle": "&{Text42}",
+            "ActionDescription": "&{Text43}",
+            "ActionTitle_1": "&{Text44}",
+            "ActionDescription_1": "&{Text45}",
+            "ActionTitle_2": "&{Text46}",
+            "ActionDescription_2": "&{Text47}",
+            "ActionTitle_3": "&{Text48}",
+            "ActionDescription_3": "&{Text49}",
+            "ActionTitle_4": "&{Text50}",
+            "ActionDescription_4": "&{Text51}",
             "DecodeKeyName": "MainTXN Identifier",
             "EncodedInputValue": "${MainTXNCurentTXNDataIdentifier}",
             "DecodedResultVariable": "MainTXNCurentTXNDataIdentifierDecoded",
@@ -560,7 +600,7 @@
         "ScrollToPointer": false,
         "FrameAutoScroll": true,
         "FrameScrollBars": "",
-        "ToastMessage": "",
+        "ToastMessage": "&{Text48}",
         "ToastPosition": null,
         "ActionDuration": 10
       }
@@ -574,8 +614,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Select Base64Encoded ProductID",
-        "ActionDescription": "Select the encoded Product ID from the transaction details.",
+        "ActionTitle": "&{Text53}",
+        "ActionDescription": "&{Text54}",
         "ActionType": "FormatMetaData",
         "ActionParameters": {
           "ExternalURL": "",
@@ -647,6 +687,10 @@
             "SegmentNo": 5,
             "FrameID": 3,
             "FrameTitle": "",
+            "ActionTitle": "&{Text55}",
+            "ActionDescription": "&{Text56}",
+            "ActionTitle_1": "&{Text57}",
+            "ActionDescription_1": "&{Text58}",
             "OperationKey": "productId",
             "OperationValue": "MainTXNCurentTXNDataProductId",
             "OperationKeyName": "encoded ProductID from the transaction details",
@@ -674,8 +718,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Save Base64Encoded ProductID",
-        "ActionDescription": "Save the base64 encoded ProductID value for future usage.",
+        "ActionTitle": "&{Text59}",
+        "ActionDescription": "&{Text60}",
         "ActionType": "InformationStorage",
         "ActionParameters": {
           "ExternalURL": "",
@@ -751,7 +795,17 @@
             "StepNo": 14,
             "SegmentNo": 5,
             "FrameID": 3,
-            "FrameTitle": "Step 5 - Decode MainTXN ProductID",
+            "FrameTitle": "&{Text71}",
+            "ActionTitle": "&{Text61}",
+            "ActionDescription": "&{Text62}",
+            "ActionTitle_1": "&{Text63}",
+            "ActionDescription_1": "&{Text64}",
+            "ActionTitle_2":"&{Text65}",
+            "ActionDescription_2":"&{Text66}",
+            "ActionTitle_3":"&{Text67}",
+            "ActionDescription_3":"&{Text68}",
+            "ActionTitle_4":"&{Text69}",
+            "ActionDescription_4":"&{Text70}",
             "DecodeKeyName": "MainTXN ProductID",
             "EncodedInputValue": "${MainTXNCurentTXNDataProductId}",
             "DecodedResultVariable": "MainTXNCurentTXNDataProductIdDecoded",
@@ -766,7 +820,7 @@
         "ScrollToPointer": false,
         "FrameAutoScroll": true,
         "FrameScrollBars": "",
-        "ToastMessage": "",
+        "ToastMessage": "&{Text70}",
         "ToastPosition": null,
         "ActionDuration": 10
       }
@@ -780,8 +834,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Select Base64Encoded PreviousTXN",
-        "ActionDescription": "Select the encoded PreviousTXN Hash value from the transaction details.",
+        "ActionTitle": "&{Text71}",
+        "ActionDescription": "&{Text72}",
         "ActionType": "FormatMetaData",
         "ActionParameters": {
           "ExternalURL": "",
@@ -853,6 +907,10 @@
             "SegmentNo": 6,
             "FrameID": 1,
             "FrameTitle": "",
+            "ActionTitle":"&{Text73}",
+            "ActionDescription": "&{Text74}",
+            "ActionTitle_1":"&{Text75}",
+            "ActionDescription_1":"&{Text76}",
             "OperationKey": "PreviousTXN",
             "OperationValue": "MainTXNPreviousTXN",
             "OperationKeyName": "encoded PreviousTXN Hash from the transaction details.",
@@ -880,8 +938,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Save Base64Encoded PreviousTXN",
-        "ActionDescription": "Save the base64 encoded Previous TXN Hash value for future usage.",
+        "ActionTitle": "&{Text77}",
+        "ActionDescription": "&{Text78}",
         "ActionType": "InformationStorage",
         "ActionParameters": {
           "ExternalURL": "",
@@ -931,8 +989,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Select Base64Encoded Transaction Type",
-        "ActionDescription": "Select the encoded Transaction Type value from the transaction details.",
+        "ActionTitle": "&{Text79}",
+        "ActionDescription": "&{Text80}",
         "ActionType": "FormatMetaData",
         "ActionParameters": {
           "ExternalURL": "",
@@ -1004,6 +1062,10 @@
             "SegmentNo": 7,
             "FrameID": 1,
             "FrameTitle": "",
+            "ActionTitle":"&{Text81}",
+            "ActionDescription": "&{Text82}",
+            "ActionTitle_1":"&{Text83}",
+            "ActionDescription_1":"&{Text84}",
             "OperationKey": "Type",
             "OperationValue": "MainTXNTXType",
             "OperationKeyName": "encoded Transaction Type from the transaction details.",
@@ -1031,8 +1093,8 @@
         "FrameTitle": ""
       },
       "Action": {
-        "ActionTitle": "Save Base64Encoded PreviousTXN",
-        "ActionDescription": "Save the base64 encoded Previous TXN Hash value for future usage.",
+        "ActionTitle": "&{Text77}",
+        "ActionDescription": "&{Text86}",
         "ActionType": "InformationStorage",
         "ActionParameters": {
           "ExternalURL": "",
@@ -1109,7 +1171,17 @@
             "StepNo": 21,
             "SegmentNo": 7,
             "FrameID": 4,
-            "FrameTitle": "Step 04 - Decode Transaction Type",
+            "FrameTitle": "&{Text97}",
+            "ActionTitle":"&{Text87}",
+            "ActionDescription": "&{Text88}",
+            "ActionTitle_1":"&{Text89}",
+            "ActionDescription_1":"&{Text90}",
+            "ActionTitle_2":"&{Text91}",
+            "ActionDescription_2":"&{Text92}",
+            "ActionTitle_3":"&{Text93}",
+            "ActionDescription_3":"&{Text94}",
+            "ActionTitle_4":"&{Text95}",
+            "ActionDescription_4":"&{Text96}",
             "DecodeKeyName": "Transaction Type",
             "EncodedInputValue": "${MainTXNTXType}",
             "DecodedResultVariable": "MainTXNTXTypeDecoded",
@@ -1124,7 +1196,7 @@
         "ScrollToPointer": false,
         "FrameAutoScroll": true,
         "FrameScrollBars": "",
-        "ToastMessage": "",
+        "ToastMessage": "&{Text96}",
         "ToastPosition": null,
         "ActionDuration": 10
       }
@@ -1135,15 +1207,11 @@
         "StepNo": 22,
         "SegmentNo": 8,
         "FrameID": 5,
-        "FrameTitle": "Step 05 - Verification Summary"
+        "FrameTitle": "&{Text98}"
       },
       "Action": {
-        "ActionTitle": "Verification Summary",
-        "ActionDescription": [
-          {
-            "en": "Verification Summary"
-          }
-        ],
+        "ActionTitle": "&{Text99}",
+        "ActionDescription": "&{Text100}",
         "ActionType": "BrowserScreen",
         "ActionParameters": {
           "ExternalURL": "",
