@@ -20,7 +20,7 @@ export class VerificationServiceService {
   }
 
   handleError(err: HttpErrorResponse) {
-    console.log("Error Handler: ", err);
+    //console.log("Error Handler: ", err);
     return throwError("test");
   }
 }

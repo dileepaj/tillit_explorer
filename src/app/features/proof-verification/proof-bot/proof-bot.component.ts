@@ -98,7 +98,7 @@ export class ProofBotComponent implements OnInit {
   toastLeft: string = "32%";
   ActionConfigurations: any;
   SegmentNumber: number;
-  availableProofs: any[] = ["pog", "poe", "pobl"];
+  availableProofs: any[] = ["poe"];
   proofType: string = "";
   lang: string = "en";
   Name: string =""
@@ -116,13 +116,12 @@ export class ProofBotComponent implements OnInit {
       this.route.queryParamMap.subscribe(params => {
         this.proofBotParams = {
           params:{
-          txn: 'be22a568072abfc106f2f1e37809befb4c260d7ebe21f89ba8e2e7dcda27e8e7',
-          type: 'pog'
+          txn: params.get('txn'),
+          type: params.get('type')
           }
         }
       });
     }
-    console.log('Params', this.proofBotParams);
     this.proofType = this.proofBotParams.params.type;
   }
 
@@ -139,7 +138,7 @@ export class ProofBotComponent implements OnInit {
     ) {
       this.TXNhash = this.proofBotParams.params.txn;
       this.TXNhash2 = this.proofBotParams.params.txn2;
-      this.variableStorage['TXNhash'] = 'be22a568072abfc106f2f1e37809befb4c260d7ebe21f89ba8e2e7dcda27e8e7'
+      this.variableStorage['TXNhash'] = this.proofBotParams.params.txn //'be22a568072abfc106f2f1e37809befb4c260d7ebe21f89ba8e2e7dcda27e8e7'
       this.isLoading = true;
 
       // backend call
@@ -162,16 +161,16 @@ export class ProofBotComponent implements OnInit {
     // handleMultiStepAction
     this.handleMultiStepActions();
 
-    console.log('langJson', langJson);
+    //console.log('langJson', langJson);
     // if verification success
-    console.log(this.proofJSON);
+    //console.log(this.proofJSON);
 
     const { Header } = this.proofJSON;
     this.StorageTitle = Header.StorageTitle;
     this.ProofContainerTitle = Header.ProofContainerTitle;
     this.steppers = this.filterSegmentsAndActions(Header.Segments);
     
-    console.log('Steppers',this.steppers);
+    //console.log('Steppers',this.steppers);
     this.playbackSpeed = Header.PlaybackSpeed;
     this.gsHeightExpand = Header.GSHeightExpand;
     this.gsOverflowX = Header.GSOverflowX;
@@ -209,7 +208,7 @@ export class ProofBotComponent implements OnInit {
 
   handleLangJson(langJson: any) {
     let { Segments, Actions } = langJson;
-    console.log('Sementics', Segments)
+    //console.log('Sementics', Segments)
     var variables = Segments;
 
     for (let index = 0; index < Actions.length; index++) {
@@ -222,7 +221,7 @@ export class ProofBotComponent implements OnInit {
     }
 
     this.proofJSON = this.parseLangData(this.proofJSON, variables);
-    console.log(' this.proofJSONss', this.parseLangData(this.proofJSON, variables));
+    //console.log(' this.proofJSONss', this.parseLangData(this.proofJSON, variables));
     //console.log( this.proofJSON )
   }
 
@@ -255,14 +254,14 @@ export class ProofBotComponent implements OnInit {
         }
       } catch (error) {}
     });
-    console.log('parseLangDataJSon: under me');
-    console.log('parseLangDataJSon:', JSON.parse(data));
+    //console.log('parseLangDataJSon: under me');
+    //console.log('parseLangDataJSon:', JSON.parse(data));
     return JSON.parse(data);
   }
 
   getActionConfigurations() {
     var actionConfigs: any = ActionConfigurations;
-    console.log('ActionConfigs',actionConfigs);
+    //console.log('ActionConfigs',actionConfigs);
     return actionConfigs.default;
   }
 
@@ -271,9 +270,9 @@ export class ProofBotComponent implements OnInit {
     var { Steps } = this.proofJSON;
     for (let index = 0; index < Steps.length; index++) {
       const step = Steps[index];
-      console.log("step",step["Action"]);
+      //console.log("step",step["Action"]);
 
-      console.log(typeof step);
+      //console.log(typeof step);
 
       if (step["Action"].ActionType == "MultiStepAction") {
         var subActions = this.ActionConfigurations[
@@ -309,21 +308,21 @@ export class ProofBotComponent implements OnInit {
           if (valueType == "string" && a[0].match(/"\#{[^}]+}"/g)) {
             try {
               var result = JSON.stringify(replaceValue);
-              console.log("result-------",result);
+              //console.log("result-------",result);
               replaceValue = result;
             } catch (error) {
               replaceValue = `"${replaceValue}"`;
             }
           } else if (valueType == "object")
             replaceValue = JSON.stringify(replaceValue);
-              console.log("replaceValue------------------",replaceValue);
+              //console.log("replaceValue------------------",replaceValue);
           data = data.replace(a[0], replaceValue);
          // console.log("data.replace(a[0], replaceValue);---",data.replace(a[0], replaceValue));
         }
       } catch (error) {}
     });
-    console.log('Data----',data);
-    console.log('parseSubActionDataParseSubActionData', JSON.parse(data));
+    //console.log('Data----',data);
+    //console.log('parseSubActionDataParseSubActionData', JSON.parse(data));
     return JSON.parse(data);
   }
 
@@ -373,7 +372,7 @@ export class ProofBotComponent implements OnInit {
 
   setLangFn(lang: string) {
     this.lang = lang;
-    console.log("language",this.lang);
+    //console.log("language",this.lang);
   }
   
   togglePlayPauseFn() {
@@ -562,7 +561,7 @@ export class ProofBotComponent implements OnInit {
     this.subSteppers = this.steppers.find(
       (step: any) => step.NO == segmentNo
     ).SubActions;
-    console.log("substeppers",this.subSteppers);
+    //console.log("substeppers",this.subSteppers);
     await new Promise(resolveTime => setTimeout(resolveTime, 1000));
     var index = this.subSteppers.findIndex(
       (step: any) => step.ActionID == actionID
@@ -772,7 +771,7 @@ export class ProofBotComponent implements OnInit {
         }
       } catch (error) {}
     });
-    console.log('JSON.parse(data)', JSON.parse(data))
+    //console.log('JSON.parse(data)', JSON.parse(data))
     return JSON.parse(data);
   }
 
@@ -890,7 +889,7 @@ export class ProofBotComponent implements OnInit {
       ToastPosition,
       ActionDuration
     } = Customizations;
-    console.log("action",Action);
+    //console.log("action",Action);
     var ds = this.demoScreenChildRefs[FrameID];
     if (ds) {
       switch (ds.type) {
@@ -925,7 +924,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-    console.log("action2",Action);
+    //console.log("action2",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -989,7 +988,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-    console.log("action3",Action);
+    //console.log("action3",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -1053,7 +1052,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-    console.log("action4",Action);
+    //console.log("action4",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -1120,7 +1119,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-    console.log("action5",Action);
+    //console.log("action5",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -1186,7 +1185,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-    console.log("action6",Action);
+    //console.log("action6",Action);
     const {
       ExternalURL,
       InnerHTML,
@@ -1222,7 +1221,7 @@ export class ProofBotComponent implements OnInit {
     switch (FormatType) {
       case "parseJson":
         try {
-          console.log('JSON.parse(val)', JSON.parse(val))
+          //console.log('JSON.parse(val)', JSON.parse(val))
           var res = JSON.parse(val);
           this.variableStorage[ActionResultVariable] = res;
         } catch (error) {
@@ -1323,7 +1322,7 @@ export class ProofBotComponent implements OnInit {
       ActionResultVariable,
       MetaData
     } = Action;
-    console.log("action6",Action);
+    //console.log("action6",Action);
     const {
       ExternalURL,
       InnerHTML,

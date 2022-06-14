@@ -397,7 +397,7 @@ export class SiteScreenComponent implements OnInit {
 
   setFrameTitle(title: string) {
     this.FrameTitle = title;
-    console.log("title", this.FrameTitle);
+    //console.log("title", this.FrameTitle);
   }
 
   // style an element
@@ -558,7 +558,7 @@ export class SiteScreenComponent implements OnInit {
       ][selector] = data;
       await this.sleepFor(600);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   }
 
