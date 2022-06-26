@@ -826,6 +826,7 @@
             "ActionDescription_4":"&{Text68}",
             "InformationStorageKey":"&{Text69}",
             "ToastMessage":"&{Text70}",
+            "DecodeKeyName": "CurrentTXN Hash",
             "EncodedInputValue": "${MainTXNCurentTXNHash}",
             "DecodedResultVariable": "var_currenttxn"
             

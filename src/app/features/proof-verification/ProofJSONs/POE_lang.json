@@ -291,13 +291,13 @@
           "en": "Load the base64 decode website"
         },
         "Text60": {
-          "en": "Decode the base64 encoded #{DecodeKeyName}"
+          "en": "Decode the base64 encoded CurrentTXN Hash"
         },
         "Text61": {
           "en": "Input base64 encoded current txn hash"
         },
         "Text62": {
-          "en": "Input the base64 encoded #{DecodeKeyName}"
+          "en": "Input the base64 encoded CurrentTXN Hash"
         },
         "Text63": {
           "en": "Click decode button"

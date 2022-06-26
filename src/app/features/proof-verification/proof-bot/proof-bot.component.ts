@@ -724,7 +724,7 @@ export class ProofBotComponent implements OnInit {
       // this.isDisableGlobalInformationR = this.isDisableGlobalStorageScroll("R");
 
       if (Customizations.ToastMessage) {
-        this.toastMSG = Customizations.ToastMessage;
+        this.toastMSG = Customizations.ToastMessage[this.lang];
         this.toastTop = Customizations.ToastPosition[0];
         this.toastLeft = Customizations.ToastPosition[1];
         this.isToast = true;
