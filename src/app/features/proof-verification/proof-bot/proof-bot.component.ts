@@ -163,7 +163,7 @@ export class ProofBotComponent implements OnInit {
 
     //console.log('langJson', langJson);
     // if verification success
-    //console.log(this.proofJSON);
+    //console.log(this.lang);
 
     const { Header } = this.proofJSON;
     this.StorageTitle = Header.StorageTitle;
