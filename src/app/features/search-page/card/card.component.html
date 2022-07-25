@@ -57,6 +57,22 @@
               <span class="cardcontent">{{transactionData.productId}}</span>
             </div>
           </div> -->
+          <div class="row contentMargin" *ngIf="transactionData.fromIdentifier1">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3">
+              <span class="fieldStyle" >From Identifier1 : </span>
+            </div>    
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9">
+              <span class="cardcontent">{{transactionData.fromIdentifier1}}</span>
+            </div>
+          </div>
+          <div class="row contentMargin" *ngIf="transactionData.fromIdentifier2">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3">
+              <span class="fieldStyle" >From Identifier2 : </span>
+            </div>    
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9">
+              <span class="cardcontent">{{transactionData.fromIdentifier2}}</span>
+            </div>
+          </div>
           <div class="row contentMargin" *ngIf="transactionData.identifier">
             <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3">
               <span class="fieldStyle" >Identifier : </span>
@@ -65,7 +81,7 @@
               <span class="cardcontent">{{transactionData.identifier}}</span>
             </div>
           </div>
-          <div class="row contentMargin" >
+          <!-- <div class="row contentMargin" >
             <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3" *ngIf="transactionData.sender">
               <span class="fieldStyle" >Sender : </span>
             </div>
@@ -80,7 +96,7 @@
             <div class="col-xs-12 col-sm-12 col-md-7 col-lg-9 col-xl-9">
               <span class="cardcontent">{{transactionData.receiver}}</span>
             </div>
-          </div>
+          </div> -->
           <div class="row contentMargin" *ngIf="transactionData.transferType">
             <div class="col-xs-12 col-sm-12 col-md-5 col-lg-3 col-xl-3">
               <span class="fieldStyle" >Type : </span>
@@ -97,8 +113,7 @@
               <span class="cardcontent">{{transactionData.timestamp | date: 'medium'}}</span>
             </div>
           </div>
-
-</div>
+      </div>
       <!-- Item button Need to fix -->
       <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 col-xl-2  align-self-center justify-content-center">
         <div class="row  justify-content-end viewButton">

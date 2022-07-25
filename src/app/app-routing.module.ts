@@ -8,8 +8,6 @@ import { SearchPageComponent } from './features/search-page/search-page.componen
 import { TransactionDetailsComponent } from './features/transaction-details/transaction-details.component';
 import { ProofPococComponent } from './features/proofs/pococ/proof-pococ.component';
 import { ProofPocComponent } from './features/proofs/poc/proof-poc.component';
-import { MaintenanceComponent } from './features/maintenance/maintenance.component';
-import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -19,7 +17,6 @@ const routes: Routes = [
   {path: 'pococ/:txnhash', component: ProofPococComponent},
   {path: 'poc/:txnhash', component: ProofPocComponent},
   {path: 'txn/:txnId', component: TransactionDetailsComponent},
-  {path: 'proof-verification', component: VerificationScreenComponent},
   {path: '**', component: InvalidLinkComponent}
 
   // { path: '', component: MaintenanceComponent },
