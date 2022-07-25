@@ -27,13 +27,9 @@ import { ProofPocComponent } from './features/proofs/poc/proof-poc.component';
 import {NgxPaginationModule} from 'ngx-pagination'; 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { MaintenanceComponent } from './features/maintenance/maintenance.component';
-import { SiteScreenComponent } from './features/proof-verification/components/site-screen/site-screen.component';
-import { VerificationScreenComponent } from './features/proof-verification/verification-screen/verification-screen.component';
-import { GlobalStorageComponent } from './features/proof-verification/components/global-storage/global-storage.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { HomeSkeletonComponent } from './features/skeleton-view/home-skeleton/home-skeleton.component';
-import { ElementDividerComponent } from './features/proof-verification/components/element-divider/element-divider.component';
 
 @NgModule({
   declarations: [
@@ -55,11 +51,7 @@ import { ElementDividerComponent } from './features/proof-verification/component
     ErrorIdComponent,
     ProofPocComponent,
     MaintenanceComponent,
-    SiteScreenComponent,
-    VerificationScreenComponent,
-    GlobalStorageComponent,
     HomeSkeletonComponent,
-    ElementDividerComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +68,7 @@ import { ElementDividerComponent } from './features/proof-verification/component
     NgbModule,
     NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' })
   ],
-  entryComponents: [SiteScreenComponent, ElementDividerComponent],
+  entryComponents: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

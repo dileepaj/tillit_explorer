@@ -74,6 +74,25 @@
           </div>
         </div>
 
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.fromIdentifier1">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            From Identifier1
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.fromIdentifier1}}
+          </div>
+        </div>
+
+        
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.fromIdentifier2">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            From Identifier2
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.fromIdentifier2}}
+          </div>
+        </div>
+
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.identifier">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Identifier
@@ -83,14 +102,14 @@
           </div>
         </div>
 
-        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.productId">
+        <!-- <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.productId">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Product ID
           </div>
           <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.productId}}
           </div>
-        </div>
+        </div> -->
 
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.productName">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">

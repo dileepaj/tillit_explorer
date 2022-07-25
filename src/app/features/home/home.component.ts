@@ -64,20 +64,17 @@ export class HomeComponent implements OnInit {
     this.transactionDataService.getRecentTransactions(this.page,this.perPage, this.NoPage).subscribe((transactions) => {
 
       // this.loadingComplete = true;
-      console.log("Blockchain: ", !!transactions);
+      // console.log("Blockchain: ", transactions);
       if(!!transactions){
       transactions.forEach(element => {
-        //console.log("Blockchain: ", element);
-        if (element.TxnType == "tdp") {
 
+        if (element.TxnType == "tdp") {
           let index = element.AvailableProof.findIndex((proof) => {
             return proof == "poc";
           });
-
           if (index != -1) {
             element.AvailableProof.splice(index, 1);
           }
-
           let txnItem = {
             status: element.Status,
             txnHash: element.Txnhash,
@@ -91,7 +88,6 @@ export class HomeComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             BlockchainName: "Stellar",
-            productId: "Not Available",
             productName: element.ProductName
           }
 
@@ -119,7 +115,6 @@ export class HomeComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             BlockchainName: "Stellar",
-            productId: "Not Available",
             productName: element.ProductName
           }
           this.results1.push(txnItem);
@@ -159,16 +154,8 @@ export class HomeComponent implements OnInit {
           this.otherResultsAvailable = true;
 
 
-        } else if (element.TxnType == "splitChild") {
-
-          let index = element.AvailableProof.findIndex((proof) => {
-            return proof == "poc";
-          });
-
-          if (index != -1) {
-            element.AvailableProof.splice(index, 1);
-          }
-
+        } 
+        else if (element.TxnType == "splitChild") {
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -181,25 +168,19 @@ export class HomeComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             BlockchainName: "Stellar",
-            productId: "Product ID Not Available",
+            from:element.From,
+            to:element.To,
             productName: element.ProductName,
-            identifier: element.Identifier
+            identifier: element.Identifier,
+            fromIdentifier1:element.FromIdentifier1,
+            fromIdentifier2:element.FromIdentifier2,
+            toIdentifier:element.ToIdentifier
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
         }
 
-
         else if (element.TxnType == "splitParent") {
-
-          let index = element.AvailableProof.findIndex((proof) => {
-            return proof == "poc";
-          });
-
-          if (index != -1) {
-            element.AvailableProof.splice(index, 1);
-          }
-
           let txnItem = {
             proofStatus: element.Status,
             txnHash: element.Txnhash,
@@ -212,9 +193,34 @@ export class HomeComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             BlockchainName: "Stellar",
-            productId: "Product ID Not Available",
             productName: element.ProductName,
-            identifier: element.Identifier
+            identifier: element.Identifier,
+            fromIdentifier1:element.FromIdentifier1,
+            fromIdentifier2:element.FromIdentifier2,
+            toIdentifier:element.ToIdentifier
+          }
+          this.results1.push(txnItem);
+          this.otherResultsAvailable = true;
+        }
+
+        else if (element.TxnType == "merge") {
+          let txnItem = {
+            proofStatus: element.Status,
+            txnHash: element.Txnhash,
+            transferType: element.TxnType,
+            sequence: element.SequenceNo,
+            txnUrl: element.Url,
+            publicKey: element.SourceAccount,
+            timestamp: element.Timestamp,
+            ledger: element.Ledger,
+            fee: element.FeePaid,
+            availableProofs: element.AvailableProof,
+            BlockchainName: "Stellar",
+            productName: element.ProductName,
+            identifier: element.Identifier,
+            fromIdentifier1:element.FromIdentifier1,
+            fromIdentifier2:element.FromIdentifier2,
+            toIdentifier:element.ToIdentifier
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
