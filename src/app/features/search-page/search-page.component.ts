@@ -191,10 +191,14 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Stellar",
-            productId: element.ProductId,
+            BlockchainName: "Stellar",
+            from:element.From,
+            to:element.To,
             productName: element.ProductName,
-            identifier: "Not Available"
+            identifier: element.Identifier,
+            fromIdentifier1:element.FromIdentifier1,
+            fromIdentifier2:element.FromIdentifier2,
+            toIdentifier:element.ToIdentifier
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
@@ -219,10 +223,12 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Stellar",
-            productId: element.ProductId,
+            BlockchainName: "Stellar",
             productName: element.ProductName,
-            identifier: "Not Available"
+            identifier: element.Identifier,
+            fromIdentifier1:element.FromIdentifier1,
+            fromIdentifier2:element.FromIdentifier2,
+            toIdentifier:element.ToIdentifier
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
