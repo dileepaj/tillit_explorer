@@ -5,6 +5,7 @@ import { IBase64 } from '../../shared/models/base64.model';
 import { ErrorMessage } from '../../shared/models/error-message.model';
 import { encode, decode } from 'js-base64';
 import {Location} from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-transaction-details',
@@ -347,4 +348,11 @@ export class TransactionDetailsComponent implements OnInit {
       this.router.navigate(['/poc', this.txnItem.txnHash]);
     }
   }
+
+  proofbotLink(txnHash,proof){
+    let botUrl= environment.blockchain.getProofbotDomain+`?type=`+proof+`&txn=`+txnHash
+    return botUrl
+  }
+
 }
+
