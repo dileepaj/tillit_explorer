@@ -43,11 +43,7 @@ export class TransactionDetailsComponent implements OnInit {
   tdpImages = [];
   errorOccurred: boolean = false;
   loadingComplete: boolean = false;
-
   error: ErrorMessage;
-
-  // Loader Variables
-
   color = "primary";
   mode = "indeterminate";
   value = 20;
@@ -56,7 +52,17 @@ export class TransactionDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnId');
-    this.getTransactionDetails(this.txnId);
+    this.addTransactionDetailsToSessionStorage(this.txnId)
+  }
+
+  addTransactionDetailsToSessionStorage(txnId:string){
+    if(sessionStorage.getItem(`${txnId}`)){
+    this.txnItem=JSON.parse(sessionStorage.getItem(`${txnId}`))
+    this.loadingComplete = true;
+    }else{
+    this.loadingComplete = false;
+    this.getTransactionDetails(txnId)
+    }
   }
 
   goBack():void{
@@ -109,7 +115,7 @@ export class TransactionDetailsComponent implements OnInit {
 
           if (tdp.data) {
          //   check image exist in object
-         for (let [key, value] of Object.entries(tdp.data)) {     
+         for (let [key, value] of Object.entries(tdp.data)) {
             if(Array.isArray(value)&&value.length>0)
               value.map((imageData)=>{
                 if(!!imageData.image&&imageData.image!=''){
@@ -117,9 +123,11 @@ export class TransactionDetailsComponent implements OnInit {
                   this.enableSlider = true;
                 }
              })
-            }   
+            }
           }
-
+          if(!!this.txnItem){
+            sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
+          }
         }, (err) => {
         //  console.log("Get TDP Error: ", err);
           this.loadingComplete = true;
@@ -168,6 +176,8 @@ export class TransactionDetailsComponent implements OnInit {
           availableProofs: transaction[0].AvailableProof,
           blockchain:transaction[0].Blockchain,
           productName: transaction[0].ProductName,
+          fromIdentifier1:transaction[0].FromIdentifier1,
+          fromIdentifier2:transaction[0].FromIdentifier2,
         }
 
       } else if (transaction[0].TxnType == "coc") {
@@ -202,7 +212,9 @@ export class TransactionDetailsComponent implements OnInit {
           inputData: transaction[0].inputData,
           blockchain:transaction[0].Blockchain,
           senderSigned: false,
-          receiverSigned: false
+          receiverSigned: false,
+          fromIdentifier1:transaction[0].FromIdentifier1,
+          fromIdentifier2:transaction[0].FromIdentifier2,
         }
 
       } else if (transaction[0].TxnType == "splitParent") {
@@ -232,8 +244,9 @@ export class TransactionDetailsComponent implements OnInit {
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
           blockchain:transaction[0].Blockchain,
-          productId: "Not Sending",
           productName: transaction[0].ProductName,
+          fromIdentifier1:transaction[0].FromIdentifier1,
+          fromIdentifier2:transaction[0].FromIdentifier2,
         }
       } else if (transaction[0].TxnType == "splitChild") {
 
@@ -262,8 +275,9 @@ export class TransactionDetailsComponent implements OnInit {
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
           blockchain:transaction[0].Blockchain,
-          productId: "Not Sending",
           productName: transaction[0].ProductName,
+          fromIdentifier1:transaction[0].FromIdentifier1,
+          fromIdentifier2:transaction[0].FromIdentifier2,
         }
 
       } else if (transaction[0].TxnType == "merge") {
@@ -292,10 +306,13 @@ export class TransactionDetailsComponent implements OnInit {
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
           blockchain:transaction[0].Blockchain,
-          productId: "Not Sending",
           productName: transaction[0].ProductName,
+          fromIdentifier1:transaction[0].FromIdentifier1,
+          fromIdentifier2:transaction[0].FromIdentifier2,
         }
-
+      }
+      if(!!this.txnItem){
+        sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
       }
     }, (err) => {
     //  console.log("Get Transaction Error: ", err);

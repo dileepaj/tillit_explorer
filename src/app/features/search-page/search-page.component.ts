@@ -15,33 +15,24 @@ import { encode, decode } from 'js-base64';
   styleUrls: ['./search-page.component.css']
 })
 export class SearchPageComponent implements OnInit {
-
   searchId: string;
   results: any = [];
   errorOccurred: boolean = false;
   otherResultsAvailable: boolean = false;
-
   tdpObsCount: number = 0;
   tdpObsResCount: number = 0;
   tdpObsResolved: boolean = true;
   tdpErrorCount: number = 0;
-
   error: ErrorMessage;
   loadingComplete: boolean = false;
-
-  // Loader Variables
-
+  // Loader Variable
   color = "primary";
   mode = "indeterminate";
   value = 20;
-
   page:number = 1;
   perPage:number = 10;
   NoItems:number;
-  
-
   constructor(private route: ActivatedRoute, private transactionDataService: TransactionDataService) { }
-
   ngOnInit() {
     this.route.params.subscribe((data) => {
       this.results = [];
@@ -53,7 +44,7 @@ export class SearchPageComponent implements OnInit {
       }
     });
   }
-  
+
   onChangePage(event:number){
     this.route.params.subscribe((data) => {
      this.page = event;
@@ -74,9 +65,10 @@ export class SearchPageComponent implements OnInit {
   search(id: string): void {
     this.transactionDataService.getTransactions(id,this.page,this.perPage).subscribe((transactions) => {
       this.errorOccurred = false;
+      if(!!transactions){
       transactions.forEach(element => {
-        this.NoItems = element.Itemcount 
-       
+        this.NoItems = element.Itemcount
+
         if (element.TxnType == "tdp") {
           this.transactionDataService.getTracifiedDataPackets(transactions[0].TdpId).subscribe((base64Data: IBase64) => {
               this.loadingComplete = true;
@@ -202,10 +194,14 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Stellar",
-            productId: element.ProductId,
+            BlockchainName: "Stellar",
+            from:element.From,
+            to:element.To,
             productName: element.ProductName,
-            identifier: "Not Available"
+            identifier: element.Identifier,
+            fromIdentifier1:element.FromIdentifier1,
+            fromIdentifier2:element.FromIdentifier2,
+            toIdentifier:element.ToIdentifier
           }
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
@@ -230,18 +226,47 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-            blockchainName: "Stellar",
-            productId: element.ProductId,
+            BlockchainName: "Stellar",
             productName: element.ProductName,
-            identifier: "Not Available"
+            identifier: element.Identifier,
+            fromIdentifier1:element.FromIdentifier1,
+            fromIdentifier2:element.FromIdentifier2,
+            toIdentifier:element.ToIdentifier
           }
-
           this.results.push(txnItem);
           this.otherResultsAvailable = true;
-       //   console.log("ELSE: ", txnItem);
+        }else if (element.TxnType == "merge") {
+          let txnItem = {
+            proofStatus: element.Status,
+            txnHash: element.Txnhash,
+            transferType: element.TxnType,
+            sequence: element.SequenceNo,
+            txnUrl: element.Url,
+            publicKey: element.SourceAccount,
+            timestamp: element.Timestamp,
+            ledger: element.Ledger,
+            fee: element.FeePaid,
+            availableProofs: element.AvailableProof,
+            BlockchainName: "Stellar",
+            productName: element.ProductName,
+            identifier: element.Identifier,
+            fromIdentifier1:element.FromIdentifier1,
+            fromIdentifier2:element.FromIdentifier2,
+            toIdentifier:element.ToIdentifier
+          }
+          this.results.push(txnItem);
+          this.otherResultsAvailable = true;
         }
-      });
-
+      })}else{
+        this.loadingComplete = true;
+        this.errorOccurred = true;
+        this.error = {
+          errorTitle: "No matching results found",
+          errorMessage: "We can not find the requested records in Stellar blockchain",
+          errorMessageSecondary: "Check if the entered ID is correct and try again.",
+          errorType: "empty"
+        }
+      }
       if (this.otherResultsAvailable) {
         this.loadingComplete = true;
       } else if (!this.otherResultsAvailable && this.error && this.tdpErrorCount == this.tdpObsCount) {
@@ -252,28 +277,34 @@ export class SearchPageComponent implements OnInit {
       } else {
         this.loadingComplete = true;
       }
-
     }, (err) => {
-     // console.log("Blockchain Error: ", err);
+
+    console.log("err.error.code",err.error.code)
       this.loadingComplete = true;
       this.errorOccurred = true;
-      if (err.status === 400) {
+      if (err.error.code === 400) {
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
-          errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
+          errorMessage:  "We can not find the requested records in Stellar blockchain",
+          errorMessageSecondary: "Please try again later",
+          errorType: "empty"
+        }
+      }
+      else if(err.error.code === 500){
+        this.error = {
+          errorTitle: "Internal server error",
+          errorMessage:  "We can not find the requested records in Stellar blockchain",
+          errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       } else {
         this.error = {
-          errorTitle: "Something went wrong",
-          errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
-          errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
+          errorTitle: "Somthing Went Wrong",
+          errorMessage: "Unable to reach Tillit explorer gateway",
+          errorMessageSecondary: "Please try again later",
           errorType: "empty"
         }
       }
     });
   }
-
-
 }

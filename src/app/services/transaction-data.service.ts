@@ -22,6 +22,12 @@ export class TransactionDataService {
     );
   }
 
+  getTransactionsCount(): Observable<any> {
+    return this.http.get(environment.blockchain.getRecentTransactionsCount).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   getTransactions(transactionId: string, page:number, perPage:number): Observable<any> {
     let params = new HttpParams();
     params = params.append('txn', String(transactionId));

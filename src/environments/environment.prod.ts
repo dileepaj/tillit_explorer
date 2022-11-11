@@ -17,6 +17,7 @@ export const environment = {
     getPocData: 'https://gateway.tracified.com/proof/poc/',
     getPocTreeData: 'https://gateway.tracified.com/pocv4/',
     getTransactionData: 'https://gateway.tracified.com/GetTransactions/',
-    getRecentTransactions: 'https://gateway.tracified.com/RetrievePreviousTranasctions/'
+    getRecentTransactions: 'https://gateway.tracified.com/RetrievePreviousTranasctions/',
+    getRecentTransactionsCount:'https://gateway.tracified.com/RetrievePreviousTranasctionsCount/',
   }
 };

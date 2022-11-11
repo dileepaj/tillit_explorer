@@ -8,7 +8,6 @@ import { SearchPageComponent } from './features/search-page/search-page.componen
 import { TransactionDetailsComponent } from './features/transaction-details/transaction-details.component';
 import { ProofPococComponent } from './features/proofs/pococ/proof-pococ.component';
 import { ProofPocComponent } from './features/proofs/poc/proof-poc.component';
-import { MaintenanceComponent } from './features/maintenance/maintenance.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},

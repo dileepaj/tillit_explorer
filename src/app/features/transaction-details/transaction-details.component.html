@@ -4,8 +4,8 @@
     <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
     </mat-spinner>
   </div>
-  <div class="container mt-5" *ngIf="loadingComplete && !errorOccurred">
-    <div class="row mb-3">
+  <div class="container mt-3" *ngIf="loadingComplete && !errorOccurred">
+    <div class="row mb-2">
       <div class="col-12">
         <div class="row">
         <div class="mr-3 ml-3 "><span  (click)="goBack()">   <i class="fas fa-angle-left clickableAwesomeFont" style="font-size: 30px;"></i></span></div>
@@ -16,8 +16,7 @@
     <div class="col-12 col-md-12 pb-3 ml-0 pt-md-4 pl-md-4 pr-md-4" style="background-color: white;">
     <div class="col-xs-12 col-md-12 pb-3 mt-3" *ngIf="txnItem.images">
       <div class="row mt-2">
-        <div class="col-12">
-          <div style="text-align:center;">
+        <div class="col-xs-12 col-md-12 col-lg-12 text-center">
             <owl-carousel-o [options]="customOptions">
               <ng-template carouselSlide *ngFor="let imageData of txnItem.images">
                 <div>
@@ -25,11 +24,10 @@
                 </div>
               </ng-template>
             </owl-carousel-o>
-          </div>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-12 pb-3 ml-0 pt-md-4 pl-md-4 pr-md-4" style="background-color: white;">
+
     <div class="col-xs-12 col-md-12 mt-3 mt-md-4">
       <div class="col-xs-12 col-md-12 text-left  pb-1"
         style="background-color: white; border-bottom: 0.5px solid #dee2e6;">
@@ -76,6 +74,25 @@
           </div>
         </div>
 
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.fromIdentifier1">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            From Identifier1
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.fromIdentifier1}}
+          </div>
+        </div>
+
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.fromIdentifier2">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            From Identifier2
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.fromIdentifier2}}
+          </div>
+        </div>
+
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.identifier">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Identifier
@@ -85,14 +102,14 @@
           </div>
         </div>
 
-        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.productId">
+        <!-- <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.productId">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Product ID
           </div>
           <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.productId}}
           </div>
-        </div>
+        </div> -->
 
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.productName">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">

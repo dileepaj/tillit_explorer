@@ -1,3 +1,40 @@
 .mat-spinner::ng-deep circle {
     stroke: #0062cc;
 }
+
+.searchResulitTitle{
+    display: block;
+    font-size: 15px;
+  }
+
+@media screen and (min-width: 1200px) {
+    .titleMargin{
+        margin-left: 10%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .titleMargin{
+        margin-left: 10%;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .titleMargin{
+        margin-left: 8.7%;
+    }
+}
+@media screen and (max-width: 824px) {
+    .titleMargin{
+        margin-left: 8.6%;
+    }
+}
+@media screen and (max-width: 750px) {
+    .titleMargin{
+        margin-left: 7.8%;
+    }
+}
+@media screen and (max-width: 450px) {
+    .titleMargin{
+        margin-left: 5%;
+    }
+}
