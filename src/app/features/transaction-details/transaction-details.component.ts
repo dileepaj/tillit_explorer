@@ -348,3 +348,4 @@ export class TransactionDetailsComponent implements OnInit {
     }
   }
 }
+
