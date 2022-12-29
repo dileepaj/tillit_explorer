@@ -64,21 +64,6 @@
             <div style="float: none;"></div>
           </div>
         </div>
-        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.availableProofs">
-          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
-            Proofbot links
-          </div>
-          <div class="col-12 col-md-9 " style=" overflow-y: auto;  overflow-wrap: break-word;">
-            <div class="text-md-left text-center pl-md-1 mr-2" style="font-weight: 600;color:#818E94; float: left;"
-              *ngFor="let proof of txnItem.availableProofs">
-              <a href={{proofbotLink(txnItem.txnHash,proof)}} onclick="return true;"><span *ngIf="proof=='poe'||proof=='pog'"
-                  class="pl-3 pr-3 pt-2 pb-2 badge badge-pill badge-primary"
-                  style="font-size: 14px;background-color: #cffdfd;color:#818E94;font-weight: 700;">{{proof | uppercase}}</span>
-              </a>
-            </div>
-            <div style="float: none;"></div>
-          </div>
-        </div>
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.tdpId">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             TDP ID

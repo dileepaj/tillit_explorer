@@ -19,6 +19,5 @@ export const environment = {
     getTransactionData: 'https://qa.gateway.tracified.com/GetTransactions/',
     getRecentTransactions: 'https://qa.gateway.tracified.com/RetrievePreviousTranasctions/',
     getRecentTransactionsCount:'https://qa.gateway.tracified.com/RetrievePreviousTranasctionsCount/',
-    getProofbotDomain:'http://qa.proofbot.tillit.world/'
   }
 };
