@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~8.2.4",
     "@angular/router": "~8.2.4",
     "@auth0/angular-jwt": "^3.0.0",
+    "@types/d3": "^5.16.0",
     "@ng-bootstrap/ng-bootstrap": "^5.0.0",
     "acorn": "^8.6.0",
     "bootstrap": "^4.3.1",

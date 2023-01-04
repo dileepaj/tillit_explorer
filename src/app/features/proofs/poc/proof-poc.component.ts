@@ -132,7 +132,7 @@ export class ProofPocComponent implements OnInit {
     let height = box.getBoundingClientRect().height;
     this.pocTreeWidth = width;
     this.pocTreeHeight = height;
-    
+
     //listeners
     d3.selectAll("g.edgePath").on('click', function (d: any) {
         const from = Nodes[d.v].TrustLinks[0];
@@ -142,7 +142,7 @@ export class ProofPocComponent implements OnInit {
     // d3.selectAll("g.edgeLabel").on('click', function (d: any) {
     //     const from = Nodes[d.v].TrustLinks[0];
     //     const to = Nodes[d.w].TrustLinks[0];
-    //     if(Nodes[d.w].Data.TxnType == 2) 
+    //     if(Nodes[d.w].Data.TxnType == 2)
     //         window.open(`/proof-verification?type=pobl&txn=${to}&txn2=${from}`);
     //     else alert("At the moment, proof verification is only available for TDPs.")
     // });
@@ -184,9 +184,9 @@ export class ProofPocComponent implements OnInit {
                 curve: d3.curveBasis,
                 style: `stroke: ${colors.sColor}; fill:none; stroke-width: 1.4px; stroke-dasharray: 5, 5;`,
                 arrowheadStyle: `fill: ${colors.sColor}`,
-            });  
+            });
             edgeValues.push(nodeIndex);
-            this.addNodesAndEdges(g, Nodes, doneNodes, edgeValues, childNode, nodeIndex, nodeDepth);        
+            this.addNodesAndEdges(g, Nodes, doneNodes, edgeValues, childNode, nodeIndex, nodeDepth);
         }
     }
     doneNodes.push(node.Data.TxnHash);
@@ -302,7 +302,7 @@ export class ProofPocComponent implements OnInit {
   //     .attr("r", 10)
   //     .attr("fill", "steelblue");
 
-  //   node.append("text").text((d: any) => {      
+  //   node.append("text").text((d: any) => {
   //     console.log("Node Text: ", d);
   //     return d.id;
   //   }).attr("opacity", 0);
@@ -319,7 +319,7 @@ export class ProofPocComponent implements OnInit {
   // }
 
   public getTransaction(passingHash: string) {
-    this.pocTransactions.forEach((element) => { 
+    this.pocTransactions.forEach((element) => {
       if (element.Txnhash == passingHash) {
         this.selectedItem = element;
       }
