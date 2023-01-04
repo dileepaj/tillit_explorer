@@ -24,6 +24,7 @@ export class SearchbarComponent {
   search() {
   //  console.log("Searchbar button",this.searchForm.value);
     if (this.searchForm.value) {
+      sessionStorage.removeItem("searchPage");
       this.searchText=this.searchForm.value
       this.router.navigate(['/search', this.searchForm.value]);
       this.popSearch = false;

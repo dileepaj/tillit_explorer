@@ -42,6 +42,9 @@ export class SearchPageComponent implements OnInit {
       if ( this.page != 1){
         this.reloadCurrentPage()
       }
+      if(sessionStorage.getItem('searchPage')) {
+        this.page = parseInt(sessionStorage.getItem('searchPage'));
+      }
     });
   }
 
@@ -55,6 +58,7 @@ export class SearchPageComponent implements OnInit {
      if (this.page == 1) {
       this.reloadCurrentPage()
     }
+    sessionStorage.setItem('searchPage',this.page.toString());
   });
   }
 
