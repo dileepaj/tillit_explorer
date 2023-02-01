@@ -7,6 +7,7 @@ import * as dracula from 'graphdracula';
 import { NullAstVisitor } from '@angular/compiler';
 import * as dagreD3 from 'dagre-d3';
 import {Location} from '@angular/common';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-poc',
   templateUrl: './proof-poc.component.html',
@@ -139,13 +140,13 @@ export class ProofPocComponent implements OnInit {
         const to = Nodes[d.w].TrustLinks[0];
         console.log({from, to})
     });
-    // d3.selectAll("g.edgeLabel").on('click', function (d: any) {
-    //     const from = Nodes[d.v].TrustLinks[0];
-    //     const to = Nodes[d.w].TrustLinks[0];
-    //     if(Nodes[d.w].Data.TxnType == 2)
-    //         window.open(`/proof-verification?type=pobl&txn=${to}&txn2=${from}`);
-    //     else alert("At the moment, proof verification is only available for TDPs.")
-    // });
+    d3.selectAll("g.edgeLabel").on('click', function (d: any) {
+        const from = Nodes[d.v].TrustLinks[0];
+        const to = Nodes[d.w].TrustLinks[0];
+        if(Nodes[d.w].Data.TxnType == 2)
+            window.open(environment.blockchain.proofBot+`/?type=pobl&txn=${to}&txn2=${from}`);
+        else alert("At the moment, proof verification is only available for TDPs.")
+    });
     d3.selectAll("g.node").on('click', function (d: any) {
         window.open("/txn/" + Nodes[d].TrustLinks[0])
     });
@@ -180,7 +181,7 @@ export class ProofPocComponent implements OnInit {
             mainIndex = nodeIndex;
             g.setEdge(node.Data.TxnHash, childNode.Data.TxnHash, {
                 label: `${nodeIndex} ${this.getTxnNameForTxnType(childNode.Data.TxnType)}`,
-                labelStyle: `font-size: 10px; fill: ${colors.sColor};`,
+                labelStyle: `font-size: 10px; fill: ${colors.sColor}; cursor: pointer;`,
                 curve: d3.curveBasis,
                 style: `stroke: ${colors.sColor}; fill:none; stroke-width: 1.4px; stroke-dasharray: 5, 5;`,
                 arrowheadStyle: `fill: ${colors.sColor}`,
