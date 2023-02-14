@@ -125,8 +125,8 @@ export class ProofPocComponent implements OnInit {
     let box = document.querySelector('#pocTree');
     let width = box.getBoundingClientRect().width;
     let height = box.getBoundingClientRect().height;
-    this.pocTreeWidth = width;
-    this.pocTreeHeight = height;
+    this.pocTreeWidth = width + (2 * this.marginx);
+    this.pocTreeHeight = height + (2 * this.marginy);
     // Center the graph
     var xCenterOffset = (inner.attr("width") - g.graph().width) / 2;
     svgGroup.attr("transform", "translate(" + xCenterOffset + ", 30)");

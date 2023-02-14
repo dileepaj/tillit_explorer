@@ -29,8 +29,8 @@
       </mat-spinner>
     </div>
     <div [style.opacity]="loadingComplete ? '1' : '0'" [style.height.px]="loadingComplete ? '460' : '0'" id="body" style="width: 100% !important;  border:2px solid #000;  overflow: scroll !important;" class="px-5 py-4 bg-white d-flex align-items-center" >
-      <div [attr.width.px]="pocTreeWidth + (2 * marginx )" [attr.height.px]="pocTreeHeight+ ( 2 * marginy )">
-        <svg [attr.width.px]="pocTreeWidth + (2 * marginx )" [attr.height.px]="pocTreeHeight+ ( 2 * marginy )">
+      <div [attr.width.px]="pocTreeWidth" [attr.height.px]="pocTreeHeight">
+        <svg [attr.width.px]="pocTreeWidth" [attr.height.px]="pocTreeHeight">
           <g id="pocTree"/>
         </svg>
       </div>
