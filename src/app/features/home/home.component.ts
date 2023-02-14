@@ -154,7 +154,7 @@ export class HomeComponent implements OnInit {
           this.otherResultsAvailable = true;
 
 
-        } 
+        }
         else if (element.TxnType == "splitChild") {
           let txnItem = {
             proofStatus: element.Status,

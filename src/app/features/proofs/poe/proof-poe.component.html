@@ -57,7 +57,7 @@
     </mat-spinner>
   </div>
   <div class="container mt-5" *ngIf="loadingComplete && !errorOccurred">
-    <div class="row mb-3">  
+    <div class="row mb-3">
       <div class="col-12">
         <div class="row">
           <div class="mr-2 ml-3 "><span  (click)="goBack()">   <i class="fas fa-angle-left clickableAwesomeFont" style="font-size: 30px;"></i></span></div>
@@ -81,13 +81,13 @@
           </div>
         </div>
       </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 align-self-center text-center">  
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 align-self-center text-center">
         <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"[attr.aria-expanded]="!isCollapsed" aria-controls="collapseshowResult">Show Result <i class="fas ml-5 fa-caret-down"
           style="font-size: 18px;"></i></button>
       </div>
-      </div>  
-    <div class="showResult">       
-      <div id="collapseshowResult" [ngbCollapse]="isCollapsed">  
+      </div>
+    <div class="showResult">
+      <div id="collapseshowResult" [ngbCollapse]="isCollapsed">
       <div class="row mb-3 mt-3 ">
         <div class="col-12 col-md-12 ">
           <div class="row pl-3">
@@ -139,7 +139,7 @@
           <div class="float-none"></div>
         </div>
       </div>
-      <!-- <div 
+      <!-- <div
         *ngFor="let item of tracifiedCoreData.data | keyvalue">
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="!isContainImage(item.value)">
         <div class="col-sm-12 col-md-3  col-lg-3  pl-md-4  pt-3 pt-md-0 trasactionDataMobileResponsive" style="font-size: 18px; font-weight:500;">
@@ -152,9 +152,9 @@
             </div>
           </div>
           <div *ngIf="isObject(item.value)">
-          <div class="row align-self-center"  *ngFor="let subItem of item.value  | keyvalue" style="overflow-y: auto; "> 
+          <div class="row align-self-center"  *ngFor="let subItem of item.value  | keyvalue" style="overflow-y: auto; ">
             <div class="col-sm-12 col-md-6 col-lg-6 align-item-center" style=" font-size: 14px; font-weight:420; overflow-wrap:break-word; ">
-              <p>  {{CapitalFirstLetterAndPutSpace(subItem.key)}} :</p> 
+              <p>  {{CapitalFirstLetterAndPutSpace(subItem.key)}} :</p>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 align-item-center" style=" font-size: 14px; overflow-y: auto;  overflow-wrap:normal;"  >
               <p>  {{subItem.value }}</p>

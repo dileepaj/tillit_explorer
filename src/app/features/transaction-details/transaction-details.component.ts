@@ -58,7 +58,7 @@ export class TransactionDetailsComponent implements OnInit {
   addTransactionDetailsToSessionStorage(txnId:string){
     if(sessionStorage.getItem(`${txnId}`)){
     this.txnItem=JSON.parse(sessionStorage.getItem(`${txnId}`))
-    this.loadingComplete = true;  
+    this.loadingComplete = true;
     }else{
     this.loadingComplete = false;
     this.getTransactionDetails(txnId)
@@ -115,7 +115,7 @@ export class TransactionDetailsComponent implements OnInit {
 
           if (tdp.data) {
          //   check image exist in object
-         for (let [key, value] of Object.entries(tdp.data)) {     
+         for (let [key, value] of Object.entries(tdp.data)) {
             if(Array.isArray(value)&&value.length>0)
               value.map((imageData)=>{
                 if(!!imageData.image&&imageData.image!=''){
@@ -123,7 +123,7 @@ export class TransactionDetailsComponent implements OnInit {
                   this.enableSlider = true;
                 }
              })
-            }   
+            }
           }
           if(!!this.txnItem){
             sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
@@ -348,3 +348,4 @@ export class TransactionDetailsComponent implements OnInit {
     }
   }
 }
+

@@ -44,6 +44,7 @@ export class SearchPageComponent implements OnInit {
       }
     });
   }
+
   onChangePage(event:number){
     this.route.params.subscribe((data) => {
      this.page = event;
@@ -56,16 +57,18 @@ export class SearchPageComponent implements OnInit {
     }
   });
   }
+
   reloadCurrentPage() {
     window.location.reload();
    }
+
   search(id: string): void {
     this.transactionDataService.getTransactions(id,this.page,this.perPage).subscribe((transactions) => {
       this.errorOccurred = false;
       if(!!transactions){
       transactions.forEach(element => {
-        this.NoItems = element.Itemcount 
-       
+        this.NoItems = element.Itemcount
+
         if (element.TxnType == "tdp") {
           this.transactionDataService.getTracifiedDataPackets(transactions[0].TdpId).subscribe((base64Data: IBase64) => {
               this.loadingComplete = true;
