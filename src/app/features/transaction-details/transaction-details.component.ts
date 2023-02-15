@@ -71,7 +71,16 @@ export class TransactionDetailsComponent implements OnInit {
 
   getTransactionDetails(txnId: string): void {
     this.transactionDataService.getTransactions(txnId,1,10).subscribe((transaction) => {
-  //    console.log("Transaction: ", transaction);
+      if (transaction==null){
+        this.loadingComplete = true;
+        this.errorOccurred = true;
+        this.error = {
+          errorTitle: "No matching results found.",
+          errorMessage: "There is no data associated with the given transaction hash. Check if the entered transaction hash is correct and try again.",
+          errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
+          errorType: "empty"
+        }
+      }
       if (transaction[0].TxnType == "tdp") {
         this.transactionDataService.getTracifiedDataPackets(transaction[0].TdpId).subscribe((base64Data: IBase64) => {
         //  console.log("Backend: ", base64Data);
@@ -134,14 +143,14 @@ export class TransactionDetailsComponent implements OnInit {
           this.errorOccurred = true;
           if (err.status === 400) {
             this.error = {
-              errorTitle: "No matching results found",
+              errorTitle: "No matching results found.",
               errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
               errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
               errorType: "empty"
             }
           } else {
             this.error = {
-              errorTitle: "Something went wrong",
+              errorTitle: "Something went wrong.",
               errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
               errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
               errorType: "empty"
@@ -320,14 +329,14 @@ export class TransactionDetailsComponent implements OnInit {
       this.errorOccurred = true;
       if (err.status === 400) {
         this.error = {
-          errorTitle: "No matching results found",
+          errorTitle: "No matching results found.",
           errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
           errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
           errorType: "empty"
         }
       } else {
         this.error = {
-          errorTitle: "Something went wrong",
+          errorTitle: "Something went wrong.",
           errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
           errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
           errorType: "empty"
