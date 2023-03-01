@@ -9,6 +9,7 @@ import { ClipboardService } from 'ngx-clipboard';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { encode, decode } from 'js-base64';
 import {Location} from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   templateUrl: './proof-poe.component.html',
@@ -53,6 +54,7 @@ export class ProofPoeComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
   public isCollapsed = true;
+  proofbotDomain = environment.blockchain.proofBot
 
   constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService, private _location: Location) { }
 
