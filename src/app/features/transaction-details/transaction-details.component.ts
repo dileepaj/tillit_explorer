@@ -356,5 +356,18 @@ export class TransactionDetailsComponent implements OnInit {
       this.router.navigate(['/poc', this.txnItem.txnHash]);
     }
   }
+
+  addProofName(proof){
+    if (proof == "pog") {
+      return "Proof of Genesis (PoG)"
+    } else if (proof == "poe") {
+      return "Proof of Existence (PoE)"
+    } else if (proof == "pococ") {
+      return "Change of Custody (POCOC)"
+    } else if (proof == "poc") {
+      return "proof of Continuity (POC)"
+    }else
+      return proof
+  }
 }
 
