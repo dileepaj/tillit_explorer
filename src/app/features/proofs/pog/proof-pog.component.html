@@ -19,8 +19,8 @@
   </div>
   <div class="col-lg-5 col-sm-12 col-xs-12">
     <div class="row  flex-container">
-      <div class="mr-3">
-        <a [href]="proofbotDomain + '/?type=pog&txn=' + txnId" target="_blank">
+      <div class="mr-3" *ngIf="!!botHash">
+        <a [href]="proofbotDomain + '/?type=pog&txn=' + botHash" target="_blank">
           <span
             class="pl-3 pr-3 pt-2 pb-2 badge badge-primary"
             style="width:175px;font-size: 14px;background-color:#3182BD;color:#FFFFFF;font-weight: 500; line-height: 16.41px; margin-bottom: 0.3rem;">

@@ -139,9 +139,7 @@ export class ProofPocComponent implements OnInit {
     d3.selectAll("g.edgeLabel").on('click', function (d: any) {
         const from = Nodes[d.v].TrustLinks[0];
         const to = Nodes[d.w].TrustLinks[0];
-        if(Nodes[d.w].Data.TxnType == 2)
-            window.open(environment.blockchain.proofBot+`/?type=pobl&txn=${to}&txn2=${from}`);
-        else alert("At the moment, proof verification is only available for TDPs.")
+        window.open(environment.blockchain.proofBot+`/?type=pobl&txn=${to}&txn2=${from}`);
     });
     d3.selectAll("g.node").on('click', function (d: any) {
         window.open("/txn/" + Nodes[d].TrustLinks[0])
