@@ -11,3 +11,45 @@
 .clickableAwesomeFont:hover{
   color:blue !important;
 }
+.rectNode{
+  padding: 3px 30px;
+  border: 2px solid #929292;
+  background-color:#D9D9D9;
+}
+
+.label-bar{
+  background-color: #F1F1F1;
+}
+
+.label-bar{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.dot {
+  margin-top: auto;
+  margin-bottom: auto;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+}
+
+.genesis {
+  background-color: #16A085;
+}
+
+.tdp {
+  background-color: #27AE60;
+}
+
+.split {
+  background-color: #2980B9;
+}
+
+.parent {
+  background-color: #8E44AD;
+}
+
+.merge {
+  background-color:#C0392B;
+}

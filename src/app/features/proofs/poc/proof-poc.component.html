@@ -4,34 +4,58 @@
     <div class="row mb-3">
       <div class="col-12">
         <div class="row">
-          <div class="mr-1 ml-3 "><span  (click)="goBack()">   <i class="fas fa-angle-left clickableAwesomeFont" style="font-size: 30px;"></i></span></div>
-       <div>
-          <h4>PROOF OF CONTINUITY (POC)</h4>
-          <p>Prove the history of a given data packet through blockchain</p>
-      </div>
+          <div class="mr-1 ml-3 "><span (click)="goBack()"> <i class="fas fa-angle-left clickableAwesomeFont"
+                style="font-size: 30px;"></i></span></div>
+          <div>
+            <h4>PROOF OF CONTINUITY (POC)</h4>
+            <p>Prove the history of a given data packet through blockchain</p>
+          </div>
         </div>
       </div>
-      <div class="col-12 mt-2 ml-3">
-        <ul class="p-2 ml-4">
-          <li class="text-muted m-0" style="font-size: 14px;">Click on a <b>node</b> to view and verify it's transaction information.</li>
-          <!-- <li class="text-muted" style="font-size: 14px;">Click on a <b>edge</b> to verify it's associated backlink.</li> -->
-        </ul>
+      <div class="col-12 mt-2">
+        <div class="text-muted mb-2" style="font-size: 14px;">Click on a node <span class="rectNode ml-1 mr-1"></span>
+          to verify it’s transaction information.</div>
+        <div class="text-muted" style="font-size: 14px;">Click on a edge <span class="ml-1 mr-1"><img
+              src="../../../../assets/img/Arrow2.svg" alt=""></span> to verify it's associated backlink.</div>
       </div>
-      <div class="col-12 mt-2 ml-3">
-        <ul class="p-2 ml-4">
-          <li class="text-muted m-0" style="font-size: 14px;">Click on a <b>node</b> to view and verify it's transaction information.</li>
-          <li class="text-muted" style="font-size: 14px;">Click on a <b>edge</b> to verify it's associated backlink.</li>
-        </ul>
+    </div>
+    <div class="label-bar row justify-content-around align-items-center  mt-2 mb-2">
+      <div class="col-sm-12  col-md-auto  text-center">
+        <div class="row justify-content-center align-item-center text-center">
+          <div class="dot genesis mr-2"></div> Genesis Batch
+        </div>
+      </div>
+      <div class="col-sm-12  col-md-auto  text-center">
+        <div class="row">
+          <div class="dot tdp mr-2"></div> Batch
+        </div>
+      </div>
+      <div class="col-sm-12  col-md-auto  text-center">
+        <div class="row">
+          <div class="dot split mr-2"></div> Splitted Batch
+        </div>
+      </div>
+      <div class="col-sm-12  col-md-auto  text-center">
+        <div class="row">
+          <div class="dot parent mr-2"></div> Split Parent
+        </div>
+      </div>
+      <div class="col-sm-12  col-md-auto  text-center">
+        <div class="row">
+          <div class="dot merge mr-2"></div> Merged Batch
+        </div>
       </div>
     </div>
     <div class="mt-5 d-flex justify-content-center align-items-center" *ngIf="!loadingComplete" style="height: 300px;">
       <mat-spinner class="progress-loader" [color]="color" [mode]="mode" [value]="value">
       </mat-spinner>
     </div>
-    <div [style.opacity]="loadingComplete ? '1' : '0'" [style.height.px]="loadingComplete ? '460' : '0'" id="body" style="width: 100% !important;  border:2px solid #000;  overflow: scroll !important;" class="px-5 py-4 bg-white d-flex align-items-center" >
+    <div [style.opacity]="loadingComplete ? '1' : '0'" [style.min-height.px]="loadingComplete ? '260' : '0'" id="body"
+      style="width: 100% !important;  border:1px solid #000;  overflow: scroll !important;"
+      class="px-5 py-4 bg-white d-flex align-items-center">
       <div [attr.width.px]="pocTreeWidth" [attr.height.px]="pocTreeHeight">
         <svg [attr.width.px]="pocTreeWidth" [attr.height.px]="pocTreeHeight">
-          <g id="pocTree"/>
+          <g id="pocTree" />
         </svg>
       </div>
     </div>
