@@ -347,9 +347,9 @@ export class TransactionDetailsComponent implements OnInit {
 
   navigateToProof(proof) {
     if (proof == "pog") {
-      this.router.navigate(['/pog', this.txnItem.txnHash]);
+      this.router.navigate(['/pog', this.txnItem.txnHash], {state:{botHash:this.txnId}});
     } else if (proof == "poe") {
-      this.router.navigate(['/poe', this.txnItem.tdpId]);
+      this.router.navigate(['/poe', this.txnItem.tdpId], {state:{botHash:this.txnId}});
     } else if (proof == "pococ") {
       this.router.navigate(['/pococ', this.txnItem.txnHash]);
     } else if (proof == "poc") {

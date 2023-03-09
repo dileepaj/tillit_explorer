@@ -1,5 +1,4 @@
 <app-header></app-header>
-
 <div class="modal" id="myModal">
   <div class="modal-dialog">
     <div class="modal-content" style="border-radius: 0%;">
@@ -69,10 +68,10 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-5 col-sm-12 col-xs-12">
+      <div class="col-lg-5 col-sm-12 col-xs-12" *ngIf="!!botHash">
         <div class="row  flex-container">
           <div class="mr-3">
-            <a [href]="proofbotDomain + '/?type=poe&txn=' + tdpId" target="_blank">
+            <a [href]="proofbotDomain + '/?type=poe&txn=' + botHash" target="_blank">
               <span
                 class="pl-3 pr-3 pt-2 pb-2 badge badge-primary"
                 style="width:175px;font-size: 14px;background-color:#3182BD;color:#FFFFFF;font-weight: 500; line-height: 16.41px; margin-bottom: 0.3rem;">

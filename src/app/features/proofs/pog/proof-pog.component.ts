@@ -26,10 +26,12 @@ export class ProofPogComponent {
   mode = "indeterminate";
   value = 20;
   proofbotDomain=environment.blockchain.proofBot
+  botHash:string
 
   constructor(private route: ActivatedRoute, private pogDataService: PogDataService, private _location: Location) { }
 
   ngOnInit() {
+    this.botHash= history.state.botHash
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
     this.getProofData(this.txnId);
   }
