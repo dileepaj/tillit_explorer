@@ -53,6 +53,7 @@ export class ProofPoeComponent implements OnInit {
   mode = "indeterminate";
   value = 20;
   public isCollapsed = true;
+  poacstatus: any;
 
   constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService, private _location: Location) { }
 
@@ -84,7 +85,9 @@ export class ProofPoeComponent implements OnInit {
     this.poeDataService.getHashValues(tdpId).subscribe((data) => {
       this.transactionData = data[0];
      // console.log("PoE Hash Data: ", this.transactionData);
-
+    if(data[0].Status=="POE failed but POAC is present"){
+      this.poacstatus="POAC is PRESENT"
+    }
       if (this.transactionData.TxnType != "tdp") {
         this.errorOccurred = true;
         this.error = {
