@@ -36,10 +36,14 @@ export class HomeComponent implements OnInit {
       sessionStorage.clear();
     }
 
+    if(sessionStorage.getItem('currentPageInHome')){
+      this.page = parseInt(sessionStorage.getItem('currentPageInHome'))
+    }
     this.addResultToSessionStorage(this.page);
   }
   onChangePage(event:number){
     this.page = event
+    sessionStorage.setItem('currentPageInHome',event.toString())
     this.addResultToSessionStorage(event)
   }
 

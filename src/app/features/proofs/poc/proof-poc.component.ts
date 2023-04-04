@@ -139,9 +139,7 @@ export class ProofPocComponent implements OnInit {
     d3.selectAll("g.edgeLabel").on('click', function (d: any) {
         const from = Nodes[d.v].TrustLinks[0];
         const to = Nodes[d.w].TrustLinks[0];
-        if(Nodes[d.w].Data.TxnType == 2)
-            window.open(environment.blockchain.proofBot+`/?type=pobl&txn=${to}&txn2=${from}`);
-        else alert("At the moment, proof verification is only available for TDPs.")
+        window.open(environment.blockchain.proofBot+`/?type=pobl&txn=${to}&txn2=${from}`);
     });
     d3.selectAll("g.node").on('click', function (d: any) {
         window.open("/txn/" + Nodes[d].TrustLinks[0])
@@ -150,15 +148,15 @@ export class ProofPocComponent implements OnInit {
   }
 
   addNodesAndEdges(g:any, Nodes:any, doneNodes:Array<string>, edgeValues:Array<number>, node:any, mainIndex:number, depth:number) {
-    const {sColor, lColor} = this.getColorForTxnType(node.Data.TxnType);
+    const {sColor, lColor, bColor} = this.getColorForTxnType(node.Data.TxnType);
     if(doneNodes.includes(node.Data.TxnHash)) return;
     if (node.Data.Identifier!=""){
         g.setNode(node.Data.TxnHash, {
-            label: node.Data.Identifier,
+            label: `Batch ID:  ${node.Data.Identifier}`,
             shape: 'rect',
             id:`node-${node.Data.TxnHash}-${sColor}`,
-            style: `stroke: black; stroke-width: 1px; fill: ${sColor}`,
-            labelStyle: `font: 300 14px 'Helvetica Neue', Helvetica;fill: ${lColor}; cursor: pointer;`,
+            style: `stroke: ${bColor}; stroke-width: 2.5px; fill: ${sColor}`,
+            labelStyle: `font: 300 14px 'Helvetica Neue', Helvetica;fill: ${lColor}; cursor: pointer; font-weight: bold`,
         });
     }
     var lastSplitNodeIndex = null;
@@ -178,10 +176,10 @@ export class ProofPocComponent implements OnInit {
             } else nodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, mainIndex, nodeDepth);
             mainIndex = nodeIndex;
             g.setEdge(node.Data.TxnHash, childNode.Data.TxnHash, {
-                label: `${nodeIndex} ${this.getTxnNameForTxnType(childNode.Data.TxnType)}`,
-                labelStyle: `font-size: 10px; fill: ${colors.sColor}; cursor: pointer;`,
+                label: `${this.getTxnNameForTxnType(childNode.Data.TxnType)}`,
+                labelStyle: `font-size: 10px; fill: ${colors.sColor}; cursor: pointer; font-weight: bold`,
                 curve: d3.curveBasis,
-                style: `stroke: ${colors.sColor}; fill:none; stroke-width: 1.9px; stroke-dasharray: 5, 5;`,
+                style: `stroke: ${colors.sColor}; fill:none; stroke-width: 2px;`,
                 arrowheadStyle: `fill: ${colors.sColor}`,
             });
             edgeValues.push(nodeIndex);
@@ -192,34 +190,40 @@ export class ProofPocComponent implements OnInit {
   }
 
   getColorForTxnType(type) {
-    var sColor : string, lColor : string;
+    var sColor : string, lColor : string, bColor : string;
     switch (type) {
       case "0":
-          sColor = "brown";
+          sColor = "#16A085";
+          bColor = "#086553";
           lColor = "white";
           break
       case "2":
-          sColor = "green";
+          sColor = "#27AE60";
+          bColor = "#127D40";
           lColor = "white";
           break
       case "6":
-          sColor = "purple";
+          sColor = "#2980B9";
+          bColor = "#105481";
           lColor = "white";
           break
       case "7":
-          sColor = "red";
+          sColor = "#C0392B";
+          bColor = "#802C24";
           lColor = "white";
           break
       case "5":
-          sColor = "black";
+          sColor = "#8E44AD";
+          bColor = "#70318A";
           lColor = "white";
           break
       default:
-          sColor = "blue";
+          sColor = "black";
+          bColor = "black";
           lColor = "white";
           break
     }
-    return {sColor, lColor};
+    return {sColor, lColor, bColor};
   }
 
   getTxnNameForTxnType(type) {
