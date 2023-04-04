@@ -111,3 +111,15 @@
 .clickableAwesomeFont:hover{
   color:blue !important;
 }
+
+@media (min-width: 576px) {
+  .flex-container {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .flex-container {
+    justify-content: center;
+  }
+}
