@@ -347,14 +347,27 @@ export class TransactionDetailsComponent implements OnInit {
 
   navigateToProof(proof) {
     if (proof == "pog") {
-      this.router.navigate(['/pog', this.txnItem.txnHash]);
+      this.router.navigate(['/pog', this.txnItem.txnHash], {state:{botHash:this.txnId}});
     } else if (proof == "poe") {
-      this.router.navigate(['/poe', this.txnItem.tdpId]);
+      this.router.navigate(['/poe', this.txnItem.tdpId], {state:{botHash:this.txnId}});
     } else if (proof == "pococ") {
       this.router.navigate(['/pococ', this.txnItem.txnHash]);
     } else if (proof == "poc") {
       this.router.navigate(['/poc', this.txnItem.txnHash]);
     }
+  }
+
+  addProofName(proof){
+    if (proof == "pog") {
+      return "Proof of Genesis (PoG)"
+    } else if (proof == "poe") {
+      return "Proof of Existence (PoE)"
+    } else if (proof == "pococ") {
+      return "Change of Custody (POCOC)"
+    } else if (proof == "poc") {
+      return "proof of Continuity (POC)"
+    }else
+      return proof
   }
 }
 

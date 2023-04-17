@@ -6,14 +6,31 @@
   </div>
 
   <div class="container mt-5" *ngIf="loadingComplete && !errorOccurred">
-    <div class="row mb-3">  
-      <div class="col-12">
-        <div class="row">
-          <div class="mr-2 ml-3 "><span  (click)="goBack()">   <i class="fas fa-angle-left clickableAwesomeFont" style="font-size: 30px;"></i></span></div>
-          <div >
-            <h4>PROOF OF GENESIS (POG)</h4>
-        <p>Proof of initialization of a traceability item</p>
+  <div class="row mb-3">
+    <div class="col-lg-7 col-sm-12 col-xs-12">
+      <div class="row">
+       <div class="mr-2 ml-3"><span (click)="goBack()"><i class="fas fa-angle-left clickableAwesomeFont"
+            style="font-size: 30px;"></i></span></div>
+        <div>
+          <h4>PROOF OF GENESIS (POG)</h4>
+          <p style="font-size: 13px;">Proof of initialization of a traceability item</p>
+        </div>
       </div>
+  </div>
+  <div class="col-lg-5 col-sm-12 col-xs-12">
+    <div class="row  flex-container">
+      <div class="mr-3" *ngIf="!!botHash">
+        <a [href]="proofbotDomain + '/?type=pog&txn=' + botHash" target="_blank">
+          <span
+            class="pl-3 pr-3 pt-1 pb-1 badge badge-primary"
+            style="width:175px;font-size: 14px;background-color:#3182BD;color:#FFFFFF;font-weight: 500; line-height: 23.41px; margin-bottom: 0.3rem;">
+            {{"Verify Proof"}}<img src="../../../../assets/img/botWhiteLogo.svg" width="30" height="22"> <span ></span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <div class="row flex-container">
+      <div class="mr-3"><p style="font-size: 13px;">Powered by Tracified ProofBot</p></div>
     </div>
   </div>
 </div>
@@ -134,14 +151,6 @@
           {{txnItem.sequence}}
         </div>
       </div>
-    </div>
-
-    <div class="col-xs-12 col-md-12 center pt-5" style="color: #6C757D;">
-      View this Transaction in Stellar<br>
-      <a href="{{txnItem.txnLabUrl}}" target="_blank"><button class="mt-2 mb-2 mr-2 ml-2 btn btn-primary btn-main btnFixSize" type="button"
-        style="width: fit-content;background-color: #3182BD;border:none">View on Stellar Lab</button></a>
-        <a href="{{txnItem.txnUrl}}" target="_blank"><button class="mt-2 mb-2 mr-2 ml-2 btn btn-primary btn-main btnFixSize" type="button"
-          style="width: fit-content;background-color: #3182BD;border:none">JSON View</button></a>
     </div>
   </div>
   <div class="container" *ngIf="loadingComplete && errorOccurred">

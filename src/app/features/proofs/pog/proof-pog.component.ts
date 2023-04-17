@@ -4,6 +4,7 @@ import { PogDataService } from '../../../services/pog-data.service';
 import { ITransactionGenesis } from 'src/app/shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
 import {Location} from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   templateUrl: './proof-pog.component.html',
@@ -24,10 +25,13 @@ export class ProofPogComponent {
   color = "primary";
   mode = "indeterminate";
   value = 20;
+  proofbotDomain=environment.blockchain.proofBot
+  botHash:string
 
   constructor(private route: ActivatedRoute, private pogDataService: PogDataService, private _location: Location) { }
 
   ngOnInit() {
+    this.botHash= history.state.botHash
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
     this.getProofData(this.txnId);
   }
