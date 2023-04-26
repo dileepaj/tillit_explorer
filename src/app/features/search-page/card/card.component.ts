@@ -21,7 +21,7 @@ export class CardComponent implements OnInit {
     if (proof == "pog") {
       this.router.navigate(['/pog', this.transactionData.txnHash]);
     } else if (proof == "poe") {
-      this.router.navigate(['/poe', this.transactionData.tdpId]);
+      this.router.navigate(['/poe', this.transactionData.tdpId, this.transactionData.sequence]);
     } else if (proof == "pococ") {
       this.router.navigate(['/pococ', this.transactionData.txnHash]);
     } else if (proof == "poc") {
