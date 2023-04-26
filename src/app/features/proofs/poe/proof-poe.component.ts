@@ -57,13 +57,15 @@ export class ProofPoeComponent implements OnInit {
   poacstatus: any;
   proofbotDomain = environment.blockchain.proofBot
   botHash:string
+  sequence:string
 
   constructor(private route: ActivatedRoute, private router: Router, private poeDataService: PoeDataService, private clipboardService: ClipboardService, private _location: Location) { }
 
   ngOnInit() {
     this.botHash= history.state.botHash
     this.tdpId = this.route.snapshot.paramMap.get('txnhash');
-    this.getProofData(this.tdpId);
+    this.sequence = this.route.snapshot.paramMap.get('sequence');
+    this.getProofData(this.tdpId, this.sequence);
   }
  
   goBack():void{
@@ -85,8 +87,8 @@ export class ProofPoeComponent implements OnInit {
     return text
   }
 
-  getProofData(tdpId: string): void {
-    this.poeDataService.getHashValues(tdpId).subscribe((data) => {
+  getProofData(tdpId: string, sequence:string): void {
+    this.poeDataService.getHashValues(tdpId, sequence).subscribe((data) => {
       this.transactionData = data[0];
      // console.log("PoE Hash Data: ", this.transactionData);
     if(data[0].Status=="POE failed but POAC is present"){
