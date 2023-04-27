@@ -12,7 +12,7 @@ import { ProofPocComponent } from './features/proofs/poc/proof-poc.component';
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'search/:id', component: SearchPageComponent},
-  {path: 'poe/:txnhash', component: ProofPoeComponent},
+  {path: 'poe/:txnhash/:sequence', component: ProofPoeComponent},
   {path: 'pog/:txnhash', component: ProofPogComponent},
   {path: 'pococ/:txnhash', component: ProofPococComponent},
   {path: 'poc/:txnhash', component: ProofPocComponent},

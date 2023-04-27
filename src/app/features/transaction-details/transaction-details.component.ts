@@ -349,7 +349,7 @@ export class TransactionDetailsComponent implements OnInit {
     if (proof == "pog") {
       this.router.navigate(['/pog', this.txnItem.txnHash], {state:{botHash:this.txnId}});
     } else if (proof == "poe") {
-      this.router.navigate(['/poe', this.txnItem.tdpId], {state:{botHash:this.txnId}});
+      this.router.navigate(['/poe', this.txnItem.tdpId, this.txnItem.sequence], {state:{botHash:this.txnId}});
     } else if (proof == "pococ") {
       this.router.navigate(['/pococ', this.txnItem.txnHash]);
     } else if (proof == "poc") {

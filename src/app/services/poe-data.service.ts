@@ -3,7 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { Proofs } from '../shared/models/proof.model';
 import { HashData } from '../shared/models/hash-data.model';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { tap, catchError} from 'rxjs/operators';
 
 @Injectable({
@@ -20,8 +20,12 @@ export class PoeDataService {
 
   constructor(private http: HttpClient) { }
 
-  getHashValues(id: string): Observable<HashData> {
-    return this.http.get<HashData>(environment.blockchain.getHashData + id).pipe(
+  getHashValues(id: string, sequenceNo: string): Observable<HashData> {
+    let params = new HttpParams();
+    params = params.append('tdpId', String(id) );
+    params = params.append('seqNo', String(sequenceNo));
+    console.log(environment.blockchain.getHashData, {params});
+    return this.http.get<HashData>(environment.blockchain.getHashData, {params}).pipe(
       // tap(data => { console.log("Hash Data: ", JSON.stringify(data))}),
       catchError(this.handleError)
     );
