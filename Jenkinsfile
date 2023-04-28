@@ -6,21 +6,8 @@ pipeline {
       steps {
         sh 'node --version'
         sh 'npm --version'
-        sh 'npm install'
-        script {
-          if (env.BRANCH_NAME == "release") {
-            sh 'npm run build-prod'
-            env.BUCKET_NAME = 'explorer.tillit.world'
-          } else if(env.BRANCH_NAME == "qa") {
-            sh 'npm run build-qa'
-            env.BUCKET_NAME = 'qa.explorer.tillit.world'
-          } else if (env.BRANCH_NAME == "staging") {
-            sh 'npm run build-staging'
-            env.BUCKET_NAME = 'staging.explorer.tillit.world'
-          } else {
-            sh 'npm run build'
-          }
-        }
+        sh 'npm ci'
+        sh 'npm run build'
       }
     }
     stage('Test') {
@@ -36,35 +23,41 @@ pipeline {
     stage('Deploy') {
       when {
         anyOf {
-          branch 'staging'
-          branch 'qa'
-          branch 'release'
+          branch 'master'
         }
       }
       steps {
-        s3Upload(
-          consoleLogLevel: 'INFO',
-          dontWaitForConcurrentBuildCompletion: false,
-          entries: [[
-            bucket: env.BUCKET_NAME,
-            excludedFile: '',
-            flatten: false,
-            gzipFiles: false,
-            keepForever: false,
-            managedArtifacts: false,
-            noUploadOnFailure: true,
-            selectedRegion: 'ap-south-1',
-            showDirectlyInBrowser: false,
-            sourceFile: 'dist/Tillit-Explorer/**',
-            storageClass: 'STANDARD',
-            uploadFromSlave: false,
-            useServerSideEncryption: false
-          ]],
-          pluginFailureResultConstraint: 'FAILURE',
-          profileName: 'tracified-admin-frontend-jenkins-deployer',
-          userMetadata: [],
-          dontSetBuildResultOnFailure: false
-        )
+        script {
+          def buckets = ['qa.explorer.tillit.world', 'staging.explorer.tillit.world']
+          def scripts = ['npm run build -- -c qa --aot', 'npm run build -- -c staging --aot']
+          for (int i = 0; i < buckets.size(); ++i) {
+            echo 'Uploading to ' + buckets[i]
+            sh scripts[i]
+            s3Upload(
+              consoleLogLevel: 'INFO',
+              dontWaitForConcurrentBuildCompletion: false,
+              entries: [[
+                bucket: buckets[i],
+                excludedFile: '',
+                flatten: false,
+                gzipFiles: false,
+                keepForever: false,
+                managedArtifacts: false,
+                noUploadOnFailure: true,
+                selectedRegion: 'ap-south-1',
+                showDirectlyInBrowser: false,
+                sourceFile: 'dist/Tillit-Explorer/**',
+                storageClass: 'STANDARD',
+                uploadFromSlave: false,
+                useServerSideEncryption: false
+              ]],
+              pluginFailureResultConstraint: 'FAILURE',
+              profileName: 'tracified-admin-frontend-jenkins-deployer',
+              userMetadata: [],
+              dontSetBuildResultOnFailure: false
+            )
+          }
+        }
       }
     }
   }
