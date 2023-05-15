@@ -24,7 +24,6 @@ export class PoeDataService {
     let params = new HttpParams();
     params = params.append('tdpId', String(id) );
     params = params.append('seqNo', String(sequenceNo));
-    console.log(environment.blockchain.getHashData, {params});
     return this.http.get<HashData>(environment.blockchain.getHashData, {params}).pipe(
       // tap(data => { console.log("Hash Data: ", JSON.stringify(data))}),
       catchError(this.handleError)
