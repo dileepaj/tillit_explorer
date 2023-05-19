@@ -83,24 +83,8 @@ export class TransactionDetailsComponent implements OnInit {
       }
       if (transaction[0].TxnType == "tdp") {
         this.transactionDataService.getTracifiedDataPackets(transaction[0].TdpId).subscribe((base64Data: IBase64) => {
-        //  console.log("Backend: ", base64Data);
           this.loadingComplete = true;
           let tdp: any = JSON.parse(decode(base64Data.data));
-         // console.log("Transaction Item: ", tdp);
-
-         // console.log("Available Proofs: ", transaction[0].Blockchain);
-
-          // let index = transaction[0].AvailableProof.findIndex((proof) => {
-          //   console.log("Proof Loop: ", proof);
-          //   return proof == "poc";
-          // });
-
-          // if (index != -1) {
-          //   transaction[0].AvailableProof.splice(index, 1);
-          // }
-
-          // console.log("Proof After Removed: ", transaction[0].AvailableProof);
-
           this.txnItem = {
             status: transaction[0].Status,
             txnHash: transaction[0].Txnhash,
@@ -138,7 +122,6 @@ export class TransactionDetailsComponent implements OnInit {
             sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
           }
         }, (err) => {
-        //  console.log("Get TDP Error: ", err);
           this.loadingComplete = true;
           this.errorOccurred = true;
           if (err.status === 400) {
@@ -228,17 +211,7 @@ export class TransactionDetailsComponent implements OnInit {
 
       } else if (transaction[0].TxnType == "splitParent") {
 
-        // let index = transaction[0].AvailableProof.findIndex((proof) => {
-        //   console.log("Proof Loop: ", proof);
-        //   return proof == "poc";
-        // });
-
-        // if (index != -1) {
-        //   transaction[0].AvailableProof.splice(index, 1);
-        // }
-
         this.loadingComplete = true;
-
         this.txnItem = {
           status: transaction[0].Status,
           txnHash: transaction[0].Txnhash,
@@ -258,18 +231,7 @@ export class TransactionDetailsComponent implements OnInit {
           fromIdentifier2:transaction[0].FromIdentifier2,
         }
       } else if (transaction[0].TxnType == "splitChild") {
-
-        // let index = transaction[0].AvailableProof.findIndex((proof) => {
-        //   console.log("Proof Loop: ", proof);
-        //   return proof == "poc";
-        // });
-
-        // if (index != -1) {
-        //   transaction[0].AvailableProof.splice(index, 1);
-        // }
-
         this.loadingComplete = true;
-
         this.txnItem = {
           status: transaction[0].Status,
           txnHash: transaction[0].Txnhash,
@@ -290,18 +252,7 @@ export class TransactionDetailsComponent implements OnInit {
         }
 
       } else if (transaction[0].TxnType == "merge") {
-
-        // let index = transaction[0].AvailableProof.findIndex((proof) => {
-        //   console.log("Proof Loop: ", proof);
-        //   return proof == "poc";
-        // });
-
-        // if (index != -1) {
-        //   transaction[0].AvailableProof.splice(index, 1);
-        // }
-
         this.loadingComplete = true;
-
         this.txnItem = {
           status: transaction[0].Status,
           txnHash: transaction[0].Txnhash,
@@ -319,12 +270,33 @@ export class TransactionDetailsComponent implements OnInit {
           fromIdentifier1:transaction[0].FromIdentifier1,
           fromIdentifier2:transaction[0].FromIdentifier2,
         }
+      } else if (transaction[0].TxnType == "stage transfer") {
+          this.loadingComplete = true;
+          this.txnItem = {
+            status: transaction[0].Status,
+            txnHash: transaction[0].Txnhash,
+            transferType: transaction[0].TxnType,
+            sequence: transaction[0].SequenceNo,
+            txnUrl: transaction[0].Url,
+            labTxnUrl: transaction[0].LabUrl,
+            publickKey: transaction[0].SourceAccount,
+            identifier: transaction[0].Identifier,
+            tdpId: transaction[0].TdpId,
+            timestamp: transaction[0].Timestamp,
+            ledger: transaction[0].Ledger,
+            fee: transaction[0].FeePaid,
+            availableProofs: transaction[0].AvailableProof,
+            productName: transaction[0].ProductName,
+            blockchain:transaction[0].Blockchain,
+            currentStage: transaction[0].CurrentStage,
+            previousStage: transaction[0].PreviousStage,
+            images: []
+          }
       }
       if(!!this.txnItem){
         sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
       }
     }, (err) => {
-    //  console.log("Get Transaction Error: ", err);
       this.loadingComplete = true;
       this.errorOccurred = true;
       if (err.status === 400) {

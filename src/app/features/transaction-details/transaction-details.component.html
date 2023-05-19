@@ -45,7 +45,7 @@
             Transaction Type
           </div>
           <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
-            {{txnItem.transferType}}
+            {{txnItem.transferType| uppercase}}
           </div>
         </div>
 
@@ -197,6 +197,24 @@
           </div>
           <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.sequence}}
+          </div>
+        </div>
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.currentStage">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Current Stage
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.currentStage}}
+          </div>
+        </div>
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.previousStage">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Previous Stage
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.previousStage}}
           </div>
         </div>
 
