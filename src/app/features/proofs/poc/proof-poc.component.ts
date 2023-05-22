@@ -151,13 +151,22 @@ export class ProofPocComponent implements OnInit {
     const {sColor, lColor, bColor} = this.getColorForTxnType(node.Data.TxnType);
     if(doneNodes.includes(node.Data.TxnHash)) return;
     if (node.Data.Identifier!=""){
-        g.setNode(node.Data.TxnHash, {
-            label: `Batch ID:  ${node.Data.Identifier}`,
-            shape: 'rect',
-            id:`node-${node.Data.TxnHash}-${sColor}`,
-            style: `stroke: ${bColor}; stroke-width: 2.5px; fill: ${sColor}`,
-            labelStyle: `font: 300 14px 'Helvetica Neue', Helvetica;fill: ${lColor}; cursor: pointer; font-weight: bold`,
-        });
+      let label=`Batch ID : ${node.Data.Identifier}\n`
+      if (!!node.Data.ProductName) {
+        label = label + `Product : ${node.Data.ProductName}\n`
+      }
+      if(!!node.Data.CurrentStage){
+        label = label + `Stage : ${node.Data.CurrentStage}\n`
+      }
+      g.setNode(node.Data.TxnHash, {
+        label: label ,
+        shape: 'rect',
+        id: `${node.Data.TxnHash}`,
+        style: `stroke: ${bColor}; stroke-width: 1.5px; fill: ${sColor}`,
+        labelStyle: `font: 300 14px 'Helvetica Neue', Helvetica;fill: ${lColor}; cursor: pointer; font-weight: bold`,
+        rx: 15, // set the x-axis radius of the rectangle
+        ry: 15, // set the y-axis radius of the rectangle
+      });
     }
     var lastSplitNodeIndex = null;
     if(node.Children) {
@@ -179,7 +188,7 @@ export class ProofPocComponent implements OnInit {
                 label: `${this.getTxnNameForTxnType(childNode.Data.TxnType)}`,
                 labelStyle: `font-size: 10px; fill: ${colors.sColor}; cursor: pointer; font-weight: bold`,
                 curve: d3.curveBasis,
-                style: `stroke: ${colors.sColor}; fill:none; stroke-width: 2px;`,
+                style: `stroke: ${colors.sColor}; fill:none; stroke-width: 3.5px;`,
                 arrowheadStyle: `fill: ${colors.sColor}`,
             });
             edgeValues.push(nodeIndex);
@@ -193,35 +202,50 @@ export class ProofPocComponent implements OnInit {
     var sColor : string, lColor : string, bColor : string;
     switch (type) {
       case "0":
-          sColor = "#16A085";
-          bColor = "#086553";
-          lColor = "white";
-          break
+        sColor = "#45B39D";
+        bColor = "#45B39D";
+        lColor = "white";
+        break
       case "2":
-          sColor = "#27AE60";
-          bColor = "#127D40";
-          lColor = "white";
-          break
+        sColor = "#52BE80";
+        bColor = "#52BE80";
+        lColor = "white";
+        break
       case "6":
-          sColor = "#2980B9";
-          bColor = "#105481";
-          lColor = "white";
-          break
+        sColor = "#5499C7";
+        bColor = "#5499C7";
+        lColor = "white";
+        break
       case "7":
-          sColor = "#C0392B";
-          bColor = "#802C24";
-          lColor = "white";
-          break
+        sColor = "#CD6155";
+        bColor = "#CD6155";
+        lColor = "white";
+        break
       case "5":
-          sColor = "#8E44AD";
-          bColor = "#70318A";
-          lColor = "white";
-          break
+        sColor = "#A569BD";
+        bColor = "#A569BD";
+        lColor = "white";
+        break
+      case "9":
+        sColor = "#d1b92e";
+        bColor = "#e6cb37";
+        lColor = "white";
+        break
+      case "9":
+        sColor = "#CD8F55";
+        bColor = "#CD8F55";
+        lColor = "white";
+        break
+      case "10":
+        sColor = "#718598";
+        bColor = "#718598";
+        lColor = "white";
+        break
       default:
-          sColor = "black";
-          bColor = "black";
-          lColor = "white";
-          break
+        sColor = "black";
+        bColor = "black";
+        lColor = "white";
+        break
     }
     return {sColor, lColor, bColor};
   }
@@ -238,6 +262,10 @@ export class ProofPocComponent implements OnInit {
           return "MERGE";
       case "5":
           return "SPLIT PARENT";
+      case "9":
+          return "STAGE TRANSFER";
+      case "10":
+          return "POCOC";
       default:
     }
   }

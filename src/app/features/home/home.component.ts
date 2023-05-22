@@ -179,7 +179,6 @@ export class HomeComponent implements OnInit {
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
         }
-
         else if (element.TxnType == "splitParent") {
           let txnItem = {
             proofStatus: element.Status,
@@ -202,7 +201,6 @@ export class HomeComponent implements OnInit {
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
         }
-
         else if (element.TxnType == "merge") {
           let txnItem = {
             proofStatus: element.Status,
@@ -221,6 +219,31 @@ export class HomeComponent implements OnInit {
             fromIdentifier1:element.FromIdentifier1,
             fromIdentifier2:element.FromIdentifier2,
             toIdentifier:element.ToIdentifier
+          }
+          this.results1.push(txnItem);
+          this.otherResultsAvailable = true;
+        }
+        else if (element.TxnType == "stage transfer") {
+          let index = element.AvailableProof.findIndex((proof) => {
+            return proof == "poc";
+          });
+          if (index != -1) {
+            element.AvailableProof.splice(index, 1);
+          }
+          let txnItem = {
+            status: element.Status,
+            txnHash: element.Txnhash,
+            transferType: element.TxnType,
+            sequence: element.SequenceNo,
+            txnUrl: element.Url,
+            publickKey: element.SourceAccount,
+            identifier: element.Identifier,
+            timestamp: element.Timestamp,
+            ledger: element.Ledger,
+            fee: element.FeePaid,
+            availableProofs: element.AvailableProof,
+            BlockchainName: "Stellar",
+            productName: element.ProductName
           }
           this.results1.push(txnItem);
           this.otherResultsAvailable = true;
