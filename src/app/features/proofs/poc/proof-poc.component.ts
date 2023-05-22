@@ -152,22 +152,21 @@ export class ProofPocComponent implements OnInit {
     if(doneNodes.includes(node.Data.TxnHash)) return;
     if (node.Data.Identifier!=""){
       let label=`Batch ID : ${node.Data.Identifier}\n`
-
       if (!!node.Data.ProductName) {
         label = label + `Product : ${node.Data.ProductName}\n`
-      }else if(!!node.Data.CurrentStage){
+      }
+      if(!!node.Data.CurrentStage){
         label = label + `Stage : ${node.Data.CurrentStage}\n`
       }
-
-        g.setNode(node.Data.TxnHash, {
-          label: !!node.Data.ProductName ? `\n\n Batch ID : ${node.Data.Identifier}\n Product : ${node.Data.ProductName}\n Stage : ${node.Data.CurrentStage}\n` : `\n${node.Data.Identifier}\n` ,
-          shape: 'rect',
-          id: `${node.Data.TxnHash}`,
-          style: `stroke: ${bColor}; stroke-width: 1.5px; fill: ${sColor}`,
-          labelStyle: `font: 300 14px 'Helvetica Neue', Helvetica;fill: ${lColor}; cursor: pointer; font-weight: bold`,
-          rx: 15, // set the x-axis radius of the rectangle
-          ry: 15, // set the y-axis radius of the rectangle
-        });
+      g.setNode(node.Data.TxnHash, {
+        label: label ,
+        shape: 'rect',
+        id: `${node.Data.TxnHash}`,
+        style: `stroke: ${bColor}; stroke-width: 1.5px; fill: ${sColor}`,
+        labelStyle: `font: 300 14px 'Helvetica Neue', Helvetica;fill: ${lColor}; cursor: pointer; font-weight: bold`,
+        rx: 15, // set the x-axis radius of the rectangle
+        ry: 15, // set the y-axis radius of the rectangle
+      });
     }
     var lastSplitNodeIndex = null;
     if(node.Children) {
@@ -232,6 +231,16 @@ export class ProofPocComponent implements OnInit {
         bColor = "#e6cb37";
         lColor = "white";
         break
+      case "9":
+        sColor = "#CD8F55";
+        bColor = "#CD8F55";
+        lColor = "white";
+        break
+      case "10":
+        sColor = "#718598";
+        bColor = "#718598";
+        lColor = "white";
+        break
       default:
         sColor = "black";
         bColor = "black";
@@ -255,6 +264,8 @@ export class ProofPocComponent implements OnInit {
           return "SPLIT PARENT";
       case "9":
           return "STAGE TRANSFER";
+      case "10":
+          return "POCOC";
       default:
     }
   }
