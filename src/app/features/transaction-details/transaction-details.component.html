@@ -218,6 +218,33 @@
           </div>
         </div>
 
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.geolocation">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Geolocation
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.geolocation}}
+          </div>
+        </div>
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.tenantName">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Tenant Name
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.tenantName}}
+          </div>
+        </div>
+
+        <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.createdAt">
+          <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
+            Transaction created at
+          </div>
+          <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
+            {{txnItem.createdAt}}
+          </div>
+        </div>
+
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.inputData">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
             Input Data
