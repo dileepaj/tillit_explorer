@@ -103,7 +103,10 @@ export class TransactionDetailsComponent implements OnInit {
             productName: tdp.header.item.itemName,
             stageId: tdp.header.stageID,
             blockchain:transaction[0].Blockchain,
-            images: []
+            images: [],
+            geolocation: transaction[0].GeoLocation,
+            tenantName: transaction[0].TenantName,
+            createdAt: transaction[0].CreatedAt,
           }
 
           if (tdp.data) {
@@ -170,6 +173,9 @@ export class TransactionDetailsComponent implements OnInit {
           productName: transaction[0].ProductName,
           fromIdentifier1:transaction[0].FromIdentifier1,
           fromIdentifier2:transaction[0].FromIdentifier2,
+          geolocation: transaction[0].GeoLocation,
+          tenantName: transaction[0].TenantName,
+          createdAt: transaction[0].CreatedAt,
         }
 
       } else if (transaction[0].TxnType == "coc") {
@@ -207,6 +213,9 @@ export class TransactionDetailsComponent implements OnInit {
           receiverSigned: false,
           fromIdentifier1:transaction[0].FromIdentifier1,
           fromIdentifier2:transaction[0].FromIdentifier2,
+          geolocation: transaction[0].GeoLocation,
+          tenantName: transaction[0].TenantName,
+          createdAt: transaction[0].CreatedAt,
         }
 
       } else if (transaction[0].TxnType == "splitParent") {
@@ -229,6 +238,9 @@ export class TransactionDetailsComponent implements OnInit {
           productName: transaction[0].ProductName,
           fromIdentifier1:transaction[0].FromIdentifier1,
           fromIdentifier2:transaction[0].FromIdentifier2,
+          geolocation: transaction[0].Geolocation,
+          tenantName: transaction[0].TenantName,
+          createdAt: transaction[0].CreatedAt,
         }
       } else if (transaction[0].TxnType == "splitChild") {
         this.loadingComplete = true;
@@ -249,6 +261,9 @@ export class TransactionDetailsComponent implements OnInit {
           productName: transaction[0].ProductName,
           fromIdentifier1:transaction[0].FromIdentifier1,
           fromIdentifier2:transaction[0].FromIdentifier2,
+          geolocation: transaction[0].GeoLocation,
+          tenantName: transaction[0].TenantName,
+          createdAt: transaction[0].CreatedAt,
         }
 
       } else if (transaction[0].TxnType == "merge") {
@@ -269,6 +284,9 @@ export class TransactionDetailsComponent implements OnInit {
           productName: transaction[0].ProductName,
           fromIdentifier1:transaction[0].FromIdentifier1,
           fromIdentifier2:transaction[0].FromIdentifier2,
+          geolocation: transaction[0].GeoLocation,
+          tenantName: transaction[0].TenantName,
+          createdAt: transaction[0].CreatedAt,
         }
       } else if (transaction[0].TxnType == "stage transfer") {
           this.loadingComplete = true;
@@ -290,7 +308,9 @@ export class TransactionDetailsComponent implements OnInit {
             blockchain:transaction[0].Blockchain,
             currentStage: transaction[0].CurrentStage,
             previousStage: transaction[0].PreviousStage,
-            images: []
+            geolocation: transaction[0].GeoLocation,
+            tenantName: transaction[0].TenantName,
+            createdAt: transaction[0].CreatedAt,
           }
       }
       if(!!this.txnItem){
