@@ -4,7 +4,7 @@ import { TransactionDataService } from '../../services/transaction-data.service'
 import { IBase64 } from '../../shared/models/base64.model';
 import { ErrorMessage } from '../../shared/models/error-message.model';
 import { encode, decode } from 'js-base64';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-transaction-details',
@@ -55,23 +55,23 @@ export class TransactionDetailsComponent implements OnInit {
     this.addTransactionDetailsToSessionStorage(this.txnId)
   }
 
-  addTransactionDetailsToSessionStorage(txnId:string){
-    if(sessionStorage.getItem(`${txnId}`)){
-    this.txnItem=JSON.parse(sessionStorage.getItem(`${txnId}`))
-    this.loadingComplete = true;
-    }else{
-    this.loadingComplete = false;
-    this.getTransactionDetails(txnId)
+  addTransactionDetailsToSessionStorage(txnId: string) {
+    if (sessionStorage.getItem(`${txnId}`)) {
+      this.txnItem = JSON.parse(sessionStorage.getItem(`${txnId}`))
+      this.loadingComplete = true;
+    } else {
+      this.loadingComplete = false;
+      this.getTransactionDetails(txnId)
     }
   }
 
-  goBack():void{
+  goBack(): void {
     this._location.back();
-    }
+  }
 
   getTransactionDetails(txnId: string): void {
-    this.transactionDataService.getTransactions(txnId,1,10).subscribe((transaction) => {
-      if (transaction==null){
+    this.transactionDataService.getTransactions(txnId, 1, 10).subscribe((transaction) => {
+      if (transaction == null) {
         this.loadingComplete = true;
         this.errorOccurred = true;
         this.error = {
@@ -102,7 +102,7 @@ export class TransactionDetailsComponent implements OnInit {
             productId: tdp.header.item.itemID,
             productName: tdp.header.item.itemName,
             stageId: tdp.header.stageID,
-            blockchain:transaction[0].Blockchain,
+            blockchain: transaction[0].Blockchain,
             images: [],
             geolocation: transaction[0].GeoLocation,
             tenantName: transaction[0].TenantName,
@@ -110,19 +110,19 @@ export class TransactionDetailsComponent implements OnInit {
           }
 
           if (tdp.data) {
-         //   check image exist in object
-         for (let [key, value] of Object.entries(tdp.data)) {
-            if(Array.isArray(value)&&value.length>0)
-              value.map((imageData)=>{
-                if(!!imageData.image&&imageData.image!=''){
-                  this.txnItem.images.push(imageData);
-                  this.enableSlider = true;
-                }
-             })
+            //   check image exist in object
+            for (let [key, value] of Object.entries(tdp.data)) {
+              if (Array.isArray(value) && value.length > 0)
+                value.map((imageData) => {
+                  if (!!imageData.image && imageData.image != '') {
+                    this.txnItem.images.push(imageData);
+                    this.enableSlider = true;
+                  }
+                })
             }
           }
-          if(!!this.txnItem){
-            sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
+          if (!!this.txnItem) {
+            sessionStorage.setItem(`${txnId}`, JSON.stringify(this.txnItem))
           }
         }, (err) => {
           this.loadingComplete = true;
@@ -146,7 +146,6 @@ export class TransactionDetailsComponent implements OnInit {
       } else if (transaction[0].TxnType == "genesis") {
 
         let index = transaction[0].AvailableProof.findIndex((proof) => {
-          console.log("Proof Loop: ", proof);
           return proof == "poc";
         });
 
@@ -169,10 +168,12 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchain:transaction[0].Blockchain,
-          productName: transaction[0].ProductName,
-          fromIdentifier1:transaction[0].FromIdentifier1,
-          fromIdentifier2:transaction[0].FromIdentifier2,
+          blockchain: transaction[0].Blockchain,
+          productId: transaction[0].productId,
+          productName: (transaction[0].CreatedAt && transaction[0].ProductName) ?
+           atob(transaction[0].ProductName) : transaction[0].ProductName,
+          fromIdentifier1: transaction[0].FromIdentifier1,
+          fromIdentifier2: transaction[0].FromIdentifier2,
           geolocation: transaction[0].GeoLocation,
           tenantName: transaction[0].TenantName,
           createdAt: transaction[0].CreatedAt,
@@ -181,7 +182,6 @@ export class TransactionDetailsComponent implements OnInit {
       } else if (transaction[0].TxnType == "coc") {
 
         let index = transaction[0].AvailableProof.findIndex((proof) => {
-          console.log("Proof Loop: ", proof);
           return proof == "poc";
         });
 
@@ -208,11 +208,11 @@ export class TransactionDetailsComponent implements OnInit {
           assetCode: "Not Sending",
           quantity: 0,
           inputData: transaction[0].inputData,
-          blockchain:transaction[0].Blockchain,
+          blockchain: transaction[0].Blockchain,
           senderSigned: false,
           receiverSigned: false,
-          fromIdentifier1:transaction[0].FromIdentifier1,
-          fromIdentifier2:transaction[0].FromIdentifier2,
+          fromIdentifier1: transaction[0].FromIdentifier1,
+          fromIdentifier2: transaction[0].FromIdentifier2,
           geolocation: transaction[0].GeoLocation,
           tenantName: transaction[0].TenantName,
           createdAt: transaction[0].CreatedAt,
@@ -234,10 +234,12 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchain:transaction[0].Blockchain,
-          productName: transaction[0].ProductName,
-          fromIdentifier1:transaction[0].FromIdentifier1,
-          fromIdentifier2:transaction[0].FromIdentifier2,
+          blockchain: transaction[0].Blockchain,
+          productId: transaction[0].productId,
+          productName: (transaction[0].CreatedAt && transaction[0].ProductName) ?
+           atob(transaction[0].ProductName) : transaction[0].ProductName,
+          fromIdentifier1: transaction[0].FromIdentifier1,
+          fromIdentifier2: transaction[0].FromIdentifier2,
           geolocation: transaction[0].Geolocation,
           tenantName: transaction[0].TenantName,
           createdAt: transaction[0].CreatedAt,
@@ -257,10 +259,12 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchain:transaction[0].Blockchain,
-          productName: transaction[0].ProductName,
-          fromIdentifier1:transaction[0].FromIdentifier1,
-          fromIdentifier2:transaction[0].FromIdentifier2,
+          blockchain: transaction[0].Blockchain,
+          productId: transaction[0].productId,
+          productName: (transaction[0].CreatedAt && transaction[0].ProductName) ?
+           atob(transaction[0].ProductName) : transaction[0].ProductName,
+          fromIdentifier1: transaction[0].FromIdentifier1,
+          fromIdentifier2: transaction[0].FromIdentifier2,
           geolocation: transaction[0].GeoLocation,
           tenantName: transaction[0].TenantName,
           createdAt: transaction[0].CreatedAt,
@@ -280,41 +284,45 @@ export class TransactionDetailsComponent implements OnInit {
           ledger: transaction[0].Ledger,
           fee: transaction[0].FeePaid,
           availableProofs: transaction[0].AvailableProof,
-          blockchain:transaction[0].Blockchain,
-          productName: transaction[0].ProductName,
-          fromIdentifier1:transaction[0].FromIdentifier1,
-          fromIdentifier2:transaction[0].FromIdentifier2,
+          blockchain: transaction[0].Blockchain,
+          productId: transaction[0].productId,
+          productName: (transaction[0].CreatedAt && transaction[0].ProductName) ?
+           atob(transaction[0].ProductName) : transaction[0].ProductName,
+          fromIdentifier1: transaction[0].FromIdentifier1,
+          fromIdentifier2: transaction[0].FromIdentifier2,
           geolocation: transaction[0].GeoLocation,
           tenantName: transaction[0].TenantName,
           createdAt: transaction[0].CreatedAt,
         }
       } else if (transaction[0].TxnType == "stage transfer") {
-          this.loadingComplete = true;
-          this.txnItem = {
-            status: transaction[0].Status,
-            txnHash: transaction[0].Txnhash,
-            transferType: transaction[0].TxnType,
-            sequence: transaction[0].SequenceNo,
-            txnUrl: transaction[0].Url,
-            labTxnUrl: transaction[0].LabUrl,
-            publickKey: transaction[0].SourceAccount,
-            identifier: transaction[0].Identifier,
-            tdpId: transaction[0].TdpId,
-            timestamp: transaction[0].Timestamp,
-            ledger: transaction[0].Ledger,
-            fee: transaction[0].FeePaid,
-            availableProofs: transaction[0].AvailableProof,
-            productName: transaction[0].ProductName,
-            blockchain:transaction[0].Blockchain,
-            currentStage: transaction[0].CurrentStage,
-            previousStage: transaction[0].PreviousStage,
-            geolocation: transaction[0].GeoLocation,
-            tenantName: transaction[0].TenantName,
-            createdAt: transaction[0].CreatedAt,
-          }
+        this.loadingComplete = true;
+        this.txnItem = {
+          status: transaction[0].Status,
+          txnHash: transaction[0].Txnhash,
+          transferType: transaction[0].TxnType,
+          sequence: transaction[0].SequenceNo,
+          txnUrl: transaction[0].Url,
+          labTxnUrl: transaction[0].LabUrl,
+          publickKey: transaction[0].SourceAccount,
+          identifier: transaction[0].Identifier,
+          tdpId: transaction[0].TdpId,
+          timestamp: transaction[0].Timestamp,
+          ledger: transaction[0].Ledger,
+          fee: transaction[0].FeePaid,
+          availableProofs: transaction[0].AvailableProof,
+          blockchain: transaction[0].Blockchain,
+          productId: transaction[0].productId,
+          productName: (transaction[0].CreatedAt && transaction[0].ProductName) ?
+           atob(transaction[0].ProductName) : transaction[0].ProductName,
+          currentStage: transaction[0].CurrentStage,
+          previousStage: transaction[0].PreviousStage,
+          geolocation: transaction[0].GeoLocation,
+          tenantName: transaction[0].TenantName,
+          createdAt: transaction[0].CreatedAt,
+        }
       }
-      if(!!this.txnItem){
-        sessionStorage.setItem(`${txnId}`,JSON.stringify(this.txnItem))
+      if (!!this.txnItem) {
+        sessionStorage.setItem(`${txnId}`, JSON.stringify(this.txnItem))
       }
     }, (err) => {
       this.loadingComplete = true;
@@ -339,9 +347,9 @@ export class TransactionDetailsComponent implements OnInit {
 
   navigateToProof(proof) {
     if (proof == "pog") {
-      this.router.navigate(['/pog', this.txnItem.txnHash], {state:{botHash:this.txnId}});
+      this.router.navigate(['/pog', this.txnItem.txnHash], { state: { botHash: this.txnId } });
     } else if (proof == "poe") {
-      this.router.navigate(['/poe', this.txnItem.tdpId, this.txnItem.sequence], {state:{botHash:this.txnId}});
+      this.router.navigate(['/poe', this.txnItem.tdpId, this.txnItem.sequence], { state: { botHash: this.txnId } });
     } else if (proof == "pococ") {
       this.router.navigate(['/pococ', this.txnItem.txnHash]);
     } else if (proof == "poc") {
@@ -349,7 +357,7 @@ export class TransactionDetailsComponent implements OnInit {
     }
   }
 
-  addProofName(proof){
+  addProofName(proof) {
     if (proof == "pog") {
       return "Proof of Genesis (PoG)"
     } else if (proof == "poe") {
@@ -358,7 +366,7 @@ export class TransactionDetailsComponent implements OnInit {
       return "Change of Custody (POCOC)"
     } else if (proof == "poc") {
       return "proof of Continuity (POC)"
-    }else
+    } else
       return proof
   }
 }
