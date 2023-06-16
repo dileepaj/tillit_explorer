@@ -157,7 +157,7 @@
 
         <div class="row show-bottom-border mr-0 ml-0 pb-md-4 pt-md-4" *ngIf="txnItem.timestamp">
           <div class="col-12 col-md-3 pl-md-4  pt-3 pt-md-0" style="font-size: 18px; font-weight:500;">
-            Timestamp
+            Blockchain Timestamp
           </div>
           <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
             {{txnItem.timestamp | date: 'medium'}}
@@ -241,7 +241,7 @@
             Transaction created at
           </div>
           <div class="col-12 col-md-9 " style="overflow-y: auto;  overflow-wrap: break-word;">
-            {{txnItem.createdAt}}
+            {{txnItem.createdAt | date: 'medium'}}
           </div>
         </div>
 
