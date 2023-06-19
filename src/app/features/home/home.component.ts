@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName
+              productName: element.CreatedAt ? this.decodeFromBase64(element.ProductName) : element.ProductName
             }
 
             this.results1.push(txnItem);
@@ -112,7 +112,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName
+              productName: element.CreatedAt ? this.decodeFromBase64(element.ProductName) : element.ProductName
             }
             this.results1.push(txnItem);
             this.otherResultsAvailable = true;
@@ -167,7 +167,7 @@ export class HomeComponent implements OnInit {
               BlockchainName: "Stellar",
               from: element.From,
               to: element.To,
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName,
+              productName: element.CreatedAt ? this.decodeFromBase64(element.ProductName) : element.ProductName,
               identifier: element.Identifier,
               fromIdentifier1: element.FromIdentifier1,
               fromIdentifier2: element.FromIdentifier2,
@@ -189,7 +189,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName,
+              productName: element.CreatedAt ? this.decodeFromBase64(element.ProductName) : element.ProductName,
               identifier: element.Identifier,
               fromIdentifier1: element.FromIdentifier1,
               fromIdentifier2: element.FromIdentifier2,
@@ -211,7 +211,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName,
+              productName: element.CreatedAt ? this.decodeFromBase64(element.ProductName) : element.ProductName,
               identifier: element.Identifier,
               fromIdentifier1: element.FromIdentifier1,
               fromIdentifier2: element.FromIdentifier2,
@@ -240,7 +240,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName
+              productName: element.CreatedAt ? this.decodeFromBase64(element.ProductName) : element.ProductName
             }
             this.results1.push(txnItem);
             this.otherResultsAvailable = true;
@@ -295,5 +295,12 @@ export class HomeComponent implements OnInit {
         }
       }
     });
+  }
+
+  decodeFromBase64(base64Text) {
+    const decodedData = atob(base64Text);
+    const decoder = new TextDecoder('utf-8');
+    const decodedText = decoder.decode(new Uint8Array([...decodedData].map(char => char.charCodeAt(0))));
+    return decodedText;
   }
 }
