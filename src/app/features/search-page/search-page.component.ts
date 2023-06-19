@@ -8,6 +8,7 @@ import { ITransactionCoc } from '../../shared/models/transaction-coc.model';
 import { ITransactionGenesis } from 'src/app/shared/models/transaction-genesis.model';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
 import { encode, decode } from 'js-base64';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-search-page',
@@ -32,7 +33,7 @@ export class SearchPageComponent implements OnInit {
   page:number = 1;
   perPage:number = 10;
   NoItems:number;
-  constructor(private route: ActivatedRoute, private transactionDataService: TransactionDataService) { }
+  constructor(private route: ActivatedRoute, private transactionDataService: TransactionDataService, private commonService: CommonService) { }
   ngOnInit() {
     this.route.params.subscribe((data) => {
       this.results = [];
@@ -127,9 +128,8 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-
             productId: element.ProductId,
-            productName: element.ProductName,
+            productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName,
             blockchainName: "Stellar"
           }
 
@@ -159,10 +159,9 @@ export class SearchPageComponent implements OnInit {
             ledger: element.Ledger,
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
-
             assetCode: element.AssetCode,
             quantity: 0,
-            productName: element.ProductName,
+            productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName,
             inputData: element.inputData,
             blockchainName: "Stellar",
             cocStatus: element.cocStatus,
@@ -197,7 +196,7 @@ export class SearchPageComponent implements OnInit {
             BlockchainName: "Stellar",
             from:element.From,
             to:element.To,
-            productName: element.ProductName,
+            productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName,
             identifier: element.Identifier,
             fromIdentifier1:element.FromIdentifier1,
             fromIdentifier2:element.FromIdentifier2,
@@ -227,10 +226,8 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             BlockchainName: "Stellar",
-            productName: element.ProductName,
+            productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName,
             identifier: element.Identifier,
-            fromIdentifier1:element.FromIdentifier1,
-            fromIdentifier2:element.FromIdentifier2,
             toIdentifier:element.ToIdentifier
           }
           this.results.push(txnItem);
@@ -248,7 +245,7 @@ export class SearchPageComponent implements OnInit {
             fee: element.FeePaid,
             availableProofs: element.AvailableProof,
             BlockchainName: "Stellar",
-            productName: element.ProductName,
+            productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName,
             identifier: element.Identifier,
             fromIdentifier1:element.FromIdentifier1,
             fromIdentifier2:element.FromIdentifier2,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TransactionDataService } from '../../services/transaction-data.service';
 import { ErrorMessage } from 'src/app/shared/models/error-message.model';
 import { Observable, Subscription, timer } from 'rxjs';
+import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit {
   totalRecords: number = 0;
   subscription: Subscription;
 
-  constructor(private transactionDataService: TransactionDataService) { }
+  constructor(private transactionDataService: TransactionDataService, private commonService: CommonService) { }
   ngOnInit() {
     this.getRecentTransactionsCount()
     window.onunload = function () {
@@ -85,7 +86,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName
+              productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName
             }
 
             this.results1.push(txnItem);
@@ -112,7 +113,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName
+              productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName
             }
             this.results1.push(txnItem);
             this.otherResultsAvailable = true;
@@ -167,7 +168,7 @@ export class HomeComponent implements OnInit {
               BlockchainName: "Stellar",
               from: element.From,
               to: element.To,
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName,
+              productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName,
               identifier: element.Identifier,
               fromIdentifier1: element.FromIdentifier1,
               fromIdentifier2: element.FromIdentifier2,
@@ -189,10 +190,8 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName,
+              productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName,
               identifier: element.Identifier,
-              fromIdentifier1: element.FromIdentifier1,
-              fromIdentifier2: element.FromIdentifier2,
               toIdentifier: element.ToIdentifier
             }
             this.results1.push(txnItem);
@@ -211,7 +210,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName,
+              productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName,
               identifier: element.Identifier,
               fromIdentifier1: element.FromIdentifier1,
               fromIdentifier2: element.FromIdentifier2,
@@ -240,7 +239,7 @@ export class HomeComponent implements OnInit {
               fee: element.FeePaid,
               availableProofs: element.AvailableProof,
               BlockchainName: "Stellar",
-              productName: element.CreatedAt ? atob(element.ProductName) : element.ProductName
+              productName: element.CreatedAt ? this.commonService.decodeFromBase64(element.ProductName) : element.ProductName
             }
             this.results1.push(txnItem);
             this.otherResultsAvailable = true;
@@ -296,4 +295,5 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+
 }
