@@ -6,8 +6,9 @@ import { ErrorMessage } from '../../../shared/models/error-message.model';
 import * as dracula from 'graphdracula';
 import { NullAstVisitor } from '@angular/compiler';
 import * as dagreD3 from 'dagre-d3';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { CommonService } from 'src/app/services/common.service';
 @Component({
   selector: 'app-poc',
   templateUrl: './proof-poc.component.html',
@@ -21,15 +22,15 @@ export class ProofPocComponent implements OnInit {
   errorOccurred: boolean = false;
   pocTreeWidth: Number = 0;
   pocTreeHeight: Number = 0;
-  marginx=50;
-  marginy=50
+  marginx = 50;
+  marginy = 50
   pocTransactions = [];
   selectedItem;
   color = "primary";
   mode = "indeterminate";
   value = 10;
 
-  constructor(private route: ActivatedRoute, private pocDataService: PocDataService,  private _location: Location) { }
+  constructor(private route: ActivatedRoute, private pocDataService: PocDataService, private _location: Location, private commonService: CommonService) { }
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
@@ -38,9 +39,9 @@ export class ProofPocComponent implements OnInit {
     // this.renderGraph(this.getData().Nodes);
   }
 
-  goBack():void{
+  goBack(): void {
     this._location.back();
-    }
+  }
 
   getProofData(id: string) {
     this.pocDataService.getPocProofData(id).subscribe((data) => {
@@ -80,7 +81,7 @@ export class ProofPocComponent implements OnInit {
     this.pocDataService.getPocTreeData(id).subscribe((data) => {
       this.loadingComplete = true;
       this.renderGraph(data.Nodes);
-     }, (err)=> {
+    }, (err) => {
     })
   }
 
@@ -89,36 +90,36 @@ export class ProofPocComponent implements OnInit {
     var g: any = new dagreD3.graphlib.Graph({ directed: true });
 
     // Set an object for the graph label
-    g.setGraph({ marginx: this.marginx,marginy: this.marginy});
+    g.setGraph({ marginx: this.marginx, marginy: this.marginy });
     g.graph().rankdir = 'LR';
     g.graph().ranksep = 80;
     g.graph().nodesep = 8;
 
     // Default to assigning a new object as a label for each new edge.
-    g.setDefaultEdgeLabel(function() {
-        return {};
+    g.setDefaultEdgeLabel(function () {
+      return {};
     });
 
-    var genesisNodes = Object.entries(Nodes).map(data=>{
-        if (!data[1].Parents) return data[1];
+    var genesisNodes = Object.entries(Nodes).map(data => {
+      if (!data[1].Parents) return data[1];
     })
 
-    genesisNodes = genesisNodes.filter(n=>n);
+    genesisNodes = genesisNodes.filter(n => n);
 
 
     var doneNodes = [];
-    var edgeValues :number[] = [0];
+    var edgeValues: number[] = [0];
 
     // set nodes and edges
     for (var key in genesisNodes) {
-      var max = edgeValues.reduce(function(a, b) {
+      var max = edgeValues.reduce(function (a, b) {
         return Math.max(a, b);
       }, 98);
       this.addNodesAndEdges(g, Nodes, doneNodes, edgeValues, genesisNodes[key], max + 1, 0);
     }
 
     // var svg = d3.select('svg');
-    var inner:any = d3.select('#pocTree'),svgGroup = inner.append("g");
+    var inner: any = d3.select('#pocTree'), svgGroup = inner.append("g");
     var render = new dagreD3.render();
     render(inner, g);
 
@@ -133,33 +134,33 @@ export class ProofPocComponent implements OnInit {
     inner.attr("height", g.graph().height + 50);
     //listeners
     d3.selectAll("g.edgePath").on('click', function (d: any) {
-        const from = Nodes[d.v].TrustLinks[0];
-        const to = Nodes[d.w].TrustLinks[0];
+      const from = Nodes[d.v].TrustLinks[0];
+      const to = Nodes[d.w].TrustLinks[0];
     });
     d3.selectAll("g.edgeLabel").on('click', function (d: any) {
-        const from = Nodes[d.v].TrustLinks[0];
-        const to = Nodes[d.w].TrustLinks[0];
-        window.open(environment.blockchain.proofBot+`/?type=pobl&txn=${to}&txn2=${from}`);
+      const from = Nodes[d.v].TrustLinks[0];
+      const to = Nodes[d.w].TrustLinks[0];
+      window.open(environment.blockchain.proofBot + `/?type=pobl&txn=${to}&txn2=${from}`);
     });
     d3.selectAll("g.node").on('click', function (d: any) {
-        window.open("/txn/" + Nodes[d].TrustLinks[0])
+      window.open("/txn/" + Nodes[d].TrustLinks[0])
     });
 
   }
 
-  addNodesAndEdges(g:any, Nodes:any, doneNodes:Array<string>, edgeValues:Array<number>, node:any, mainIndex:number, depth:number) {
-    const {sColor, lColor, bColor} = this.getColorForTxnType(node.Data.TxnType);
-    if(doneNodes.includes(node.Data.TxnHash)) return;
-    if (node.Data.Identifier!=""){
-      let label=`Batch ID : ${node.Data.Identifier}\n`
+  addNodesAndEdges(g: any, Nodes: any, doneNodes: Array<string>, edgeValues: Array<number>, node: any, mainIndex: number, depth: number) {
+    const { sColor, lColor, bColor } = this.getColorForTxnType(node.Data.TxnType);
+    if (doneNodes.includes(node.Data.TxnHash)) return;
+    if (node.Data.Identifier != "") {
+      let label = `Batch ID : ${node.Data.Identifier}\n`
       if (!!node.Data.ProductName) {
-        label = label + `Product : ${node.Data.ProductName}\n`
+        label = label + `Product : ${node.Data.Timestamp ? this.commonService.decodeFromBase64(node.Data.ProductName) : node.Data.ProductNam}\n`
       }
-      if(!!node.Data.CurrentStage){
+      if (!!node.Data.CurrentStage) {
         label = label + `Stage : ${node.Data.CurrentStage}\n`
       }
       g.setNode(node.Data.TxnHash, {
-        label: label ,
+        label: label,
         shape: 'rect',
         id: `${node.Data.TxnHash}`,
         style: `stroke: ${bColor}; stroke-width: 1.5px; fill: ${sColor}`,
@@ -169,37 +170,37 @@ export class ProofPocComponent implements OnInit {
       });
     }
     var lastSplitNodeIndex = null;
-    if(node.Children) {
-        for (let index = 0; index < node.Children.length; index++) {
-            const child = node.Children[index];
-            const childNode = Nodes[child];
-            const colors = this.getColorForTxnType(childNode.Data.TxnType);
-            var nodeIndex = null;
-            var nodeDepth = depth;
-            if (childNode.Data.TxnType == "6") {
-                nodeDepth++;
-                if(lastSplitNodeIndex) lastSplitNodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, lastSplitNodeIndex, nodeDepth);
-                else lastSplitNodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, mainIndex, nodeDepth)
-                nodeIndex = lastSplitNodeIndex;
-                nodeDepth++;
-            } else nodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, mainIndex, nodeDepth);
-            mainIndex = nodeIndex;
-            g.setEdge(node.Data.TxnHash, childNode.Data.TxnHash, {
-                label: `${this.getTxnNameForTxnType(childNode.Data.TxnType)}`,
-                labelStyle: `font-size: 10px; fill: ${colors.sColor}; cursor: pointer; font-weight: bold`,
-                curve: d3.curveBasis,
-                style: `stroke: ${colors.sColor}; fill:none; stroke-width: 3.5px;`,
-                arrowheadStyle: `fill: ${colors.sColor}`,
-            });
-            edgeValues.push(nodeIndex);
-            this.addNodesAndEdges(g, Nodes, doneNodes, edgeValues, childNode, nodeIndex, nodeDepth);
-        }
+    if (node.Children) {
+      for (let index = 0; index < node.Children.length; index++) {
+        const child = node.Children[index];
+        const childNode = Nodes[child];
+        const colors = this.getColorForTxnType(childNode.Data.TxnType);
+        var nodeIndex = null;
+        var nodeDepth = depth;
+        if (childNode.Data.TxnType == "6") {
+          nodeDepth++;
+          if (lastSplitNodeIndex) lastSplitNodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, lastSplitNodeIndex, nodeDepth);
+          else lastSplitNodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, mainIndex, nodeDepth)
+          nodeIndex = lastSplitNodeIndex;
+          nodeDepth++;
+        } else nodeIndex = this.getEdgeIndexForTxnType(childNode.Data.TxnType, mainIndex, nodeDepth);
+        mainIndex = nodeIndex;
+        g.setEdge(node.Data.TxnHash, childNode.Data.TxnHash, {
+          label: `${this.getTxnNameForTxnType(childNode.Data.TxnType)}`,
+          labelStyle: `font-size: 10px; fill: ${colors.sColor}; cursor: pointer; font-weight: bold`,
+          curve: d3.curveBasis,
+          style: `stroke: ${colors.sColor}; fill:none; stroke-width: 3.5px;`,
+          arrowheadStyle: `fill: ${colors.sColor}`,
+        });
+        edgeValues.push(nodeIndex);
+        this.addNodesAndEdges(g, Nodes, doneNodes, edgeValues, childNode, nodeIndex, nodeDepth);
+      }
     }
     doneNodes.push(node.Data.TxnHash);
   }
 
   getColorForTxnType(type) {
-    var sColor : string, lColor : string, bColor : string;
+    var sColor: string, lColor: string, bColor: string;
     switch (type) {
       case "0":
         sColor = "#45B39D";
@@ -247,30 +248,30 @@ export class ProofPocComponent implements OnInit {
         lColor = "white";
         break
     }
-    return {sColor, lColor, bColor};
+    return { sColor, lColor, bColor };
   }
 
   getTxnNameForTxnType(type) {
     switch (type) {
       case "0":
-          return "GENESIS";
+        return "GENESIS";
       case "2":
-          return "TDP";
+        return "TDP";
       case "6":
-          return "SPLIT";
+        return "SPLIT";
       case "7":
-          return "MERGE";
+        return "MERGE";
       case "5":
-          return "SPLIT PARENT";
+        return "SPLIT PARENT";
       case "9":
-          return "STAGE TRANSFER";
+        return "STAGE TRANSFER";
       case "10":
-          return "POCOC";
+        return "POCOC";
       default:
     }
   }
-  getEdgeIndexForTxnType(type:string, mainIndex: number, depth : number) : number{
-    const suffix =  1 / Math.pow(10, depth);
+  getEdgeIndexForTxnType(type: string, mainIndex: number, depth: number): number {
+    const suffix = 1 / Math.pow(10, depth);
     const final = mainIndex + suffix;
     return parseFloat(final.toFixed(depth));
     // switch (type) {
@@ -290,7 +291,7 @@ export class ProofPocComponent implements OnInit {
       if (element.Txnhash == passingHash) {
         this.selectedItem = element;
       }
-     });
+    });
   }
 
   createChild(data: any) {
