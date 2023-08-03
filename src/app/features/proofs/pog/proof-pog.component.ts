@@ -70,11 +70,9 @@ export class ProofPogComponent {
         publicKey: element.SourceAccount,
         ledger: element.Ledger,
         fee: element.FeePaid,
-
-        availableProofs: ["Not Sending"],
-        productId: element.ProductName,
-        productName: element.ProductId,
-
+        availableProofs: [],
+        productId: element.ProductId,
+        productName:( element.CreatedAt !=" " &&  element.ProductName) ? atob(element.ProductName) :  element.ProductName,
       }
     }, (err) => {
     //  console.log("Get PoG Proof Error: ", err);
