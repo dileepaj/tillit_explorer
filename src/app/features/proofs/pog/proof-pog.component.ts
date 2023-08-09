@@ -72,7 +72,7 @@ export class ProofPogComponent {
         fee: element.FeePaid,
         availableProofs: [],
         productId: element.ProductId,
-        productName:( element.CreatedAt !=" " &&  element.ProductName) ? atob(element.ProductName) :  element.ProductName,
+        productName:(!!element.CreatedAt &&  element.ProductName) ? atob(element.ProductName) :  element.ProductName,
       }
     }, (err) => {
     //  console.log("Get PoG Proof Error: ", err);
