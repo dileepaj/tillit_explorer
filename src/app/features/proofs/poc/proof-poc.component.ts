@@ -9,6 +9,9 @@ import * as dagreD3 from 'dagre-d3';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/services/common.service';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-poc',
   templateUrl: './proof-poc.component.html',
@@ -29,6 +32,7 @@ export class ProofPocComponent implements OnInit {
   color = "primary";
   mode = "indeterminate";
   value = 10;
+  pocData: any = {};
 
   constructor(private route: ActivatedRoute, private pocDataService: PocDataService, private _location: Location, private commonService: CommonService) { }
 
@@ -77,13 +81,162 @@ export class ProofPocComponent implements OnInit {
     };
   }
 
-  getProofTree(id: string) {
-    this.pocDataService.getPocTreeData(id).subscribe((data) => {
-      this.loadingComplete = true;
-      this.renderGraph(data.Nodes);
-    }, (err) => {
-    })
+  async getProofTree(id: string) {
+    await this.getProofTreeOne(id)
+    this.loadingComplete = true;
+
+    this.updateChildren();
+
+    //console.log('first', this.pocData);
+
+    this.renderGraph(this.pocData.Nodes);
   }
+
+  async getProofTreeOne(id: string) {
+    let data = await this.pocDataService.getPocTreeData(id).toPromise()
+    if (this.isEmptyObject(this.pocData)) {
+      this.pocData = data;
+    } else {
+      this.pocData.LastTxnHash = data.LastTxnHash;
+      for (const nodeId in data.Nodes) {
+        if (!this.pocData.Nodes.hasOwnProperty(nodeId)) {
+          this.pocData.Nodes[nodeId] = data.Nodes[nodeId];
+        }
+      }
+    }
+
+    for (const nodeId in data.Nodes) {
+      this.pocData.LastTxnHash = data.LastTxnHash;
+      if (data.BackLinkParents != undefined && data.BackLinkParents != null) {
+        console.log('data.BackLinkParents', data)
+        console.log('POC .BackLinkParents', this.pocData)
+        for (let index = 0; index < data.BackLinkParents.length; index++) {
+          let foundHash = false
+          for (const nodeIdPoc in this.pocData.Nodes) {
+            console.log('nodeIdPoc', nodeIdPoc, data.BackLinkParents[index])
+            if (this.pocData.Nodes[nodeIdPoc].TrustLinks[0] == data.BackLinkParents[index]) {
+              foundHash = true
+            }
+            // if (this.pocData.Nodes[nodeId] && !this.pocData.Nodes[nodeId].Parents != null
+            //   && !!this.pocData.Nodes[nodeId].Parents && !!data.BackLinkParents[index] && ) {
+            //     console.log('caling-----',data.BackLinkParents[index])
+            //     this.getProofTree(data.BackLinkParents[index]);
+            // }
+
+            //console.log('this.pocData.Nodes', this.pocData);
+            //this.pocData.Nodes[nodeIdPoc].TrustLinks[0] !== data.BackLinkParents[index]
+          }
+          console.log('foundhash', foundHash)
+          if (!foundHash) {
+            console.log('caling-----', data.BackLinkParents[index])
+            await this.getProofTreeOne(data.BackLinkParents[index]);
+          }
+        }
+
+      }
+    }
+
+    // this.loadingComplete = true;
+
+    // this.updateChildren();
+
+    // //console.log('first', this.pocData);
+
+    // this.renderGraph(this.pocData.Nodes);
+    // Process and render the data as needed
+  }
+
+  updateChildren() {
+    for (const nodeId in this.pocData.Nodes) {
+      if (this.pocData.Nodes[nodeId].Parents != null) {
+        for (let i = 0; i < this.pocData.Nodes[nodeId].Parents.length; i++) {
+          const parentNodeId = this.pocData.Nodes[nodeId].Parents[i];
+          if (this.pocData.Nodes[parentNodeId] != undefined && this.pocData.Nodes[parentNodeId].Children != null && !this.pocData.Nodes[parentNodeId].Children.includes(nodeId)) {
+            this.pocData.Nodes[parentNodeId].Children.push(nodeId);
+          } else {
+            this.pocData.Nodes[parentNodeId].Children = [nodeId];
+          }
+        }
+      }
+    }
+  }
+
+  isEmptyObject(obj) {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
+  // getProofTree(id: string) {
+  //   console.log('id', id)
+  //   this.pocDataService.getPocTreeData(id).subscribe((data) => {
+  //     // Store the current data in pocData
+  //     if (this.isEmptyObject(this.pocData)) {
+  //       this.pocData = data
+  //     } else {
+  //       this.pocData.LastTxnHash = data.LastTxnHash;
+  //       for (const nodeId in data.Nodes) {
+  //         // Check if the node with the given ID already exists in "Nodes"
+  //         if (!this.pocData.Nodes.hasOwnProperty(nodeId)) {
+  //           // Node doesn't exist, so add it
+  //           this.pocData.Nodes[nodeId] = data.Nodes[nodeId];
+  //         }
+  //       }
+
+
+  //     }
+  //     for (const nodeId in data.Nodes) {
+  //       console.log('nodeId', nodeId)
+  //       this.pocData.LastTxnHash = data.LastTxnHash;
+  //       if (data.Nodes[nodeId].TrustLinks[0] !== this.pocData.LastTxnHash) {
+  //         this.getProofTree(data.LastTxnHash);
+  //       }
+  //       console.log('this.pocData.Nodes', this.pocData)
+
+
+  //     }
+
+  //     this.loadingComplete = true
+
+  //     // write code her for update Children
+
+  //     for (const nodeId in this.pocData.Nodes) {
+  //       if (this.pocData.Nodes[nodeId].Parents != null) {
+  //         for (let i = 0; i < this.pocData.Nodes[nodeId].Parents.length; i++) {
+  //           if (this.pocData.Nodes[this.pocData.Nodes[nodeId].Parents[i]].Children != null && !this.pocData.Nodes[this.pocData.Nodes[nodeId].Parents[i]].Children.includes(nodeId)) {
+  //             this.pocData.Nodes[this.pocData.Nodes[nodeId].Parents[i]].Children.push(nodeId);
+  //           } else {
+  //             this.pocData.Nodes[this.pocData.Nodes[nodeId].Parents[i]].Children = [nodeId]
+  //           }
+  //         }
+  //       }
+
+  //     }
+
+  //     console.log('first', this.pocData)
+
+  //     this.renderGraph(this.pocData.Nodes);
+  //     // Process and render the data as needed
+
+  //   }, (err) => {
+  //     // Handle errors
+  //   });
+
+
+  // }
+
+  // isEmptyObject(obj) {
+  //   for (let key in obj) {
+  //     if (obj.hasOwnProperty(key)) {
+  //       return false; // If the object has any property, it's not empty
+  //     }
+  //   }
+  //   return true; // If no properties were found, the object is empty
+  // }
 
   renderGraph(Nodes: Object) {
     // Create a new directed graph
