@@ -38,9 +38,7 @@ export class ProofPocComponent implements OnInit {
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
-    // this.getProofData(this.txnId);
     this.getProofTree(this.txnId);
-    // this.renderGraph(this.getData().Nodes);
   }
 
   goBack(): void {
@@ -84,11 +82,7 @@ export class ProofPocComponent implements OnInit {
   async getProofTree(id: string) {
     await this.getProofTreeOne(id)
     this.loadingComplete = true;
-
     this.updateChildren();
-
-    //console.log('first', this.pocData);
-
     this.renderGraph(this.pocData.Nodes);
   }
 
