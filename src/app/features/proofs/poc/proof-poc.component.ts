@@ -74,9 +74,7 @@ export class ProofPocComponent implements OnInit {
           errorType: "empty"
         }
       }
-    }), (err) => {
-      //console.log("Error: ", err);
-    };
+    })
   }
 
   async getProofTree(id: string) {
@@ -102,12 +100,9 @@ export class ProofPocComponent implements OnInit {
     for (const nodeId in data.Nodes) {
       this.pocData.LastTxnHash = data.LastTxnHash;
       if (data.BackLinkParents != undefined && data.BackLinkParents != null) {
-        console.log('data.BackLinkParents', data)
-        console.log('POC .BackLinkParents', this.pocData)
         for (let index = 0; index < data.BackLinkParents.length; index++) {
           let foundHash = false
           for (const nodeIdPoc in this.pocData.Nodes) {
-            console.log('nodeIdPoc', nodeIdPoc, data.BackLinkParents[index])
             if (this.pocData.Nodes[nodeIdPoc].TrustLinks[0] == data.BackLinkParents[index]) {
               foundHash = true
             }
