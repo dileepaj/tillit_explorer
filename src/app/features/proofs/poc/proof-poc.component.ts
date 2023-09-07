@@ -3,14 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { PocDataService } from '../../../services/poc-data.service';
 import * as d3 from 'd3';
 import { ErrorMessage } from '../../../shared/models/error-message.model';
-import * as dracula from 'graphdracula';
-import { NullAstVisitor } from '@angular/compiler';
 import * as dagreD3 from 'dagre-d3';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/services/common.service';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-poc',
@@ -34,7 +30,8 @@ export class ProofPocComponent implements OnInit {
   value = 10;
   pocData: any = {};
 
-  constructor(private route: ActivatedRoute, private pocDataService: PocDataService, private _location: Location, private commonService: CommonService) { }
+  constructor(private route: ActivatedRoute, private pocDataService: PocDataService,
+    private _location: Location, private commonService: CommonService) { }
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
@@ -62,14 +59,16 @@ export class ProofPocComponent implements OnInit {
       if (err.status === 400) {
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
+          errorMessage:
+            "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
           errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
           errorType: "empty"
         }
       } else {
         this.error = {
           errorTitle: "Something went wrong",
-          errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
+          errorMessage:
+            "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
           errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
           errorType: "empty"
         }
@@ -101,10 +100,10 @@ export class ProofPocComponent implements OnInit {
       this.pocData.LastTxnHash = data.LastTxnHash;
       if (data.BackLinkParents != undefined && data.BackLinkParents != null) {
         for (let index = 0; index < data.BackLinkParents.length; index++) {
-          let foundHash = false
+          let foundHash = false;
           for (const nodeIdPoc in this.pocData.Nodes) {
             if (this.pocData.Nodes[nodeIdPoc].TrustLinks[0] == data.BackLinkParents[index]) {
-              foundHash = true
+              foundHash = true;
             }
           }
           if (!foundHash && !!data.BackLinkParents[index]) {
@@ -121,7 +120,8 @@ export class ProofPocComponent implements OnInit {
       if (this.pocData.Nodes[nodeId].Parents != null) {
         for (let i = 0; i < this.pocData.Nodes[nodeId].Parents.length; i++) {
           const parentNodeId = this.pocData.Nodes[nodeId].Parents[i];
-          if (this.pocData.Nodes[parentNodeId] != undefined && this.pocData.Nodes[parentNodeId].Children != null && !this.pocData.Nodes[parentNodeId].Children.includes(nodeId)) {
+          if (this.pocData.Nodes[parentNodeId] != undefined && this.pocData.Nodes[parentNodeId].Children != null
+            && !this.pocData.Nodes[parentNodeId].Children.includes(nodeId)) {
             this.pocData.Nodes[parentNodeId].Children.push(nodeId);
           } else {
             this.pocData.Nodes[parentNodeId].Children = [nodeId];
