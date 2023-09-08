@@ -3,12 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { PocDataService } from '../../../services/poc-data.service';
 import * as d3 from 'd3';
 import { ErrorMessage } from '../../../shared/models/error-message.model';
-import * as dracula from 'graphdracula';
-import { NullAstVisitor } from '@angular/compiler';
 import * as dagreD3 from 'dagre-d3';
 import { Location } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/services/common.service';
+
 @Component({
   selector: 'app-poc',
   templateUrl: './proof-poc.component.html',
@@ -29,14 +28,14 @@ export class ProofPocComponent implements OnInit {
   color = "primary";
   mode = "indeterminate";
   value = 10;
+  pocData: any = {};
 
-  constructor(private route: ActivatedRoute, private pocDataService: PocDataService, private _location: Location, private commonService: CommonService) { }
+  constructor(private route: ActivatedRoute, private pocDataService: PocDataService,
+    private _location: Location, private commonService: CommonService) { }
 
   ngOnInit() {
     this.txnId = this.route.snapshot.paramMap.get('txnhash');
-    // this.getProofData(this.txnId);
     this.getProofTree(this.txnId);
-    // this.renderGraph(this.getData().Nodes);
   }
 
   goBack(): void {
@@ -60,29 +59,85 @@ export class ProofPocComponent implements OnInit {
       if (err.status === 400) {
         this.error = {
           errorTitle: "No matching results found",
-          errorMessage: "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
+          errorMessage:
+            "There is no data associated with the given ID. Check if the entered ID is correct and try again.",
           errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
           errorType: "empty"
         }
       } else {
         this.error = {
           errorTitle: "Something went wrong",
-          errorMessage: "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
+          errorMessage:
+            "An error occurred while retrieving data. Check if the entered ID is correct and try again in a while.",
           errorMessageSecondary: "If you still don't see the results you were expecting, please let us know.",
           errorType: "empty"
         }
       }
-    }), (err) => {
-      //console.log("Error: ", err);
-    };
+    })
   }
 
-  getProofTree(id: string) {
-    this.pocDataService.getPocTreeData(id).subscribe((data) => {
-      this.loadingComplete = true;
-      this.renderGraph(data.Nodes);
-    }, (err) => {
-    })
+  async getProofTree(id: string) {
+    await this.getProofTreeOne(id)
+    this.loadingComplete = true;
+    this.updateChildren();
+    this.renderGraph(this.pocData.Nodes);
+  }
+
+  async getProofTreeOne(id: string) {
+    let data = await this.pocDataService.getPocTreeData(id).toPromise()
+    if (this.isEmptyObject(this.pocData)) {
+      this.pocData = data;
+    } else {
+      this.pocData.LastTxnHash = data.LastTxnHash;
+      for (const nodeId in data.Nodes) {
+        if (!this.pocData.Nodes.hasOwnProperty(nodeId)) {
+          this.pocData.Nodes[nodeId] = data.Nodes[nodeId];
+        }
+      }
+    }
+
+    for (const nodeId in data.Nodes) {
+      this.pocData.LastTxnHash = data.LastTxnHash;
+      if (data.BackLinkParents != undefined && data.BackLinkParents != null) {
+        for (let index = 0; index < data.BackLinkParents.length; index++) {
+          let foundHash = false;
+          for (const nodeIdPoc in this.pocData.Nodes) {
+            if (this.pocData.Nodes[nodeIdPoc].TrustLinks[0] == data.BackLinkParents[index]) {
+              foundHash = true;
+            }
+          }
+          if (!foundHash && !!data.BackLinkParents[index]) {
+            await this.getProofTreeOne(data.BackLinkParents[index]);
+          }
+        }
+
+      }
+    }
+  }
+
+  updateChildren() {
+    for (const nodeId in this.pocData.Nodes) {
+      if (this.pocData.Nodes[nodeId].Parents != null) {
+        for (let i = 0; i < this.pocData.Nodes[nodeId].Parents.length; i++) {
+          const parentNodeId = this.pocData.Nodes[nodeId].Parents[i];
+          if (this.pocData.Nodes[parentNodeId] != undefined && this.pocData.Nodes[parentNodeId].Children != null
+            && !this.pocData.Nodes[parentNodeId].Children.includes(nodeId)) {
+            this.pocData.Nodes[parentNodeId].Children.push(nodeId);
+          } else {
+            this.pocData.Nodes[parentNodeId].Children = [nodeId];
+          }
+        }
+      }
+    }
+  }
+
+  isEmptyObject(obj) {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   renderGraph(Nodes: Object) {
